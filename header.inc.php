@@ -1,0 +1,21 @@
+<?php
+function print_header($title = "Coombe Sixth form registration form.", $hide_title_bar = 'false', $script = '')
+{
+?>
+<html>
+ <head>
+  <title><?php echo $title ?></title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.js"></script>
+  <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.js"></script>
+  <script type="text/javascript" language="javascript" src="jquery.jeditable.js"></script>
+  <script type="text/javascript" charset="utf-8"><?php echo $script; ?></script>
+ </head>
+ 
+ <body>
+<?php
+    if ($hide_title_bar == false) {
+      echo "  <div class='header'><h1>".$title."</h1></div>";
+    }
+}
+?>
