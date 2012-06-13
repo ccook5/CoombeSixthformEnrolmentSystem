@@ -2,75 +2,102 @@
 
 require_once('config.inc.php');
 
-function print_html_select($sql, $column_to_show, $select_name, $select_id = "", $select_class = "", $select_style = "")
+include 'header.inc.php';
+function print_html_select($sql, $column_to_show, 
+							$select_id = "",    $select_name="", 
+							$select_class = "", $select_style = "", 
+							$second_column_to_show = "", $option_id_column = "")
 {
 	global $link;
-	echo "      <select name='".$select_name."' ";
-	if ($select_id    != "") echo "id='"   .$select_id."' ";
+	echo "      <select ";
+	if ($select_name  != "") echo "name='" .$select_name ."' ";
+	if ($select_id    != "") echo "id='"   .$select_id   ."' ";
 	if ($select_class != "") echo "class='".$select_class."' ";
 	if ($select_style != "") echo "style='".$select_style."' ";
-    echo "	/>\n";
+    echo " >\n";
 
 	$result = mysql_query($sql, $link);
 
 	if (!$result) {
 		die('Invalid query: ' . mysql_error());
 	} else {
-			$matched = false;
+			$first_option = true;
 			while($row = mysql_fetch_assoc($result)) {
-				print("       <option>".$row[$column_to_show]."</option>\n");
+				print("       <option ");
+				if ($option_id_column != "") { print(" id=\""      .$row[$option_id_column]."\" "); }
+				if ($select_class     != "") { print(" class=\""   .$select_class          ."\" "); }
+				if ($option_id_column != "") { print(" value=\""   .$row[$option_id_column]."\" "); }
+				if ($first_option)           { print(" selected "); $first_option = false; }
+				print(">");
+				if ($second_column_to_show == "") {
+					print($row[$column_to_show]);
+				} else {
+					print($row[$column_to_show]." - ".$row[$second_column_to_show]);
+				}
+				print("</option>\n");
 			}
 	}
 	echo "     </select>\n";
 }
 
 if (! isset($_POST['action'])) {
+
+print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = true, $script = "
+
+	$('select.gcse_type').live('change', function() {
+			$('option.gcse_grade').each( function(index) {
+				if (this.value == $('select.gcse_type option:selected').attr('id')) { 
+					if (this.parentElement.nodeName == 'SPAN') {
+						$(this).unwrap();
+					}
+				} else {
+					$(this).wrap('<span style=\"display: none\" />');
+				}
+				
+			});
+		});", $exclude_datatables_js = true);
 ?>
-<html>
- <body>
   <h4>ajax_update_students_results.php tester</h4>
-  <table style='width: 300px; border: 1px solid black;' >
-   <form action="ajax_update_students.php" method="post"> 
+  <form action="ajax_update_students_results.php" method="post"> 
+   <table style='width: 300px; border: 1px solid black;' >
     <tr>
      <td>Action</td>
      <td>
-      <select name='action' /> 
-       <option>delete</option>
-       <option>new</option>
-       <option>update</option>
+      <select name='action' > 
+       <option>delete</option><option>new</option><option>update</option>
       </select>
      </td>
     </tr>
     <tr>
-     <td>ID</td>
-     <td><input type='text' name='student_id' /></td>
+     <td>Student ID</td>
+     <td><input type='text' name='StudentID' /></td>
     </tr>
     <tr>
      <td>Subject</td>
      <td>
-	  <?php print_html_select("SELECT * FROM GCSE_Subjects", "Name", "Subject"); ?>
+	  <?php print_html_select("SELECT * FROM GCSE_Subjects", $column_to_show="Name", $select_id="SubjectID", $select_name="SubjectID", $select_class="subject_name", "", "", $option_id_column = "id"); ?>
+     </td>
+    </tr>
+    <tr>
+     <td>Result Type</td>
+     <td>
+	  <?php print_html_select("SELECT * FROM GCSE_Qualification", $column_to_show="Type", $select_id="gcse_type", $select_name="", $select_class="gcse_type", "", $second_column_to_show = "Length", $option_id_column = "id"); ?>
      </td>
     </tr>
     <tr>
      <td>Grade</td>
      <td>
-	  <?php print_html_select("SELECT * FROM GCSE_Grade", "Grade", "Grade"); ?>
+	  <?php print_html_select("SELECT * FROM GCSE_Grade RIGHT JOIN GCSE_Qualification ON GCSE_Grade.QualificationID=GCSE_Qualification.id", 
+															$column_to_show = "Grade", $select_id="gcse_grade", $select_name="GradeID", $select_class="gcse_grade", "", $second_column_to_show = "Points", $option_id_column = "QualificationID"); ?>
      </td>
     </tr>
-    <tr>
-     <td>Student ID</td>
-     <td>
-     </td>
-     </tr>
-     <tr><td><input type="submit" /></td></tr>
-   </form>
-  </table>
+    <tr><td><input type="submit" /></td></tr>
+   </table>
+  </form>
  </body>
 </html>
 <?php
 } else {
-
-	//This is unsafe at the moment, we need to filter as its user input, and might contain sql; DROP * FROM sixthformenrolemnt;"
 	$action = mysql_real_escape_string($_POST['action']);
 	$student_id = mysql_real_escape_string($_POST['student_id']);
 
@@ -80,62 +107,16 @@ if (! isset($_POST['action'])) {
 	//We have all the info we need
 	}
 	else if ($action == "update" or $action == "new") {
-		$FirstName           = mysql_real_escape_string($_POST['FirstName']);
-		$LastName            = mysql_real_escape_string($_POST['LastName']);
-		$StudentType         = mysql_real_escape_string($_POST['StudentType']);
-		$PreviousInstitution = mysql_real_escape_string($_POST['PreviousInstitution']);
-		$EnrolmentYear       = mysql_real_escape_string($_POST['EnrolmentYear']);
+		$StudentID       = mysql_real_escape_string($_POST['student_id']);
+		$SubjectID       = mysql_real_escape_string($_POST['SubjectID']);
+		$GradeID         = mysql_real_escape_string($_POST['GradeID']);
 		
-	}
-	else {
-		print("<div class='error'>Error: Incorrect Action</div>");
-	}
-
-	if ($action == "delete") {
-	//We have all the info we need
-	}
-	else if ($action == "update" or $action == "new")
-	{
-	//Convery Student type to an integer/key value from the student type table
-		$sql_student_types = "SELECT * FROM StudentTypes";
-
-		$result_student_types = mysql_query($sql_student_types, $link);
-
-		if (!$result_student_types)
-		{
-			die('Invalid query: ' . mysql_error());
-		}
-		else
-		{
-			print($StudentType);
-			$matched = false;
-			while($row_student_type = mysql_fetch_assoc($result_student_types))
-			{
-				print($row_student_type['CourseType']);
-				if ($row_student_type['CourseType'] == $StudentType) 
-				{
-					$matched = true;
-					$StudentType = $row_student_type['id'];
-				}
-			}
-			if ($matched == false)
-			{
-	// We might want to add the student type, or we might not...
-			}
-			
-		}
-
-		$sql = '';
-	// if $action = new then make the sql query INSERT
-		if ($action == "new")
-		{
-			$sql = "INSERT INTO students (id, EnrolmentYear, FirstName, LastName, StudentType, PreviousInstitution) VALUES ('".$student_id."', '".$config['current_year']."', '".$FirstName."', '".$LastName."', '".$StudentType."', '".$PreviousInstitution."')";
-		}
-	// else make the query UPDATE
-		else if ($action == "update")
-		{
-			$sql = "UPDATE students SET EnrolmentYear='".$config['current_year']."', FirstName='".$FirstName."', LastName='".$LastName."', StudentType='".$StudentType."', PreviousInstitution='".$PreviousInstitution."' WHERE id='".$student_id."'";
-		}
+		print("<p>&dollar;StudentID = ".$StudentID."</p>");
+		print("<p>&dollar;SubjectID = ".$SubjectID."</p>");
+		print("<p>&dollar;GradeID   = ".$GradeID."</p>");
+		
+		$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."')";
+		
 		
 		print($sql);
 		$result = mysql_query($sql, $link);
@@ -147,6 +128,9 @@ if (! isset($_POST['action'])) {
 		else
 		{
 		}
+	}
+	else {
+		print("<div class='error'>Error: Incorrect Action</div>");
 	}
 }
 ?>

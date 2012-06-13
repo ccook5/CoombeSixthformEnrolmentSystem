@@ -139,7 +139,8 @@ if (! isset($_POST['action'])) {
 	// if $action = new then make the sql query INSERT
 		if ($action == "new")
 		{
-			$sql = "INSERT INTO students (id, EnrolmentYear, FirstName, LastName, StudentType, PreviousInstitution) VALUES ('".$student_id."', '".$config['current_year']."', '".$FirstName."', '".$LastName."', '".$StudentType."', '".$PreviousInstitution."')";
+			$sql = "INSERT INTO students (id, EnrolmentYear, FirstName, LastName, StudentType, PreviousInstitution) 
+			VALUES ('".$student_id."', '".$config['current_year']."', '".$FirstName."', '".$LastName."', '".$StudentType."', '".$PreviousInstitution."')";
 		}
 	// else make the query UPDATE
 		else if ($action == "update")

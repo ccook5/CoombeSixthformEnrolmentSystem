@@ -3,12 +3,11 @@ require_once 'config.inc.php';
 
 include 'header.inc.php';
 
-
 if (! isset($_GET['student_id'])) {
-  echo "<div class='error'>No student Id found</div>";
-  die;
+	echo "<div class='error'>No student Id found</div>";
+	die;
 } else {
-  $student_id = mysql_real_escape_string($_GET['student_id']);
+	$student_id = mysql_real_escape_string($_GET['student_id']);
 }
 
 function build_list($sql, $list_name, $key_column, $value_column, $value_column2 = "")
@@ -56,22 +55,22 @@ function create_select_builder($func_name, $sql, $class_name_test, $key_column, 
 		$s .= "         ".build_f_key_list($sql, "f_keys", $key_column, $f_key_column)."\n";
 	}
 	$s .= "			var s = '<select class=\"".$class_name_test."\">';\n";
-	$s .= "			var iLen = 0;\n";
-	$s .= "			for (var i = 1, iLen=arr.length; i<iLen; i++) {\n";
-	$s .= "				s = s + '<span>';\n";
-	$s .= "				s = s + '<option';\n";
-	$s .= "				s = s + ' class=\"".$class_name_test."\"';\n";
-	$s .= "				s = s + ' id='+i+''\n";
+	$s .= "			for (var i = 1; i<arr.length; i++)\n";
+	$s .= "			{\n";
+	$s .= "				s += '<span>';\n";
+	$s .= "				s += ' <option';\n";
+	$s .= "				s += '  class=\"".$class_name_test."\"';\n";
+	$s .= "				s += '  id='+i+''\n";
 	if ($f_key_column != "") {
-		$s .= "				s = s +' value='+ f_keys[i];";
+		$s .= "				s += ' value=' + f_keys[i];\n";
 	}
 	$s .= "				if (d == arr[i]) {\n";
-	$s .= "					s = s + ' selected=\"selected\"';\n";
+	$s .= "					s += ' selected=\"selected\"';\n";
 	$s .= "				}\n";
-	$s .= "				s = s + '>' + arr[i] + '</option>';\n";
-	$s .= "				s = s + '</span>';\n";
+	$s .= "				s += '>' + arr[i] + '</option>';\n";
+	$s .= "				s += ' </span>';\n";
 	$s .= "			}\n";
-	$s .= "			s = s + '</select>';\n";
+	$s .= "			s += '</select>';\n";
 	$s .= "			return s;\n";
 	$s .= "		}\n";
 
@@ -88,22 +87,22 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			}
 			oTable.fnDraw();
 		}".
-//		create_select_builder('build_student_type_select',  "SELECT * from StudentTypes",       'student_type', 'id', 'CourseType').
-		create_select_builder('build_GCSE_Type_select',     "SELECT * from GCSE_Qualification", 'gcse_type',    'id', 'Type', 'Length').
-		create_select_builder('build_subject_names_select', "SELECT * from GCSE_Subjects",      'subject_name', 'id', 'Name').
-		create_select_builder('build_GCSE_Grade_select',    "SELECT * FROM GCSE_Grade ORDER BY Points",         'gcse_grade',   'id', 'Grade', 'Points', 'QualificationID').
+		create_select_builder('build_GCSE_Type_select',     "SELECT * from GCSE_Qualification",         'gcse_type',    'id', 'Type', 'Length').
+		create_select_builder('build_subject_names_select', "SELECT * from GCSE_Subjects",              'subject_name', 'id', 'Name').
+		create_select_builder('build_GCSE_Grade_select',    "SELECT * FROM GCSE_Grade ORDER BY Points", 'gcse_grade',   'id', 'Grade', ''/*'Points'*/, 'QualificationID').
 		"
 		function editRow ( oTable, nRow ) {
 			var aData = oTable.fnGetData(nRow);
 			var jqTds = $('>td', nRow);
-			jqTds[0].innerHTML = build_GCSE_Type_select    (aData[0]);
-			jqTds[1].innerHTML = build_subject_names_select(aData[1]);
-			jqTds[2].innerHTML = build_GCSE_Grade_select   (aData[2]);
+			//skip column 0
+			jqTds[1].innerHTML = build_GCSE_Type_select    (aData[1]);
+			jqTds[2].innerHTML = build_subject_names_select(aData[2]);
+			jqTds[3].innerHTML = build_GCSE_Grade_select   (aData[3]);
 			jqTds[4].innerHTML = '<a class=\"edit\" href=\"\">Save</a>';
 		}
 		function saveRow ( oTable, nRow, action ) {
-			var jqInputs = $('input', nRow);
 			var jqSelects = $('select', nRow);
+			var jqTds = $('>td', nRow);
 			var xmlhttp;
 			if (window.XMLHttpRequest)
 			{// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -116,19 +115,26 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			xmlhttp.open('POST', 'ajax_update_students_results.php', false);
 			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			
+			http_data  = 'student_id=".$student_id."';
+			http_data += '&ResultID='  + jqTds[0].innerHTML;
+			http_data += '&SubjectID=' + jqSelects[1].options[jqSelects[1].selectedIndex].id;
+			http_data += '&GradeID=' + jqSelects[2].options[jqSelects[2].selectedIndex].id;
+
 			if (action == 'Save') {
-				xmlhttp.send('action=update&student_id='+jqInputs[0].value+'&FirstName='+jqInputs[1].value+'&LastName='+jqInputs[2].value+'&StudentType='+jqSelects[0].options[jqSelects[0].selectedIndex].value+'&PreviousInstitution='+jqInputs[3].value+'&EnrolmentYear='+jqInputs[4].value);
+				http_data  = 'action=update&' + http_data;
+				xmlhttp.send(http_data);
 			} else {
-				xmlhttp.send('action=new&student_id='+jqInputs[0].value+'&FirstName='+jqInputs[1].value+'&LastName='+jqInputs[2].value+'&StudentType='+jqSelects[0].options[jqSelects[0].selectedIndex].value+'&PreviousInstitution='+jqInputs[3].value+'&EnrolmentYear='+jqInputs[4].value);
+				http_data  = 'action=new&' + http_data;
+				xmlhttp.send(http_data);
+//				xmlhttp.send('action=new&student_id='".$student_id."'&FirstName='+jqInputs[1].value+'&LastName='+jqInputs[2].value+'&StudentType='+jqSelects[0].options[jqSelects[0].selectedIndex].value+'&PreviousInstitution='+jqInputs[3].value+'&EnrolmentYear='+jqInputs[4].value);
 			}
 			document.getElementById('debug').innerHTML = xmlhttp.responseText;
 
-			oTable.fnUpdate( jqInputs[0].value, nRow, 0, false );
-			oTable.fnUpdate( jqInputs[1].value, nRow, 1, false );
-			oTable.fnUpdate( jqInputs[2].value, nRow, 2, false );
-			oTable.fnUpdate( jqSelects[0].options[jqSelects[0].selectedIndex].value, nRow, 3, false );
+			oTable.fnUpdate( jqSelects[0].options[jqSelects[0].selectedIndex].text, nRow, 1, false );
+			oTable.fnUpdate( jqSelects[1].options[jqSelects[1].selectedIndex].text, nRow, 2, false );
+			oTable.fnUpdate( jqSelects[2].options[jqSelects[2].selectedIndex].text, nRow, 3, false );
 			
-			oTable.fnUpdate( '<a class=\"edit\" href=\"\">Edit</a>', nRow, 5, false );
+			oTable.fnUpdate( '<a class=\"edit\" href=\"\">Edit</a>', nRow, 4, false );
 			oTable.fnDraw();
 		}
 
@@ -141,8 +147,8 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			'bFilter'    : false,
 			'bPaginate'  : false,
 			'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
-				$('td:eq(3)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
-				$('td:eq(4)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
+				$('td:eq(4)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
+				$('td:eq(5)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
 			}
 			//'aoColumnDefs': [ {
 			///	'sClass'  : 'center',
@@ -162,11 +168,12 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 		$('#new_student').click( function (e) {
 			e.preventDefault();
 			
-			var aiNew = studentTable.fnAddData( [ '', '', '',
+			var aiNew = studentTable.fnAddData( ['', '', '', '',
 				'<a class=\"edit\" href=\"\">Add</a>', '<a class=\"delete\" href=\"\">Delete</a>' ] );
 			var nRow = studentTable.fnGetNodes( aiNew[0] );
 			editRow( studentTable, nRow );
 			nEditing = nRow;
+			update_grade_selectbox();
 		} );
 		
 		$('#students a.delete').live('click', function (e) {
@@ -174,11 +181,13 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			
 			var nRow = $(this).parents('tr')[0];
 
+			var jqTds = $('>td', nRow);
+			
 			var jqInputs = $('input', nRow);
 			
 			xmlhttp.open('POST', 'ajax_update_student.asp', true);
 			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xmlhttp.send('action=delete&student_id='+jqInputs[0]);
+			xmlhttp.send('action=delete&student_id='+jqTds[0]);
 			
 			studentTable.fnDeleteRow( nRow );
 		} );
@@ -211,21 +220,22 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 				nEditing = nRow;
 			}
 		} );
-		$('select.gcse_type').live('change', function() {
 		
+		function update_grade_selectbox()
+		{
 			$('option.gcse_grade').each( function(index) {
 			
 				if (this.value == $('select.gcse_type option:selected').attr('id')) { 
-		//			alert(this.parentElement.nodeName);
 					if (this.parentElement.nodeName == 'SPAN') {
 						$(this).unwrap();
 					}
 				} else {
 					$(this).wrap('<span style=\"display: none\" />');
 				}
-				
 			});
-		});
+		}
+		
+		$('select.gcse_type').live('change', update_grade_selectbox() );
 	} );
 	");
 ?>
@@ -239,6 +249,7 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="students">
          <thead>
           <tr>
+		    <th>ID</th>
 			<th>Type</th>
 			<th>Subject</th>
 			<th>Grade</th>
@@ -248,7 +259,7 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
          </thead>
          <tbody>
           <tr>
-           <td colspan="5" class="dataTables_empty">Loading data from server</td>
+           <td colspan="6" class="dataTables_empty">Loading data from server</td>
           </tr>
          </tbody>
         </table>
@@ -256,5 +267,6 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
       </tr>
      </table>
    </div>
+   <div id="debug"></div>
  </body>
 </html>
