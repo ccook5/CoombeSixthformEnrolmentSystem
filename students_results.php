@@ -77,7 +77,7 @@ function create_select_builder($func_name, $sql, $class_name_test, $key_column, 
 	return $s;
 }
 
-print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = true, $script = "
+print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
 	$(document).ready(function() {
 		function restoreRow ( oTable, nRow ) {
 			var aData = oTable.fnGetData(nRow);
@@ -91,7 +91,8 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 		create_select_builder('build_subject_names_select', "SELECT * from GCSE_Subjects",              'subject_name', 'id', 'Name').
 		create_select_builder('build_GCSE_Grade_select',    "SELECT * FROM GCSE_Grade ORDER BY Points", 'gcse_grade',   'id', 'Grade', ''/*'Points'*/, 'QualificationID').
 		"
-		function editRow ( oTable, nRow ) {
+		function editRow ( oTable, nRow )
+		{
 			var aData = oTable.fnGetData(nRow);
 			var jqTds = $('>td', nRow);
 			//skip column 0
@@ -99,11 +100,15 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			jqTds[2].innerHTML = build_subject_names_select(aData[2]);
 			jqTds[3].innerHTML = build_GCSE_Grade_select   (aData[3]);
 			jqTds[4].innerHTML = '<a class=\"edit\" href=\"\">Save</a>';
+			update_grade_selectbox();
 		}
-		function saveRow ( oTable, nRow, action ) {
+		
+		function saveRow ( oTable, nRow, action )
+		{
 			var jqSelects = $('select', nRow);
 			var jqTds = $('>td', nRow);
 			var xmlhttp;
+			
 			if (window.XMLHttpRequest)
 			{// code for IE7+, Firefox, Chrome, Opera, Safari
 				xmlhttp=new XMLHttpRequest();
@@ -126,7 +131,6 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			} else {
 				http_data  = 'action=new&' + http_data;
 				xmlhttp.send(http_data);
-//				xmlhttp.send('action=new&student_id='".$student_id."'&FirstName='+jqInputs[1].value+'&LastName='+jqInputs[2].value+'&StudentType='+jqSelects[0].options[jqSelects[0].selectedIndex].value+'&PreviousInstitution='+jqInputs[3].value+'&EnrolmentYear='+jqInputs[4].value);
 			}
 			document.getElementById('debug').innerHTML = xmlhttp.responseText;
 
@@ -140,7 +144,7 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 
 		var nEditing = null;
 
-		var studentTable = $('#students').dataTable( {
+		var ResultsTable = $('#results').dataTable( {
 			'bProcessing': true,
 			'sAjaxSource': 'get_results.php?student_id=".$student_id."',
 			'sScrollY'   : '200px',
@@ -149,50 +153,61 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 				$('td:eq(4)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
 				$('td:eq(5)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
-			}
-			//'aoColumnDefs': [ {
-			///	'sClass'  : 'center',
-			//	'aTargets': [ -1, -2 ]
-			//} ]
+			},
+			'aoColumnDefs': [
+// uncomment for production use?
+//				{ 'bVisible': false, 'aTargets': [ 0 ] },
+
+// Center the first (id), grade(third last) and last two columns (edit/delete buttons)
+				{ 'sClass'  : 'center', 'aTargets': [ 0, -1, -2, -3 ] },
+				
+// Minimise the width of the first and last two columns (edit/delete buttons)
+				{ 'sWidth'  : '5%', 'aTargets': [ 0, -1, -2] },
+			]
 		} );
 		
-		/* Add a click handler to the rows - this could be used as a callback */
-		$('#students tbody').click( function( event ) {
-		
-			$(studentTable.fnSettings().aoData).each(function (){
+		/* Add a click handler to the rows.
+		   This adds a highlight to the currently selected row. This could 
+		   also be used as a callback to do something with the row.
+		*/
+		$('#results tbody').click( function( event )
+		{
+			$(ResultsTable.fnSettings().aoData).each( function ()
+			{
 				$(this.nTr).removeClass('row_selected');
 			});
 			$(event.target.parentNode).addClass('row_selected');
 		}) ;
-				
-		$('#new_student').click( function (e) {
+
+		$('#new_result').click( function (e)
+		{
 			e.preventDefault();
 			
-			var aiNew = studentTable.fnAddData( ['', '', '', '',
-				'<a class=\"edit\" href=\"\">Add</a>', '<a class=\"delete\" href=\"\">Delete</a>' ] );
-			var nRow = studentTable.fnGetNodes( aiNew[0] );
-			editRow( studentTable, nRow );
+			var aiNew = ResultsTable.fnAddData( ['', '', '', '',
+				'<a class=\"edit\" href=\"\">Add</a>',
+				'<a class=\"delete\" href=\"\">Delete</a>' ] );
+			var nRow = ResultsTable.fnGetNodes( aiNew[0] );
+			editRow( ResultsTable, nRow );
 			nEditing = nRow;
 			update_grade_selectbox();
 		} );
 		
-		$('#students a.delete').live('click', function (e) {
+		$('#results a.delete').live('click', function (e)
+		{
 			e.preventDefault();
 			
-			var nRow = $(this).parents('tr')[0];
-
-			var jqTds = $('>td', nRow);
-			
+			var nRow     = $(this).parents('tr')[0];
+			var jqTds    = $('>td', nRow);
 			var jqInputs = $('input', nRow);
 			
 			xmlhttp.open('POST', 'ajax_update_student.asp', true);
 			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xmlhttp.send('action=delete&student_id='+jqTds[0]);
+			xmlhttp.send('action=delete&result_id='+jqTds[0]);
 			
 			studentTable.fnDeleteRow( nRow );
 		} );
 		
-		$('#students a.edit').live('click', function (e) {
+		$('#Results a.edit').live('click', function (e) {
 			e.preventDefault();
 			
 			/* Get the row as a parent of the link that was clicked on */
@@ -200,23 +215,23 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 			
 			if ( nEditing !== null && nEditing != nRow ) {
 				/* Currently editing - but not this row - restore the old before continuing to edit mode */
-				restoreRow( studentTable, nEditing );
-				editRow( studentTable, nRow );
+				restoreRow( ResultsTable, nEditing );
+				editRow( ResultsTable, nRow );
 				nEditing = nRow;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Save') {
 				/* Editing this row and want to save it */
-				saveRow( studentTable, nEditing, 'Save' );
+				saveRow( ResultsTable, nEditing, 'Save' );
 				nEditing = null;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Add') {
 				/* Editing this row and want to save it */
-				saveRow( studentTable, nEditing, 'Add' );
+				saveRow( ResultsTable, nEditing, 'Add' );
 				nEditing = null;
 			}
 			else {
 				/* No edit in progress - lets start one */
-				editRow( studentTable, nRow );
+				editRow( ResultsTable, nRow );
 				nEditing = nRow;
 			}
 		} );
@@ -224,18 +239,20 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 		function update_grade_selectbox()
 		{
 			$('option.gcse_grade').each( function(index) {
-			
-				if (this.value == $('select.gcse_type option:selected').attr('id')) { 
+				
+				if (this.value != $('select.gcse_type option:selected')[0].id) { 
+					if (this.parentElement.nodeName != 'SPAN') {
+						$(this).wrap('<span style=\"none\" />');
+					}
+				} else { 
 					if (this.parentElement.nodeName == 'SPAN') {
 						$(this).unwrap();
 					}
-				} else {
-					$(this).wrap('<span style=\"display: none\" />');
 				}
 			});
-		}
+		};
 		
-		$('select.gcse_type').live('change', update_grade_selectbox() );
+		$('select.gcse_type').live('change', update_grade_selectbox );
 	} );
 	");
 ?>
@@ -244,9 +261,9 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
     <table class='with-borders-horizontal'>
      <tr >
       <td>
-       <p><a id="new_student" href="">Add New Grade</a></p>
+       <p><a id="new_result" href="">Add New Result</a></p>
        <div id="dynamic">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="students">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="results">
          <thead>
           <tr>
 		    <th>ID</th>

@@ -99,7 +99,7 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 <?php
 } else {
 	$action = mysql_real_escape_string($_POST['action']);
-	$student_id = mysql_real_escape_string($_POST['student_id']);
+	$ResultID = mysql_real_escape_string($_POST['ResultID']);
 
 	print("action = ".$action);
 	
@@ -114,8 +114,24 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 		print("<p>&dollar;StudentID = ".$StudentID."</p>");
 		print("<p>&dollar;SubjectID = ".$SubjectID."</p>");
 		print("<p>&dollar;GradeID   = ".$GradeID."</p>");
-		
-		$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."')";
+	}
+	else {
+		print("<div class='error'>Error: Incorrect Action</div>");
+	}
+	
+	if ($action == "delete") {
+	//TODO: Delete the Row
+	}
+	else if ($action == "update" or $action == "new")
+	{
+		if ($action == "new")
+		{
+			$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."')";
+		}
+		else if ($action == "update")
+		{
+			$sql = "UPDATE GCSE_Results SET SubjectID='".$SubjectID."', GradeID='".$GradeID."', StudentID='".$StudentID."' WHERE id='".$result_id."'";
+		}
 		
 		
 		print($sql);
@@ -128,9 +144,6 @@ print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 
 		else
 		{
 		}
-	}
-	else {
-		print("<div class='error'>Error: Incorrect Action</div>");
 	}
 }
 ?>
