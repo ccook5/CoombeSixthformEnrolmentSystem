@@ -15,6 +15,7 @@ function print_header($title = "Coombe Sixth form registration form.", $hide_tit
 <?php
 	}
 ?>
+  <script type="text/javascript" language="javascript" src="enrolment.gcse_results.js"></script>
   <script type="text/javascript" charset="utf-8"><?php echo $script; ?></script>
  </head>
  

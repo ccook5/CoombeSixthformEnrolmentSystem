@@ -42,20 +42,14 @@ function print_html_select($sql, $column_to_show,
 
 if (! isset($_POST['action'])) {
 
-print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = true, $script = "
+print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
 
-	$('select.gcse_type').live('change', function() {
-			$('option.gcse_grade').each( function(index) {
-				if (this.value == $('select.gcse_type option:selected').attr('id')) { 
-					if (this.parentElement.nodeName == 'SPAN') {
-						$(this).unwrap();
-					}
-				} else {
-					$(this).wrap('<span style=\"display: none\" />');
-				}
-				
-			});
-		});", $exclude_datatables_js = true);
+	$(document).ready(function()
+	{
+		update_grade_selectbox();
+	});
+	
+	$('select.gcse_type').live('change', update_grade_selectbox );", $exclude_datatables_js = false);
 ?>
   <h4>ajax_update_students_results.php tester</h4>
   <form action="ajax_update_students_results.php" method="post"> 

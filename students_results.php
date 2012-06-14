@@ -235,23 +235,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 				nEditing = nRow;
 			}
 		} );
-		
-		function update_grade_selectbox()
-		{
-			$('option.gcse_grade').each( function(index) {
-				
-				if (this.value != $('select.gcse_type option:selected')[0].id) { 
-					if (this.parentElement.nodeName != 'SPAN') {
-						$(this).wrap('<span style=\"none\" />');
-					}
-				} else { 
-					if (this.parentElement.nodeName == 'SPAN') {
-						$(this).unwrap();
-					}
-				}
-			});
-		};
-		
+
 		$('select.gcse_type').live('change', update_grade_selectbox );
 	} );
 	");
