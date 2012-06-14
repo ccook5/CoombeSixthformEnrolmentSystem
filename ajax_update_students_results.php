@@ -124,7 +124,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 		}
 		else if ($action == "update")
 		{
-			$sql = "UPDATE GCSE_Results SET SubjectID='".$SubjectID."', GradeID='".$GradeID."', StudentID='".$StudentID."' WHERE id='".$result_id."'";
+			$sql = "UPDATE GCSE_Results SET SubjectID='".$SubjectID."', GradeID='".$GradeID."', StudentID='".$StudentID."' WHERE id='".$ResultID."'";
 		}
 		
 		

@@ -36,18 +36,18 @@ DIV.menu-block-inner {
 	padding: 			5px; 
 	background: 		#a6d4f8;
 	
-	padding:     10px;
-	text-align: center;
-	font-size:  300%
+	padding:            10px;
+	text-align:         center;
+	font-size:          300%
 }
 
 DIV.block {
-	border:           1px solid #C5C1B1; 
-	border-radius:    3px;  
-	padding:          2px;  
-	margin:           10px; 
-	background-color: #faf9f4; 
-	box-shadow:       2px 2px 3px #888;
+	border:             1px solid #C5C1B1; 
+	border-radius:      3px;  
+	padding:            2px;  
+	margin:             10px; 
+	background-color:   #faf9f4; 
+	box-shadow:         2px 2px 3px #888;
 }
 
 DIV.block TABLE {
@@ -127,30 +127,30 @@ DIV.guidelines-block-inner {
  */
 
 .dataTables_wrapper {
-	position: relative;
-	clear: both;
-	zoom: 1; /* Feeling sorry for IE */
+	position:           relative;
+	clear:              both;
+	zoom:               1; /* Feeling sorry for IE */
 }
 
 .dataTables_processing {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 250px;
-	height: 30px;
-	margin-left: -125px;
-	margin-top: -15px;
-	padding: 14px 0 2px 0;
-	border: 1px solid #ddd;
-	text-align: center;
-	color: #999;
-	font-size: 14px;
-	background-color: white;
+	position:           absolute;
+	top:                50%;
+	left:               50%;
+	width:              250px;
+	height:             30px;
+	margin-left:       -125px;
+	margin-top:        -15px;
+	padding:            14px 0 2px 0;
+	border:             1px solid #ddd;
+	text-align:         center;
+	color:              #999;
+	font-size:          14px;
+	background-color:   white;
 }
 
 .dataTables_length {
-	width: 40%;
-	float: left;
+	width:              40%;
+	float:              left;
 }
 
 .dataTables_filter {
@@ -499,43 +499,43 @@ tr.even td.sorting_3 {
 	  ee > e2
  */
 tr.odd.gradeA td.sorting_1 {
-	background-color: #c4ffc4;
+	background-color:   #c4ffc4;
 }
 
 tr.odd.gradeA td.sorting_2 {
-	background-color: #d1ffd1;
+	background-color:   #d1ffd1;
 }
 
 tr.odd.gradeA td.sorting_3 {
-	background-color: #d1ffd1;
+	background-color:   #d1ffd1;
 }
 
 tr.even.gradeA td.sorting_1 {
-	background-color: #d5ffd5;
+	background-color:   #d5ffd5;
 }
 
 tr.even.gradeA td.sorting_2 {
-	background-color: #e2ffe2;
+	background-color:   #e2ffe2;
 }
 
 tr.even.gradeA td.sorting_3 {
-	background-color: #e2ffe2;
+	background-color:   #e2ffe2;
 }
 
 tr.odd.gradeC td.sorting_1 {
-	background-color: #c4c4ff;
+	background-color:   #c4c4ff;
 }
 
 tr.odd.gradeC td.sorting_2 {
-	background-color: #d1d1ff;
+	background-color:   #d1d1ff;
 }
 
 tr.odd.gradeC td.sorting_3 {
-	background-color: #d1d1ff;
+	background-color:   #d1d1ff;
 }
 
 tr.even.gradeC td.sorting_1 {
-	background-color: #d5d5ff;
+	background-color:   #d5d5ff;
 }
 
 tr.even.gradeC td.sorting_2 {
@@ -667,9 +667,9 @@ table.display tr.gradeU {
 }
 
 div.box {
-	height: 100px;
-	padding: 10px;
-	overflow: auto;
-	border: 1px solid #8080FF;
-	background-color: #E5E5FF;
+	height:             100px;
+	padding:            10px;
+	overflow:           auto;
+	border:             1px solid #8080FF;
+	background-color:   #E5E5FF;
 }

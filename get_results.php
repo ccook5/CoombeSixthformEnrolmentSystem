@@ -1,18 +1,18 @@
 <?php
 require_once('config.inc.php');
 
-if (! isset($_GET['student_id'])) {
+if (! isset($_GET['StudentID'])) {
   echo "<div class='error'>No student Id found</div>";
   die;
 } else {
-  $student_id = mysql_real_escape_string($_GET['student_id']);
+  $StudentID = mysql_real_escape_string($_GET['StudentID']);
 }
 
-$sql = "SELECT * FROM GCSE_Results WHERE StudentID='".$student_id."'";
+$sql = "SELECT * FROM GCSE_Results WHERE StudentID='".$StudentID."'";
 //$sql    = "SELECT * from GCSE_Results 
 //			JOIN GCSE_Grade ON GCSE_Results.GradeID=GCSE_Grade.id 
 //			JOIN GCSE_Qualification ON GCSE_Grade.QualificationID=GCSE_Qualification.id 
-//			WHERE StudentID='".$student_id."'";
+//			WHERE StudentID='".$StudentID"'";
 
 $result = mysql_query($sql, $link);
 
@@ -66,13 +66,14 @@ else {
 		$first_loop = False;
 		echo("    [\n");
 		echo('    "'.$row[0]."\",\n");
+		echo('    "'.$StudentID."\",\n");
 		echo('    "'.get_qualification($row['GradeID'])."\",\n");
 		//subject
 		echo('    "'.get_subject($row['SubjectID'])."\",\n");
 		echo('    "'.get_grade($row['GradeID'])."\",\n");
 		
-		echo("    \"\",\n");
-		echo("    \"\"\n");
+		echo("    \"<a class='edit' href=''>Edit</a>\",\n");
+		echo("    \"<a class='delete' href=''>Delete</a>\"\n");
 		echo("    ]");
 	}
 	echo("  ]\n");
