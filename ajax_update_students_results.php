@@ -101,7 +101,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	//We have all the info we need
 	}
 	else if ($action == "update" or $action == "new") {
-		$StudentID       = mysql_real_escape_string($_POST['student_id']);
+		$StudentID       = mysql_real_escape_string($_POST['StudentID']);
 		$SubjectID       = mysql_real_escape_string($_POST['SubjectID']);
 		$GradeID         = mysql_real_escape_string($_POST['GradeID']);
 		

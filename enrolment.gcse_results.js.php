@@ -128,7 +128,7 @@ function students_results(ResultsTable) {
 		xmlhttp.open('POST', 'ajax_update_students_results.php', false);
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		
-		http_data  = 'student_id=' + jqTds[1].innerHTML;
+		http_data  = 'StudentID=' + jqTds[1].innerHTML;
 		http_data += '&ResultID='  + jqTds[0].innerHTML;
 		http_data += '&SubjectID=' + jqSelects[1].options[jqSelects[1].selectedIndex].id;
 		http_data += '&GradeID='   + jqSelects[2].options[jqSelects[2].selectedIndex].id;
@@ -173,7 +173,7 @@ function students_results(ResultsTable) {
 		
 		var aiNew = "";
 <?php if ($config["debug"] == "true") { ?>
-		aiNew = ResultsTable.fnAddData( ['', '', '', '', '',
+		aiNew = ResultsTable.fnAddData( ['', StudentID, '', '', '',
 			'<a class=\"edit\" href=\"\" id=\"test\">Add</a>',
 			'<a class=\"delete\" href=\"\">Delete</a>' ] );
 <?php } else { ?>

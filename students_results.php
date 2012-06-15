@@ -7,21 +7,24 @@ if (! isset($_GET['student_id'])) {
 	echo "<div class='error'>No student Id found</div>";
 	die;
 } else {
-	$student_id = mysql_real_escape_string($_GET['student_id']);
+	$StudentID = mysql_real_escape_string($_GET['student_id']);
 }
 
 $hide_columns = "";
 
-if ($config["debug"] == true) {
+if ($config["debug"] != true) {
 	$hide_columns = "				{ 'bVisible': false, 'aTargets': [ 0, 1 ] },\n";
 }
 
 print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
+var StudentID = '".$StudentID."';
+
 $(document).ready( function() {
 
+	
 	var ResultsTable = $('#results').dataTable( {
 		'bProcessing': true,
-		'sAjaxSource': 'get_results.php?StudentID=".$student_id."',
+		'sAjaxSource': 'get_results.php?StudentID=".$StudentID."',
 		'sScrollY'   : '200px',
 		'bFilter'    : false,
 		'bPaginate'  : false,
@@ -35,6 +38,7 @@ $(document).ready( function() {
 	} );
 	
 	students_results(ResultsTable);
+	
 } );
 	");
 ?>
