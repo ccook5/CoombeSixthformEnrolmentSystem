@@ -5,16 +5,19 @@ function print_header($title = "Coombe Sixth form registration form.", $hide_tit
 <html>
  <head>
   <title><?php echo $title ?></title>
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
   <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.js"></script>
 <?php
 	if ($exclude_datatables_js == false) {
 ?>
   <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.js"></script>
-  <script type="text/javascript" language="javascript" src="jquery.jeditable.js"></script>
+  <script type="text/javascript" language="javascript" src="javascripts/jquery.jeditable.js"></script>
 <?php
 	}
 ?>
+<!-- Drill-down menu --> 
+  <script type="text/javascript" language="javascript" src="javascripts/fg.menu.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheets/fg.menu.css"
   <script type="text/javascript" charset="UTF-8" language="javascript" src="enrolment.gcse_results.js.php"></script>
   <script type="text/javascript" charset="utf-8"><?php echo $script; ?></script>
  </head>

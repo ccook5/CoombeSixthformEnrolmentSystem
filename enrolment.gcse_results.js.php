@@ -76,10 +76,12 @@ function update_grade_selectbox()
 		if (this.value != $('select.gcse_type option:selected')[0].id) { 
 			if (this.parentElement.nodeName != 'SPAN') {
 				$(this).wrap('<span style=\"none\" />');
+//				$(this).css({"visability":"hidden"});
 			}
 		} else { 
 			if (this.parentElement.nodeName == 'SPAN') {
 				$(this).unwrap();
+//				$(this).css({"visability":"visible"});
 			}
 		}
 	});
@@ -131,7 +133,10 @@ function students_results(ResultsTable) {
 		http_data  = 'StudentID=' + jqTds[1].innerHTML;
 		http_data += '&ResultID='  + jqTds[0].innerHTML;
 		http_data += '&SubjectID=' + jqSelects[1].options[jqSelects[1].selectedIndex].id;
-		http_data += '&GradeID='   + jqSelects[2].options[jqSelects[2].selectedIndex].id;
+		//SelectedIndex doesnt do what I think it should do...
+		//http_data += '&GradeID='   + jqSelects[2].options[jqSelects[2].selectedIndex].id;
+		//neither does this...
+		http_data += '&GradeID=' + $('select.gcse_grade option:selected')[0].id
 
 		if (action == 'Save') {
 			http_data  = 'action=update&' + http_data;

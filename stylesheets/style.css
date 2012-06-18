@@ -4,7 +4,7 @@ BODY  {
 } 
 
 DIV.header {
-	background-image:  url("images/menu_bkd.png"); 
+	background-image:  url("../images/menu_bkd.png"); 
 	background-repeat: repeat-x; 
 	margin:            0px; 
 	padding:           5px; 
