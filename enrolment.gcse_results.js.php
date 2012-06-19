@@ -68,7 +68,46 @@ function create_select_builder($func_name, $sql, $class_name_test, $key_column, 
 
 	return $s;
 }
+
 ?>
+
+function build_accordion()
+{
+	var s = "";
+<?php
+	$sql_qualification    = "SELECT * FROM GCSE_Qualification";
+	$result_qualification = mysql_query($sql_qualification, $link);
+
+	if (!$result_qualification) {
+		die('Invalid query: ' . mysql_error());
+	} else {
+		echo "	s += '<ul id=\"accordion\">';\n";
+
+		while($row_qualification = mysql_fetch_array($result_qualification))
+		{
+			echo "	s += ' <li><div>".$row_qualification["Type"]." (".$row_qualification["Length"].")</div></li>';\n";
+		
+			$sql_grade = "SELECT * FROM GCSE_Grade WHERE QualificationID=".$row_qualification['id'];
+
+			$result_grade = mysql_query($sql_grade, $link);
+			if (!$result_grade) {
+				die('Invalid query: ' . mysql_error());
+			} else {
+				echo "	s += '   <ul>';\n";
+
+				while($row_grade = mysql_fetch_array($result_grade))  {
+					echo "	s += '     <li><a href=\"#\">".$row_grade["Grade"].' ('.$row_grade["Points"].")</a></li>'\n";
+				}
+				
+				echo "	s += '   </ul>;'\n";
+			}
+		}
+
+		echo "	s += '</ul>';\n";
+	}
+?>
+	return s;
+}
 
 function update_grade_selectbox()
 {
@@ -110,6 +149,8 @@ function students_results(ResultsTable) {
 		jqTds[2].innerHTML = build_GCSE_Type_select    (aData[2]);
 		jqTds[3].innerHTML = build_subject_names_select(aData[3]);
 		jqTds[4].innerHTML = build_GCSE_Grade_select   (aData[4]);
+		jqTds[4].innerHTML += build_accordion();
+
 		update_grade_selectbox();
 	}
 	
@@ -237,5 +278,13 @@ function students_results(ResultsTable) {
 		}
 	} );
 
+	$("#accordion > li > div").click(function(){
+	 
+		if(false == $(this).next().is(':visible')) {
+			$('#accordion ul').slideUp(300);
+		}
+		$(this).next().slideToggle(300);
+	});
+	
 	$('select.gcse_type').live('change', update_grade_selectbox );
 }

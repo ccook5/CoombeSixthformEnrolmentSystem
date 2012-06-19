@@ -39,7 +39,17 @@ $(document).ready( function() {
 	
 	students_results(ResultsTable);
 	
-} );
+    	// BUTTON
+    	$('.fg-button').hover(
+    		function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); },
+    		function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
+    	);
+		
+    	// MENU
+		$.get('enrolment.gcse_results.menuContent.php', function(data){ // grab content from another page
+			$('#flyout').menu({ content: data, flyOut: true });
+		});
+    });
 	");
 ?>
 
