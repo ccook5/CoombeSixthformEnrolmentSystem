@@ -673,3 +673,13 @@ div.box {
 	border:             1px solid #8080FF;
 	background-color:   #E5E5FF;
 }
+
+table.average_results {
+	border-collapse: collapse;
+	margin: 5px;
+}
+
+table.average_results, tr, td {
+	border: 1px solid grey;
+	padding: 5px;
+}

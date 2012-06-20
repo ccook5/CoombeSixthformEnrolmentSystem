@@ -108,11 +108,14 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = fal
 		/* Add a click handler to the rows - this could be used as a callback */
 		$('#students tbody').click( function( event ) {
 			$('#students_results').attr('src','/students_results.php');
+			
 			$(studentTable.fnSettings().aoData).each(function (){
 				$(this.nTr).removeClass('row_selected');
 			});
 			$(event.target.parentNode).addClass('row_selected');
+			
 			$('#students_results').attr('src','/students_results.php?student_id='+$(event.target.parentNode).find('td:first').html());
+			$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+$(event.target.parentNode).find('td:first').html());
 		}) ;
 				
 		$('#new_student').click( function (e) {
@@ -201,6 +204,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = fal
    </div>
    <div id="debug"></div>
 
-     <iframe frameborder=0 style="width: 100%; height: 350px;" id="students_results"></iframe>
+     <iframe frameborder=0 style="width: 79%; height: 350px;" id="students_results"></iframe>
+     <iframe frameborder=0 style="width: 19%; height: 350px; float: right;" id="average_results"></iframe>
  </body>
 </html>
