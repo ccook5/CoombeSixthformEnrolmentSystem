@@ -1,53 +1,75 @@
 <?php 
 include 'header.inc.php';
 
-print_header($title = 'Coombe Sixth form registration form.', $script = "
-			$(document).ready(function() {
-				$('#example').dataTable( {
-					'bProcessing': true,
-					'bServerSide': true,
-					'sAjaxSource': '../server_side/scripts/server_processing.php'
-				} );
-			} );");
+print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 'false', $script = "
+	$(document).ready(function() {
+		var studentTable = $('#students').dataTable( {
+			'bProcessing': true,
+			'sAjaxSource': 'get_students.php',
+			'sScrollY'   : '150px',
+			'bPaginate'  : false,
+			'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
+				$('td:eq(6)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
+				$('td:eq(7)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
+			}
+			//'aoColumnDefs': [ {
+			///	'sClass'  : 'center',
+			//	'aTargets': [ -1, -2 ]
+			//} ]
+		} );
+	});
+");
 ?>
+   <div class='block' >
+    <table class='with-borders-horizontal'>
+     <tr >
+      <td>
+       <p><a id="new_student" href="">Add New Student</a></p>
+       <div id="dynamic">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="students">
+         <thead>
+          <tr>
+			<th width="7%">Student ID</th>
+			<th width="20%">First Name</th>
+			<th width="20%">Surname</th>
+			<th width="20%">Previous Institution</th>
+			<th width="7%">Enrolment Year</th>
+			<th width="20%">Student Type</th>
+			<th>Edit</th>
+			<th>Delete</th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td colspan="9" class="dataTables_empty">Loading data from server</td>
+          </tr>
+         </tbody>
+        </table>
+       </td>
+      </tr>
+     </table>
+   </div>
+   
   <form>
    <div class='block' >
     <table class='with-borders-horizontal'>
      <tr >
-      <td></td>
-      <td></td>
-      <td>Student Code: <input type='text' /> </td>
-      <td><label><input type='radio' name='site' value='clarence_A_Lev' />A/AS@Clarence Ave.</label>&nbsp;&nbsp;&nbsp;<label><input type='radio' name='site' value='clarence_IB' />IB@Clarence Ave.</label>&nbsp;&nbsp;&nbsp;<label><input type='radio' name='site' value='college' />College Gdns.</label></td>
-     </tr>
-     <tr >
-      <td>Surname: <input type='text' /></td>
-      <td>First Name: <input type='text' /></td>
       <td>Mobile Number: <input type='text' /></td>
       <td>Sequence Number: <input type='text' /> </td>
+      <td>
+	   <label><input type='radio' name='site' value='clarence_A_Lev' />A/AS@Clarence Ave.</label>&nbsp;&nbsp;&nbsp;
+	   <label><input type='radio' name='site' value='clarence_IB' />IB@Clarence Ave.</label>&nbsp;&nbsp;&nbsp;
+	   <label><input type='radio' name='site' value='college' />College Gdns.</label></td>
      </tr>
      <tr >
       <td></td>
+	  <td><input type='submit' text='Search' /><input type='reset' text='clear' /> </td>
       <td></td>
-      <td><input type='submit' text='Search' /></td>
-      <td><input type='reset' text='clear' /> </td>
      </tr>
      </table>
    </div>
-   <div class='guidelines-block'>
-   <div class='guidelines-block-inner' >
-    <b>Guidelines for this form:</b>
-    <ol>
-     <li>The following need to be stamped: Sixth Form Fund, Results copied, Passport, Contract.  </li>
-     <li>While you wait for enrolment complete the grid below for AS at Clarence Avenue, IB at Clarence Avenue or BTech and AS at College Gardens.
-      <ul>
-       <li>To study AS at the Clarence Avenue Site you need 5 A*-C grades at GCSE (including a C in English Language).</li>
-       <li>To study a mixture of BTech and AS subjects at the College Garden site you need 4/5 A*-C grades at GCSE or equivalent (including a C in English Language)</li>
-       <li>To study IB: you need  5 A*-C grades at GCSE (including a C in English Language) and meet the other IB entry requirements.</li>
-      </ul>
-     </li>
-    </ol>
-   </div>
-   </div>
+
+   
 
    <div class='block' style=' margin-top: 0px; width: 17%; float: right;'>
    <table class='with-borders-horizontal'>
