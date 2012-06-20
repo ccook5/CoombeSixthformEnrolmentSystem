@@ -114,7 +114,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	}
 	
 	if ($action == "delete") {
-	//TODO: Delete the Row
+		print("TODO: Delete the Row");
 	}
 	else if ($action == "update" or $action == "new")
 	{

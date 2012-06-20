@@ -29,15 +29,16 @@ function print_header($title = "Coombe Sixth form registration form.", $hide_tit
 }
 #accordion div {
     display: block;
-    background-color: #FF9927;
+    background-color: #dddddd;
     font-weight: bold;
     margin: 1px;
     cursor: pointer;
     padding: 5 5 5 7px;
     list-style: circle;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+	border: 1px solid #999;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 #accordion ul {
     list-style: none;
