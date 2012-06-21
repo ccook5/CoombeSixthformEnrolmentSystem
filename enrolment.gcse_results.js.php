@@ -65,9 +65,9 @@ function create_select_builder($func_name, $sql, $class_name_test, $key_column, 
 	if ($f_key_column != "") {
 		$s .= "				s += ' value=' + f_keys[i];\n";
 	}
-//	$s .= "				if (d == arr[i]) {\n";
-//	$s .= "					s += ' selected=\"selected\"';\n";
-//	$s .= "				}\n";
+	$s .= "				if (d == arr[i]) {\n";
+	$s .= "					s += ' selected=\"selected\"';\n";
+	$s .= "				}\n";
 	$s .= "				s += '>' + arr[i] + '</option>';\n";
 	$s .= "				s += ' </span>';\n";
 	$s .= "			}\n";
@@ -119,9 +119,9 @@ function students_results(ResultsTable)
 	}
 	
 <?php
-	echo(create_select_builder('build_GCSE_Type_select',     "SELECT * from GCSE_Qualification",         'gcse_type',    'id', 'Type', 'Length'));
+	echo(create_select_builder('build_GCSE_Type_select',     "SELECT * from GCSE_Qualification ORDER BY id",         'gcse_type',    'id', 'Type', 'Length'));
 	echo(create_select_builder('build_subject_names_select', "SELECT * from GCSE_Subjects",              'subject_name', 'id', 'Name'));
-	echo(create_select_builder('build_GCSE_Grade_selects',   "SELECT * FROM GCSE_Grade ORDER BY Points", 'gcse_grade',   'id', 'Grade', ''/*'Points'*/, 'QualificationID'));
+	echo(create_select_builder('build_GCSE_Grade_selects',   "SELECT * FROM GCSE_Grade ORDER BY QualificationID", 'gcse_grade',   'id', 'Grade', ''/*'Points'*/, 'QualificationID'));
 ?>
 	function editRow ( oTable, nRow )
 	{
