@@ -1,7 +1,7 @@
 <?php 
 include 'header.inc.php';
 
-print_header($title = 'Coombe Sixth form registration form.', $hide_title_bar = 'false', $script = "
+print_header($title = 'Coombe Sixth Form Enrolment - Blocks', $hide_title_bar = false, $script = "
 	$(document).ready(function() {
 		var studentTable = $('#students').dataTable( {
 			'bProcessing': true,

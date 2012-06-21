@@ -16,7 +16,7 @@ if ($config["debug"] != true) {
 	$hide_columns = "				{ 'bVisible': false, 'aTargets': [ 0, 1 ] },\n";
 }
 
-print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
+print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $script = "
 var StudentID = '".$StudentID."';
 
 $(document).ready( function() {

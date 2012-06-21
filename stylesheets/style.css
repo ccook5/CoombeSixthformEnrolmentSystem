@@ -13,6 +13,10 @@ DIV.header {
 	font-family:       arial, helvetica, sans-serif;
 }
 
+DIV.main-menu {
+	text-align:             right;
+}
+
 TABLE.main-menu {
 	width: 100%;
 }
@@ -25,7 +29,7 @@ DIV.menu-block {
 	border:				1px solid #65B4ED; 
 	border-radius: 		3px;  
 	padding: 			2px;  
-	margin: 			10px; 
+	margin: 			40px; 
 	background-color: 	#a6d4f8; 
 	box-shadow: 		3px 3px 5px #888;
 }
@@ -679,7 +683,7 @@ table.average_results {
 	margin: 5px;
 }
 
-table.average_results, tr, td {
+table.average_results tr td {
 	border: 1px solid grey;
 	padding: 5px;
 }

@@ -1,7 +1,10 @@
 <?php 
-include 'header.inc.php';
 
-print_header();
+require_once 'config.inc.php';
+include      'header.inc.php';
+
+print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "");
+
 ?>
   <table class='main-menu'>
    <tr>

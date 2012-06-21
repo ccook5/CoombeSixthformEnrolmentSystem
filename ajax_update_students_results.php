@@ -40,7 +40,7 @@ function print_html_select($sql, $column_to_show,
 	echo "     </select>\n";
 }
 
-if (! isset($_POST['action'])) {
+if (!isset($_POST['action'])) {
 
 print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
 
@@ -65,6 +65,10 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
     <tr>
      <td>Student ID</td>
      <td><input type='text' name='StudentID' /></td>
+    </tr>
+    <tr>
+     <td>Result ID</td>
+     <td><input type='text' name='ResultID' /></td>
     </tr>
     <tr>
      <td>Subject</td>
@@ -114,30 +118,26 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	}
 	
 	if ($action == "delete") {
-		print("TODO: Delete the Row");
+		$sql = "DELETE FROM GCSE_Results WHERE id='".$ResultID."'";
 	}
-	else if ($action == "update" or $action == "new")
+	else if ($action == "new")
 	{
-		if ($action == "new")
-		{
-			$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."')";
-		}
-		else if ($action == "update")
-		{
-			$sql = "UPDATE GCSE_Results SET SubjectID='".$SubjectID."', GradeID='".$GradeID."', StudentID='".$StudentID."' WHERE id='".$ResultID."'";
-		}
-		
-		
-		print($sql);
-		$result = mysql_query($sql, $link);
+		$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."')";
+	}
+	else if ($action == "update")
+	{
+		$sql = "UPDATE GCSE_Results SET SubjectID='".$SubjectID."', GradeID='".$GradeID."', StudentID='".$StudentID."' WHERE id='".$ResultID."'";
+	}
 
-		if (!$result)
-		{
-		  die('Invalid query: ' . mysql_error());
-		}
-		else
-		{
-		}
+	print($sql);
+	$result = mysql_query($sql, $link);
+
+	if (!$result)
+	{
+	  die('Invalid query: ' . mysql_error());
+	}
+	else
+	{
 	}
 }
 ?>

@@ -19,7 +19,7 @@ function build_student_type_list()
 	return $student_types;
 }
 
-print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = false, $script = "
+print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_bar = false, $script = "
 	$(document).ready(function() {
 		function restoreRow ( oTable, nRow ) {
 			var aData = oTable.fnGetData(nRow);

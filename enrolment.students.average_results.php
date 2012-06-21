@@ -6,6 +6,9 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 
 	$(document).ready(function()
 	{
+		setInterval(function(){
+			location.reload();
+		},30000);
 	});
 	
 	", $exclude_datatables_js = false);

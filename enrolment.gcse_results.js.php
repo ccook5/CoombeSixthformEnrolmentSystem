@@ -228,13 +228,12 @@ function students_results(ResultsTable)
 		ResultsTable.fnUpdate( '<a class=\"edit\" href=\"\">Add</a>', nRow, 5, false );
 	} );
 	
-	$('#results a.delete').live('click', function (e)
+	$('#Results a.delete').live('click', function (e)
 	{
 		e.preventDefault();
 		
 		var nRow     = $(this).parents('tr')[0];
 		var jqTds    = $('>td', nRow);
-		var jqInputs = $('input', nRow);
 		
 		var xmlhttp;
 		
@@ -246,9 +245,9 @@ function students_results(ResultsTable)
 		{// code for IE6, IE5
 			xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');
 		}
-		xmlhttp.open('POST', 'ajax_update_students_results.php', true);
+		xmlhttp.open('POST', 'ajax_update_students_results.php', false);
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xmlhttp.send('action=delete&result_id='+jqTds[0]);
+		xmlhttp.send('action=delete&ResultID='+jqTds[0].innerHTML);
 		
 		
 		document.getElementById('debug').innerHTML = xmlhttp.responseText;

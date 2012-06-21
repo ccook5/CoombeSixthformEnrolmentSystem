@@ -1,5 +1,5 @@
 <?php
-function print_header($title = "Coombe Sixth form registration form.", $hide_title_bar = 'false', $script = '', $exclude_datatables_js = false)
+function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar = 'false', $script = '', $exclude_datatables_js = false)
 {
 ?>
 <html>
@@ -26,6 +26,11 @@ function print_header($title = "Coombe Sixth form registration form.", $hide_tit
 <?php
     if ($hide_title_bar == false) {
       echo "  <div class='header'><h1>".$title."</h1></div>";
+?>    <div class="main-menu">
+	 <a href="blocks.php">Blocks</a> |
+	 <a href="results.php">GCSE Results</a>
+	</div>
+<?php
     }
 }
 ?>
