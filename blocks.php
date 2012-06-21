@@ -1,4 +1,5 @@
 <?php 
+require_once 'config.inc.php';
 include 'header.inc.php';
 
 print_header($title = 'Coombe Sixth Form Enrolment - Blocks', $hide_title_bar = false, $script = "
@@ -93,10 +94,42 @@ function print_block_element($block, $id, $Name)
 }
 ?>
   
+   <div class='block' style='width: 78%'>
+    <table class='with-borders-horizontal'>
+     <tr >
+      <td>
+       <div id="dynamic">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="blocks">
+         <thead>
+          <tr>
+<?php
+	$sql    = "SELECT * FROM BLOCKS_Blocks WHERE CourseType=1";
+	$result = mysql_query($sql, $link);
+	if (!$result) {
+		die('Invalid query: ' . mysql_error());
+	} else {
+		while($row = mysql_fetch_array($result))  {
+			echo "<th>".$row["Name"]."</th>";
+		}
+	}
+?>
+          </tr>
+         </thead>
+         <tbody>
+          <tr>
+           <td colspan="9" class="dataTables_empty">Loading data from server</td>
+          </tr>
+         </tbody>
+        </table>
+       </td>
+      </tr>
+     </table>
+   </div>
+   
   <div class='block' style='width: 78%;'>
    <table class='with-borders-horizontal'>
     <tr>
-     <td>A</td>
+     <td colspan=3>A</td>
      <td>B </td>
      <td>C</td>
 	 <td>D</td>
@@ -106,14 +139,17 @@ function print_block_element($block, $id, $Name)
     <tr>
      <td>
 <?php
-		$format = "        <label><input type='radio' name='block[%1s][%2s]' id='block' />%3s<span style='text-align: right;'>[25/30]</span></label><br />\n";
+		$format = "        </td><td><label><input type='radio' name='block[%1\$s][%2\$s]' id='block[%1\$s][%2\$s]' /><div >%3\$s<span style='text-align: right;'>[25/30]</span></div></label><br />\n";
 
    printf($format, 'a', 0, 'Chemistry');
-   printf($format, 'a', 0,  "English Language and Literature");
-		?>
-        <label><input type='radio' name='block[a][0]' id='block[a][0]' />Chemistry <span style='text-align: right;'>[25/30]</span></label><br />
-        <label><input type='radio' name='block[a][1]' id='block[a][1]' />Eng Lang and Lit <span style='float: right;'>[25/30]</span></label><br />
-        <label><input type='radio' name='block[a][2]' id='block[a][2]' />Eng Lit <span style='float: right;'>[25/30]</span></label><br />
+   printf($format, 'a', 1, "English Lang and Lit");
+   printf($format, 'a', 2, "English Lit");
+   printf($format, 'a', 3, "French");
+   printf($format, 'a', 4, "Maths and Stats");
+   printf($format, 'a', 5, "Media Studies");
+   printf($format, 'a', 6, "Product Design");
+   printf($format, 'a', 7, "Sociology");
+?>
         <label><input type='radio' name='block[a][3]' id='block[a][3]' />French <span style='float: right;'>[25/30]</span></label><br />
         <label><input type='radio' name='block[a][4]' id='block[a][4]' />Maths and Stats <span style='float: right;'>[25/30]</span></label><br />
         <label><input type='radio' name='block[a][5]' id='block[a][5]' />Media Studies <span style='float: right;'>[25/30]</span></label><br />
