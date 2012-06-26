@@ -687,3 +687,11 @@ table.average_results tr td {
 	border: 1px solid grey;
 	padding: 5px;
 }
+
+.result-label {
+	font-size: 80%;
+}
+.result {
+	font-style: italic;
+	font-size: 80%;
+}

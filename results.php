@@ -93,7 +93,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 		var studentTable = $('#students').dataTable( {
 			'bProcessing': true,
 			'sAjaxSource': 'get_students.php',
-			'sScrollY'   : '200px',
+			'sScrollY'   : '160px',
 			'bPaginate'  : false,
 			'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 				$('td:eq(6)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
@@ -204,7 +204,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
    </div>
    <div id="debug"></div>
 
-     <iframe frameborder=0 style="width: 79%; height: 350px;" id="students_results"></iframe>
-     <iframe frameborder=0 style="width: 19%; height: 350px; float: right;" id="average_results"></iframe>
+     <iframe frameborder=0 style="width: 79%; height: 410px;" id="students_results"></iframe>
+     <iframe frameborder=0 style="width: 19%; height: 410px; float: right;" id="average_results"></iframe>
  </body>
 </html>

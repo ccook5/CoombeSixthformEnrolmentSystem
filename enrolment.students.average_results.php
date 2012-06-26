@@ -8,7 +8,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	{
 		setInterval(function(){
 			location.reload();
-		},30000);
+		}, 30000);
 	});
 	
 	", $exclude_datatables_js = false);
@@ -18,6 +18,51 @@ if (! isset($_GET['StudentID'])) {
 	die;
 } else {
 	$StudentID = mysql_real_escape_string($_GET['StudentID']);
+}
+
+function get_result($Subject)
+{
+	global $StudentID, $link;
+	
+	$sql    = "SELECT * FROM GCSE_Subjects WHERE Name=\"".$Subject."\" LIMIT 1";
+	$result = mysql_query($sql, $link);
+
+	$score = 0;
+
+	$SubjectID = 0;
+	if (!$result) {
+		die('Invalid query: ' . mysql_error());
+	} else {
+		$SubjectID = mysql_result($result,0);
+	}
+	
+	
+	$sql    = "SELECT GradeID FROM GCSE_Results WHERE StudentID=\"".$StudentID."\" AND SubjectID=\"".$SubjectID."\" LIMIT 1";
+	$result = mysql_query($sql, $link);
+
+	$GradeID = 0;
+	if (!$result) {
+		die('Invalid query: ' . mysql_error());
+	} else {
+		if (mysql_num_rows($result) != 1) {
+			return "Not found";
+		} else {
+			$GradeID = mysql_result($result, 0);
+		}
+	}
+	
+	$sql = "SELECT Grade FROM GCSE_Grade WHERE id=".$GradeID." LIMIT 1";
+	$result = mysql_query($sql, $link);
+	
+	$score = 0;
+
+	if (!$result) {
+		die('Invalid query: ' . mysql_error());
+	} else {
+		$score = mysql_result($result, 0);
+	}
+	
+	return $score;
 }
 
 $sql = "SELECT * FROM GCSE_Results INNER JOIN GCSE_Grade ON GCSE_Results.GradeID=GCSE_Grade.id INNER JOIN GCSE_Qualification ON GCSE_Grade.QualificationID=GCSE_Qualification.id WHERE GCSE_Results.StudentID='".$StudentID."'";
@@ -36,7 +81,17 @@ if (!$result) {
 	}
 }
 ?>
-  <table class="average_results">
+
+   <div class='block' style=' margin-top: 0px;'>
+   <table class='with-borders-horizontal'>
+    <tr><td colspan='4' stlye='text-align: center;'>GCSE GRADES - For Official Use Only</td></tr>
+    <tr><td class='result-label'>English Lang.:</td>    <td class='result'><?php echo get_result('English Language'); ?></td></tr>
+    <tr><td class='result-label'>Maths:</td>            <td class='result'><?php echo get_result('Maths'); ?></td></tr>
+    <tr><td class='result-label'>Core Science:</td>     <td class='result'><?php echo get_result('Science Core'); ?></td></tr>
+    <tr><td class='result-label'>Aditional Science:</td><td class='result'><?php echo get_result('Science Additional'); ?></td></tr>
+    <tr><td class='result-label'>Chemestry:</td><td class='result'><?php echo get_result('Chemestry'); ?></td></tr>
+    <tr><td class='result-label'>Biology:</td>  <td class='result'><?php echo get_result('Biology'); ?></td></tr>
+    <tr><td class='result-label'>Physics:</td>  <td class='result'><?php echo get_result('Physics'); ?></td></tr>
    <tr>
     <td>Total Points: <?php echo $total_points; ?></td>
     <td>Equivalient GCSEs: <?php echo $equivalent_gcses; ?></td>
@@ -45,10 +100,11 @@ if (!$result) {
 <?php if ($equivalent_gcses == 0) { ?>
     <td colspan="2">No Results Found.</td>
 <?php } else { ?>
-    <td colspan="2">Average Score: <?php echo(round($total_points/$equivalent_gcses, 1)); ?></td>
+    <td colspan="2">Average GCSE Score: <?php echo(round($total_points/$equivalent_gcses, 1)); ?></td>
 <?php } ?>
-   </tr>		
-  </table>
+   </tr>	
+   </table>
+  </div>
 
   <input type="button" value="Recalulate" onClick="window.location.reload()">
  </body>
