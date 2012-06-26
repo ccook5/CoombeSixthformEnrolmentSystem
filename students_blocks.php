@@ -58,7 +58,24 @@ $(document).ready( function() {
 );
 
 	");
+//
+function print_coursetype_selects()
+{
+	global $config, $link;
+	$sql = "SELECT * FROM BLOCKS_CourseTypes";
+	$result = mysql_query($sql, $link);
 
+	if (!$result) {  die('Invalid query: ' . mysql_error());  }
+	else
+	{
+		while($row = mysql_fetch_array($result))
+		{
+			echo "<label><input type=\"radio\" name=\"CourseTypeID\" id=\"CourseTypeID\" value=\"".$row['id']."\"/>".$row['Name']."</label>&nbsp;&nbsp;&nbsp;\n";
+		}
+	}
+	return 0;
+}
+	
 function get_places_left($courseID)
 {
 	echo $courseID;
@@ -146,7 +163,7 @@ function print_blocks_table($StudentID)
 				{
 					$count_records += 1;
 
-					$blocks[$i][ $row_blocks['Name'] ]  = "<label><input type=\"radio\" name=\"block[".$row_blocks['Name']."][]\" id=\"block[".$row_blocks['Name']."][]\" ";
+					$blocks[$i][ $row_blocks['Name'] ]  = "<label><input type=\"radio\" name=\"block[".$row_blocks['id']."]\" id=\"block[".$row_blocks['id']."]\" ";
 					$blocks[$i][ $row_blocks['Name'] ] .= "value=\"".$row[0]."\"";
 					
 					// if student is allready enrolled on this course, then mark it as selected.
@@ -183,11 +200,12 @@ function print_blocks_table($StudentID)
 }
 ?>
    <div class='block' >
-    <table class='with-borders-horizontal'>
-     <tr >
-      <td>
-       <form>  
-        <div id="dynamic">
+    <form action="blocks_handler.php" method="post">
+     <input type="hidden" name="StudentID" value="<?php echo $StudentID; ?>" />
+     <div id="dynamic">
+      <table class='with-borders-horizontal'>
+       <tr>
+        <td>
 <?php
 	$sql = "SELECT MobileNumber, SequenceNumber FROM students WHERE id=\"".$StudentID."\"";
 	$result = mysql_query($sql, $link);
@@ -200,26 +218,25 @@ function print_blocks_table($StudentID)
 		$row = mysql_fetch_array($result);
 	}
 ?>
-		 <td>Mobile Number: <input type='text' value='<?php echo $row['MobileNumber']; ?>'/></td>
-         <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>'/></td>
-         <td>
-	      <label><input type='radio' name='site' value='clarence_A_Lev' />A/AS@Clarence Ave.</label>&nbsp;&nbsp;&nbsp;
-	      <label><input type='radio' name='site' value='clarence_IB' />IB@Clarence Ave.</label>&nbsp;&nbsp;&nbsp;
-	      <label><input type='radio' name='site' value='college' />College Gdns.</label></td>
-         </tr>
+		<td>Mobile Number: <input type='text' value='<?php echo $row['MobileNumber']; ?>'/></td>
+        <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>'/></td>
+
+        <td>
+<?php print_coursetype_selects(); ?>
+		</td>
+       </tr>
 <?php
 print_blocks_table($StudentID);
 ?>
-<tr>
- <td colspan="6" style="align: center">
- <input type="submit" /> - <input type="reset" />
- </td>
-</tr>
-       </div>
-      </form>
-     </td>
-    </tr>
-   </table>
-  </div> 
+       <tr>
+        <td colspan="6" style="align: center">
+         <input type="submit" /> - <input type="reset" />
+        </td>
+       </tr>
+      </table>
+     </div><!-- id=dynamic //-->
+    </form>
+   </div><!-- class=block //-->
+  
  </body>
 </html>

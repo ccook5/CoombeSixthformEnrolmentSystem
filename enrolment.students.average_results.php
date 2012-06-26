@@ -33,7 +33,7 @@ function get_result($Subject)
 	if (!$result) {
 		die('Invalid query: ' . mysql_error());
 	} else {
-		$SubjectID = mysql_result($result,0);
+		$SubjectID = mysql_result($result, 0);
 	}
 	
 	
@@ -89,9 +89,9 @@ if (!$result) {
     <tr><td class='result-label'>Maths:</td>            <td class='result'><?php echo get_result('Maths'); ?></td></tr>
     <tr><td class='result-label'>Core Science:</td>     <td class='result'><?php echo get_result('Science Core'); ?></td></tr>
     <tr><td class='result-label'>Aditional Science:</td><td class='result'><?php echo get_result('Science Additional'); ?></td></tr>
-    <tr><td class='result-label'>Chemestry:</td><td class='result'><?php echo get_result('Chemestry'); ?></td></tr>
+    <tr><td class='result-label'>Chemistry:</td><td class='result'><?php echo get_result('Chemistry'); ?></td></tr>
     <tr><td class='result-label'>Biology:</td>  <td class='result'><?php echo get_result('Biology'); ?></td></tr>
-    <tr><td class='result-label'>Physics:</td>  <td class='result'><?php echo get_result('Physics'); ?></td></tr>
+    <tr><td class='result-label'>Physics:f</td>  <td class='result'><?php echo get_result('Physics'); ?></td></tr>
    <tr>
     <td>Total Points: <?php echo $total_points; ?></td>
     <td>Equivalient GCSEs: <?php echo $equivalent_gcses; ?></td>
