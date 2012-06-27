@@ -3,12 +3,8 @@
 require_once 'config.inc.php';
 include 'header.inc.php';
 
-$StudentID = mysql_real_escape_string($_POST['StudentID']);
-
-
+$StudentID    = mysql_real_escape_string($_POST['StudentID']);
 $CourseTypeID = mysql_real_escape_String($_POST['CourseTypeID']);
-
-
 
 /** Get all the current courses for the current block.
   *
@@ -33,13 +29,13 @@ function get_courses($CourseTypeID, $CourseID)
 
 print_header($title = 'Coombe Sixth Form Enrolment - Blocks', $hide_title_bar = true, $script = "");
 
+echo "&dollar;_POST: ";
 print_r($_POST);
 
-print $CourseTypeID;
+echo  "CourseTypeID: ".$CourseTypeID."\n";
 
 // Select everything from blocks where coursetype matches. 
-$sql = "SELECT * FROM BLOCKS_Blocks WHERE CourseType='".$CourseTypeID."' AND Year='".$config['current_year']."'";
-
+$sql    = "SELECT * FROM BLOCKS_Blocks WHERE CourseType='".$CourseTypeID."' AND Year='".$config['current_year']."'";
 $result = mysql_query($sql, $link);
 
 if ($result) {
@@ -49,7 +45,7 @@ if ($result) {
 	// for each block:
 	while($row = mysql_fetch_array($result))
 	{
-		print("Blocks");
+		print("Blocks: ");
 		print_r($row);
 		
 		$current_enrolments = Array();

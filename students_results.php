@@ -27,6 +27,12 @@ $(document).ready( function() {
 		'sScrollY'   : '200px',
 		'bFilter'    : false,
 		'bPaginate'  : false,
+		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
+//			$('td:eq(5)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
+//			$('td:eq(6)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
+			$('td:eq(5)', nRow).html( '<input type=\"button\" class=\"edit\" value=\"Edit\" />' );
+			$('td:eq(6)', nRow).html( '<input type=\"button\" class=\"delete\" value=\"Delete\" />' );
+		},
 		'aoColumnDefs': [".$hide_columns."
 // Center the first 2 (id + student id), grade(third last) and last two columns (edit/delete buttons)
 			{ 'sClass'  : 'center', 'aTargets': [ 0, 1, -1, -2, -3 ] },

@@ -204,7 +204,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
    </div>
    <div id="debug"></div>
 
-     <iframe frameborder=0 style="width: 79%; height: 410px;" id="students_results"></iframe>
-     <iframe frameborder=0 style="width: 19%; height: 410px; float: right;" id="average_results"></iframe>
+     <iframe frameborder=0 style="width: 78%; height: 410px;" id="students_results"></iframe>
+     <iframe frameborder=0 style="width: 18%; height: 410px; float: right;" id="average_results"></iframe>
  </body>
 </html>

@@ -72,8 +72,10 @@ else {
 		echo('    "'.get_subject($row['SubjectID'])."\",\n");
 		echo('    "'.get_grade($row['GradeID'])."\",\n");
 		
-		echo("    \"<a class='edit' href=''>Edit</a>\",\n");
-		echo("    \"<a class='delete' href=''>Delete</a>\"\n");
+//		echo("    \"<a class='edit' href='#'>Edit</a>\",\n");
+//		echo("    \"<a class='delete' href='#'>Delete</a>\"\n");
+		echo("    \"\",\n");
+		echo("    \"\"\n");
 		echo("    ]");
 	}
 	echo("  ]\n");
