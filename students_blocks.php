@@ -163,7 +163,7 @@ function print_blocks_table($StudentID)
 				{
 					$count_records += 1;
 
-					$blocks[$i][ $row_blocks['Name'] ]  = "<label><input type=\"radio\" name=\"block[".$row_blocks['id']."]\" id=\"block[".$row_blocks['id']."]\" ";
+					$blocks[$i][ $row_blocks['Name'] ]  = "<input type=\"radio\" name=\"block[".$row_blocks['id']."]\" id=\"block[".$row_blocks['id']."]\" ";
 					$blocks[$i][ $row_blocks['Name'] ] .= "value=\"".$row[0]."\"";
 					
 					// if student is allready enrolled on this course, then mark it as selected.
@@ -172,6 +172,7 @@ function print_blocks_table($StudentID)
 					} else {
 						$blocks[$i][ $row_blocks['Name'] ] .= " />";
 					}
+					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."]'>";
 					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName'];
 				  /*$blocks[$i][ $row_blocks['Name'] ] .= " (".get_places_left($row['id'])."&nbsp;of&nbsp;".$row['id'].$row['MaxPupils'].")";*/
 					$blocks[$i][ $row_blocks['Name'] ] .= "</label>";

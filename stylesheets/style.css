@@ -97,6 +97,12 @@ DIV.guidelines-block-inner {
 	background: 		#a6d4f8;
 }
 
+LABEL {
+	width: 80%;
+	display:inline-block;
+	vertical-align: top;
+	margin-left: 3px;
+}
 
 /*
  *  File:         demo_table.css
