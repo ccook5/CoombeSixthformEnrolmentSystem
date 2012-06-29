@@ -39,30 +39,25 @@ $(document).ready( function() {
 
 	students_results(ResultsTable);
 	
-	
-		/* Add a click handler to the rows - this could be used as a callback */
-		$('#students tbody').click( function( event ) {
-			$('#students_results').attr('src','/students_results.php');
-			
-			$(studentTable.fnSettings().aoData).each(function (){
-				$(this.nTr).removeClass('row_selected');
-			});
-			$(event.target.parentNode).addClass('row_selected');
-			
-			$('#students_results').attr('src','/students_results.php?student_id='+$(event.target.parentNode).find('td:first').html());
-			$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+$(event.target.parentNode).find('td:first').html());
-		}) ;
-				
-}
-	
-);
-
+	/* Add a click handler to the rows - this could be used as a callback */
+	$('#students tbody').click( function( event ) {
+		$('#students_results').attr('src','/students_results.php');
+		
+		$(studentTable.fnSettings().aoData).each(function (){
+			$(this.nTr).removeClass('row_selected');
+		});
+		$(event.target.parentNode).addClass('row_selected');
+		
+		$('#students_results').attr('src','/students_results.php?student_id='+$(event.target.parentNode).find('td:first').html());
+		$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+$(event.target.parentNode).find('td:first').html());
+	} );
+} );
 	");
 //
-function print_coursetype_selects()
+function print_coursetype_selects($StudentType)
 {
 	global $config, $link;
-	$sql = "SELECT * FROM BLOCKS_CourseTypes";
+	$sql = "SELECT * FROM StudentTypes";
 	$result = mysql_query($sql, $link);
 
 	if (!$result) {  die('Invalid query: ' . mysql_error());  }
@@ -70,7 +65,11 @@ function print_coursetype_selects()
 	{
 		while($row = mysql_fetch_array($result))
 		{
-			echo "<label><input type=\"radio\" name=\"CourseTypeID\" id=\"CourseTypeID\" value=\"".$row['id']."\"/>".$row['Name']."</label>&nbsp;&nbsp;&nbsp;\n";
+			echo "         <label><input type=\"radio\" name=\"CourseTypeID\" id=\"CourseTypeID\"";
+			if ($StudentType == $row['id']) {
+				echo " checked ";
+			}
+			echo " value=\"".$row['id']."\"/>".$row['CourseType']."</label>&nbsp;&nbsp;&nbsp;\n";
 		}
 	}
 	return 0;
@@ -128,32 +127,32 @@ function get_students_current_enrolments($StudentID)
 function print_blocks_table($StudentID)
 {
 	global $config, $link;
-	echo("<table class='with-borders-horizontal'>");
-	echo(" <tr>");
-
-	$enrolments = get_students_current_enrolments($StudentID);
 	
-	$blocks = Array();
+	echo("      <table class='with-borders-horizontal'>\n");
+	echo("       <tr>\n");
+
+	$enrolments    = get_students_current_enrolments($StudentID);
+	$blocks        = Array();
 	$count_records = 0;
-	$i = 0;
+	$i             = 0;
 	
 	// Get a list of the current blocks from the database. This should be a list like 'a','b','c',etc.
-	$sql_blocks = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType=1 ORDER BY id";
+	$sql_blocks    = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType=0 ORDER BY id";
 	$result_blocks = mysql_query($sql_blocks, $link);
 
 	if ($result_blocks)
 	{
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
-			echo ("<th>".$row_blocks['Name']."</th>");
+			echo ("      <th>".$row_blocks['Name']."</th>");
 			
 			/** Get all the current courses for the current block.
 			  *
 			  * We build a list for each block, then print by row in a loop 
-			  * later on in the code, so this isn't inefficient.
+			  * later on in the code, so this isn't inefficient. 
 			  */
 			$sql    = "SELECT * FROM BLOCKS_Course INNER JOIN BLOCKS_CourseDef ON CourseDefID=BLOCKS_CourseDef.id";
-			$sql   .= " INNER JOIN BLOCKS_CourseTypes ON Type=BLOCKS_CourseTypes.id";
+			$sql   .= " INNER JOIN StudentTypes ON Type=StudentTypes.id";
 			$sql   .= " WHERE EnrolmentYear=".$config['current_year']." AND BlockID=".$row_blocks['id'];
 			$result = mysql_query($sql, $link);
 
@@ -183,21 +182,21 @@ function print_blocks_table($StudentID)
 		}
 	} else {  die('Invalid query: ' . mysql_error());  }
 	
-	echo("  </tr>\n");
-	echo("  <tr>\n");
+	echo("       </tr>\n");
+	echo("       <tr>\n");
 
 	foreach($blocks as $r)
 	{	
-		echo ("     <tr>");
+		echo ("      <tr>\n");
 		foreach($r as $b)
 		{
-			echo("\n        <td>".$b."</td>");
+			echo("        <td>".$b."</td>\n");
 			$i += 1;
 		}
-		echo("\n     </tr>\n");
+		echo("      </tr>\n");
 	}
-	echo("</tr>\n");
-	echo("</table>\n");
+	echo("       </tr>\n");
+	echo("      </table>");
 }
 ?>
    <div class='block' >
@@ -207,7 +206,7 @@ function print_blocks_table($StudentID)
       <table class='with-borders-horizontal'>
        <tr>
 <?php
-	$sql = "SELECT MobileNumber, SequenceNumber FROM students WHERE id=\"".$StudentID."\"";
+	$sql = "SELECT MobileNumber, SequenceNumber, StudentType FROM students WHERE id=\"".$StudentID."\"";
 	$result = mysql_query($sql, $link);
 
 	$row = 0;
@@ -218,18 +217,22 @@ function print_blocks_table($StudentID)
 		$row = mysql_fetch_array($result);
 	}
 ?>
-		<td>Mobile Number: <input type='text' value='<?php echo $row['MobileNumber']; ?>'/></td>
+        <td>Mobile Number: <input type='text' value='<?php echo $row['MobileNumber']; ?>'/></td>
         <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>'/></td>
 
         <td>
-<?php print_coursetype_selects(); ?>
-		</td>
+<?php print_coursetype_selects($row['StudentType']); ?>
+        </td>
        </tr>
+       <tr>
+        <td colspan="6" style="align: center">
 <?php
 print_blocks_table($StudentID);
 ?>
+        </td>
+       </tr>
        <tr>
-        <td colspan="6" style="align: center">
+        <td colspan="3" style="align: center">
          <input type="submit" /> - <input type="reset" />
         </td>
        </tr>
