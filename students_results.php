@@ -78,6 +78,6 @@ $(document).ready( function() {
       </tr>
      </table>
    </div>
-   <div id="debug"></div>
+   <div id="debug" class="debug"></div>
  </body>
 </html>

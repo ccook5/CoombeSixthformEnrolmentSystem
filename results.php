@@ -1,23 +1,7 @@
 <?php 
 require_once 'config.inc.php';
-
-include 'header.inc.php';
-
-function build_student_type_list()
-{
-	global $link;
-	$student_types = "\n";
-	$sql_student_types = "SELECT * from StudentTypes";
-	$result_student_types = mysql_query($sql_student_types, $link);
-	if (!$result_student_types) {
-		die('Invalid query: ' . mysql_error());
-	} else {
-		while($row_student_types = mysql_fetch_array($result_student_types))  {
-			$student_types .= "			student_types[".$row_student_types['id']."] = '".$row_student_types['CourseType']."';\n";
-		}
-	}
-	return $student_types;
-}
+require_once 'header.inc.php';
+require_once 'select_widget.php';
 
 print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_bar = false, $script = "
 	$(document).ready(function() {
@@ -29,21 +13,9 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			}
 			oTable.fnDraw();
 		}
-		function build_student_type_select( d ) {
-			var student_types = Array();
-			".build_student_type_list()."
-			var s = '<select>';
-			var iLen = 0;
-			for (var i = 0, iLen=student_types.length; i<iLen; i++) {
-			    s = s + '<option';
-				if (d == student_types[i]) {
-					s = s + ' selected=\"selected\"';
-				}
-				s = s + '>' + student_types[i] + '</option>';
-			}
-			s = s + '</select>';
-			return s;
-		}
+
+". create_select_builder('build_student_type_select', 'SELECT* FROM StudentTypes', 'student_types', 'id', 'CourseType')."
+
 		function editRow ( oTable, nRow ) {
 			var aData = oTable.fnGetData(nRow);
 			var jqTds = $('>td', nRow);
@@ -53,8 +25,10 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			jqTds[3].innerHTML = '<input type=\"text\" value=\"'+aData[3]+'\">';
 			jqTds[4].innerHTML = '<input type=\"text\" value=\"'+aData[4]+'\">';
 			jqTds[5].innerHTML = build_student_type_select(aData[5]);
-			jqTds[6].innerHTML = '<a class=\"edit\" href=\"\">Save</a>';
+// Col 6 doesnt need updating
+			jqTds[7].innerHTML = '<button class=\"edit\">Save Student Details</button>';
 		}
+		
 		function saveRow ( oTable, nRow, action ) {
 			var jqInputs = $('input', nRow);
 			var jqSelects = $('select', nRow);
@@ -84,7 +58,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			oTable.fnUpdate( jqInputs[4].value, nRow, 4, false );
 			oTable.fnUpdate( jqSelects[0].options[jqSelects[0].selectedIndex].value, nRow, 5, false );
 			
-			oTable.fnUpdate( '<a class=\"edit\" href=\"\">Edit</a>', nRow, 6, false );
+			oTable.fnUpdate( '<button class=\"edit\">Edit Student</button>', nRow, 7, false );
 			oTable.fnDraw();
 		}
 
@@ -96,8 +70,9 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			'sScrollY'   : '160px',
 			'bPaginate'  : false,
 			'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
-				$('td:eq(6)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
-				$('td:eq(7)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
+				$('td:eq(6)', nRow).html( '<button class=\"edit_results\">Edit Results</button>' );
+				$('td:eq(7)', nRow).html( '<button class=\"edit\">Edit Student</button>' );
+				$('td:eq(8)', nRow).html( '<button class=\"delete\">Delete</button>' );
 			}
 			//'aoColumnDefs': [ {
 			///	'sClass'  : 'center',
@@ -105,30 +80,47 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			//} ]
 		} );
 		
+//		makes buttons into jquery buttons
+		$(\".edit_results\").button();
+		$(\".edit\").button();
+		$(\".delete\").button();
+
+		function load_results_iframes( StudentID )
+		{			
+			$('#students_results').attr('src','/students_results.php?student_id='+StudentID);
+			$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+StudentID);
+		}
+		
 		/* Add a click handler to the rows - this could be used as a callback */
 		$('#students tbody').click( function( event ) {
-			$('#students_results').attr('src','/students_results.php');
+// TODO: this next line may not be neccesary...
+    		$('#students_results').attr('src','/students_results.php');
 			
 			$(studentTable.fnSettings().aoData).each(function (){
 				$(this.nTr).removeClass('row_selected');
 			});
 			$(event.target.parentNode).addClass('row_selected');
 			
-			$('#students_results').attr('src','/students_results.php?student_id='+$(event.target.parentNode).find('td:first').html());
-			$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+$(event.target.parentNode).find('td:first').html());
-		}) ;
-				
+			load_results_iframes($(event.target.parentNode).find('td:first').html());
+		} );
+	
 		$('#new_student').click( function (e) {
 			e.preventDefault();
 			
 			var aiNew = studentTable.fnAddData( [ '', '', '', '', '', '',
-				'<a class=\"edit\" href=\"\">Add</a>', '<a class=\"delete\" href=\"\">Delete</a>' ] );
+				'<button class=\"results\">Edit Results</button>',
+				'<button class=\"edit\">Add</button>', '<button class=\"delete\">Delete</button>' ] );
 			var nRow = studentTable.fnGetNodes( aiNew[0] );
 			editRow( studentTable, nRow );
 			nEditing = nRow;
 		} );
 		
-		$('#students a.delete').live('click', function (e) {
+		$('#students .edit_results').live('click', function (event) {
+			event.preventDefault();
+			load_results_iframes($(event.target.parentNode).parent().find('td:first').html());
+		} );
+		
+		$('#students .delete').live('click', function (e) {
 			e.preventDefault();
 			
 			var nRow = $(this).parents('tr')[0];
@@ -142,7 +134,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			studentTable.fnDeleteRow( nRow );
 		} );
 		
-		$('#students a.edit').live('click', function (e) {
+		$('#students .edit').live('click', function (e) {
 			e.preventDefault();
 			
 			/* Get the row as a parent of the link that was clicked on */
@@ -154,7 +146,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 				editRow( studentTable, nRow );
 				nEditing = nRow;
 			}
-			else if ( nEditing == nRow && this.innerHTML == 'Save') {
+			else if ( nEditing == nRow && this.innerHTML == 'Save Student Details') {
 				/* Editing this row and want to save it */
 				saveRow( studentTable, nEditing, 'Save' );
 				nEditing = null;
@@ -188,8 +180,9 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
 			<th width="20%">Previous Institution</th>
 			<th width="7%">Enrolment Year</th>
 			<th width="20%">Student Type</th>
-			<th>Edit</th>
-			<th>Delete</th>
+			<th></th>
+			<th></th>
+			<th></th>
           </tr>
          </thead>
          <tbody>
@@ -202,7 +195,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
       </tr>
      </table>
    </div>
-   <div id="debug"></div>
+   <div id="debug" class="debug"></div>
 
      <iframe frameborder=0 style="width: 78%; height: 410px;" id="students_results"></iframe>
      <iframe frameborder=0 style="width: 18%; height: 410px; float: right;" id="average_results"></iframe>

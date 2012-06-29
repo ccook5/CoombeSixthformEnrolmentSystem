@@ -3,8 +3,7 @@
 require_once('config.inc.php');
 
 // Query
-$sql_student_types = "SELECT * from StudentTypes";
-
+$sql_student_types    = "SELECT * from StudentTypes";
 $result_student_types = mysql_query($sql_student_types, $link);
 
 if (!$result_student_types)
@@ -20,8 +19,7 @@ else
 }
 
 // Query
-$sql = "SELECT * from students WHERE EnrolmentYear=".$config['current_year'];
-
+$sql    = "SELECT * from students WHERE EnrolmentYear=".$config['current_year'];
 $result = mysql_query($sql, $link);
 
 if (!$result)
@@ -58,6 +56,7 @@ $first_loop = True;
 	{
 		echo('    "'.$student_types[ $row['StudentType'] ]."\",\n");
 	}
+	echo("    \"\",\n");
 	echo("    \"\",\n");
 	echo("    \"\"\n");
 	echo("    ]");

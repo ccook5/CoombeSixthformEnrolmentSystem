@@ -695,3 +695,8 @@ table.average_results tr td {
 	font-style: italic;
 	font-size: 80%;
 }
+
+.debug {
+	display: none;
+}
+
