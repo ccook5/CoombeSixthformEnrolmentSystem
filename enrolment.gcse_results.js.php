@@ -55,11 +55,14 @@ function students_results(ResultsTable)
 
 /** This is run when a user clicks Edit or Save. 
   *
-  * We take the value from some cells and create some select boxes with those entries pre-selected.
+  * We take the value from some cells and create some select boxes with
+  * those entries pre-selected.
   *
-  * We trigger the above function to update the grade select box depending on the pre-selected value from GCSE_Type.
+  * We trigger the above function to update the grade select box depending 
+  * on the pre-selected value from GCSE_Type.
   *
-  * Finally, we change the Edit button to a Save button. When clicked, the callback functions action depends on the value of this.
+  * Finally, we change the Edit button to a Save button. When clicked, the 
+  * callback functions action depends on the value of this.
   */
 	function editRow ( oTable, nRow )
 	{
@@ -70,16 +73,18 @@ function students_results(ResultsTable)
 		jqTds[2].innerHTML = build_GCSE_Type_select    (aData[2]);
 		jqTds[3].innerHTML = build_subject_names_select(aData[3]);
 		jqTds[4].innerHTML = build_GCSE_Grade_selects  (aData[4]);
-		
-// TODO: What is this bit for? It doesn't seem to trigger alert()...
-		$('select.gcse_grade > options').each( function(index) {
-			if (index == $('select.gcse_grade > options')[$('select',nRow)[2].selectedIndex])
+
+		update_grade_selectbox();		
+
+		// Select the right option after we update grade select with the 
+		// applicable options.
+		$('select.gcse_grade > option').each( function(index) {
+			if ($('select.gcse_grade > option')[index].innerHTML == aData[4])
 			{
-				alert(index);
+				$('select.gcse_grade > option')[index].selected = true;
 			}
 		} );
 
-		update_grade_selectbox();
 		oTable.fnUpdate( '<button class=\"edit\">Save</button>', nRow, 5, false );
 	}
 	
@@ -161,7 +166,9 @@ function students_results(ResultsTable)
 		var nRow = ResultsTable.fnGetNodes( aiNew[0] );
 		
 		if ( nEditing !== null && nEditing != nRow ) {
-			/* Currently editing - but not this row - restore the old before continuing to edit mode */
+			/* Currently editing - but not this row - restore the 
+			 * old before continuing to edit mode 
+			 */
 			restoreRow( ResultsTable, nEditing );
 		}
 		editRow( ResultsTable, nRow );
@@ -171,7 +178,8 @@ function students_results(ResultsTable)
 		ResultsTable.fnUpdate( '<button class=\"edit\">Add</button>', nRow, 5, false );
 	} );
 
-/** Delete Click handler. Calls 'ajax_update_students_results.php via AJAX, then deletes the row in the datatable.
+/** Delete Click handler. Calls 'ajax_update_students_results.php 
+  * via AJAX, then deletes the row in the datatable.
   */
 	$('.delete').live('click', function (e)
 	{
@@ -210,7 +218,8 @@ function students_results(ResultsTable)
 		var nRow = $(this).parents('tr')[0];
 		
 		if ( nEditing !== null && nEditing != nRow ) {
-			/* Currently editing - but not this row - restore the old before continuing to edit mode */
+			/* Currently editing - but not this row - restore 
+			 * the old before continuing to edit mode          */
 			restoreRow( ResultsTable, nEditing );
 			editRow( ResultsTable, nRow );
 			nEditing = nRow;

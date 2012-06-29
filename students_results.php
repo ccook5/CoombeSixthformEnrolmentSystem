@@ -28,8 +28,6 @@ $(document).ready( function() {
 		'bFilter'    : false,
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
-//			$('td:eq(5)', nRow).html( '<a class=\"edit\" href=\"\">Edit</a>' );
-//			$('td:eq(6)', nRow).html( '<a class=\"delete\" href=\"\">Delete</a>' );
 			$('td:eq(5)', nRow).html( '<input type=\"button\" class=\"edit\" value=\"Edit\" />' );
 			$('td:eq(6)', nRow).html( '<input type=\"button\" class=\"delete\" value=\"Delete\" />' );
 		},

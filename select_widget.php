@@ -67,9 +67,17 @@ function build_f_key_list($sql, $list_name, $key_column, $fk_column)
   *
   * This is now fixed with a jquery selector.
   *
-  * TODO: try changing build_f_key_list() to plain build_list(). I can't see why it wouldn't work, but don't have time to test it now.
+  * TODO: try changing build_f_key_list() to plain build_list(). 
+  * I can't see why it wouldn't work, but don't have time to test it now.
   */
-function create_select_builder($func_name, $sql, $class_name_test, $key_column, $value_column, $value_column2 = "", $f_key_column = "", $id_column = "")
+function create_select_builder($func_name, 
+                               $sql, 
+							   $class_name_test, 
+							   $key_column, 
+							   $value_column, 
+							   $value_column2 = "", 
+							   $f_key_column  = "", 
+							   $id_column     = "")
 {
 	$s  = "\n";
 	$s .= "		function ". $func_name ."( d ) {\n";
