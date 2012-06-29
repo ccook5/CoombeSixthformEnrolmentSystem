@@ -206,7 +206,6 @@ function print_blocks_table($StudentID)
      <div id="dynamic">
       <table class='with-borders-horizontal'>
        <tr>
-        <td>
 <?php
 	$sql = "SELECT MobileNumber, SequenceNumber FROM students WHERE id=\"".$StudentID."\"";
 	$result = mysql_query($sql, $link);
