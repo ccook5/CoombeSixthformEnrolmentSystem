@@ -67,11 +67,9 @@ function print_coursetype_selects($StudentType)
 	{
 		while($row = mysql_fetch_array($result))
 		{
-			echo "         <label><input type=\"radio\" name=\"CourseTypeID\" id=\"CourseTypeID\"";
 			if ($StudentType == $row['id']) {
-				echo " checked ";
+				echo "         Student Type: ".$row['CourseType']."\n";
 			}
-			echo " value=\"".$row['id']."\"/>".$row['CourseType']."</label>&nbsp;&nbsp;&nbsp;\n";
 		}
 	}
 	return 0;
@@ -79,7 +77,6 @@ function print_coursetype_selects($StudentType)
 	
 function get_places_left($courseID)
 {
-	echo $courseID;
 	global $config, $link;
 	$sql_places = "SELECT * FROM BLOCKS_CourseEnrolment WHERE EnrolmentYear=".$config['current_year']." AND CourseID='".$courseID."' ORDER BY id";
 	$result_places = mysql_query($sql_places, $link);
@@ -132,13 +129,13 @@ function find_longest_block($blocks)
 		{
 			$y++;
 //			echo (count($blocks[$i])."<br>");
-			print($y.",");
+//			print($y.",");
 		}
 		if ($y > $c) $c = $yl;
 		$x ++;
-		print $x.".";
+//		print $x.".";
 	}
-	print $c;
+//	print $c;
 	
 }
 
@@ -194,18 +191,22 @@ function print_blocks_table($StudentID)
 					
 					// if student is allready enrolled on this course, then mark it as selected.
 					if (isset($enrolments[ $row['BlockID'] ]) && $enrolments[ $row['BlockID'] ] == $row[ 0 ]) {
-						$blocks[$i][ $row_blocks['Name'] ] .= " checked />";
+						$blocks[$i][ $row_blocks['Name'] ] .= " checked />\n";
 					} else {
-						$blocks[$i][ $row_blocks['Name'] ] .= " />";
+						$blocks[$i][ $row_blocks['Name'] ] .= " />\n";
 					}
-					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."][".$i."]'>";
-					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName'];
-				  /*$blocks[$i][ $row_blocks['Name'] ] .= " (".get_places_left($row['id'])."&nbsp;of&nbsp;".$row['id'].$row['MaxPupils'].")";*/
-					$blocks[$i][ $row_blocks['Name'] ] .= "</label>";
+					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."][".$i."]'>\n";
+					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName']."\n";
+					$blocks[$i][ $row_blocks['Name'] ] .= "</label>\n";
 					
-					echo("<tr><td>");
+					$blocks[$i][ $row_blocks['Name'] ] .= "<div style='float: right;' >\n";
+				    $blocks[$i][ $row_blocks['Name'] ] .= " (".get_places_left($row[0]);
+					$blocks[$i][ $row_blocks['Name'] ] .= "/".$row['MaxPupils'].")\n";
+					$blocks[$i][ $row_blocks['Name'] ] .= "</div>\n";
+					
+					echo("<tr><td>\n");
 					echo($blocks[$i][ $row_blocks['Name'] ]);
-					echo("</td></tr>");
+					echo("</td></tr>\n");
 					
 					$i += 1;
 					if ($i > $max_rows_in_blocks)
@@ -219,34 +220,7 @@ function print_blocks_table($StudentID)
 			} else {  die('Invalid query: ' . mysql_error());  }
 		}
 	} else {  die('Invalid query: ' . mysql_error());  }
-	
-//	find_longest_block($blocks);
-	
-/*	echo("       </tr>\n");
-	echo("       <tr>\n");
-
-	foreach($blocks as $r)
-	{	
-		$i = 0;
-		echo ("      <tr>\n");
-		foreach($r as $b)
-		{
-			echo("        <td>".$b."</td>\n");
-			$i += 1;
-		}
-		while($i < $max_rows_in_blocks)
-		{
-			echo("        <td></td>\n");
-			$i += 1;
-		}
-		echo("      </tr>\n");
-	}
-	echo("<tfoot><tr>");
-	foreach ($table_footer as $e)
-	{
-		echo($e);
-	}
-	echo("</tr></tfoot>");*/
+		
 	echo("       </tr>\n");
 	echo("      </table>");
 }
@@ -269,9 +243,8 @@ function print_blocks_table($StudentID)
 		$row = mysql_fetch_array($result);
 	}
 ?>
-        <td>Mobile Number: <input type='text' value='<?php echo $row['MobileNumber']; ?>'/></td>
-        <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>'/></td>
-
+        <td>Mobile Number:   <input type='text' value='<?php echo $row['MobileNumber'];   ?>' /></td>
+        <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>' /></td>
         <td>
 <?php print_coursetype_selects($row['StudentType']); ?>
         </td>
