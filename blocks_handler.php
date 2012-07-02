@@ -27,12 +27,14 @@ function get_courses($CourseTypeID, $CourseID)
 	} else {  die('Invalid query: ' . mysql_error());  }
 }
 
-print_header($title = 'Coombe Sixth Form Enrolment - Blocks', $hide_title_bar = true, $script = "");
+print_header($title = 'Coombe Sixth Form Enrolment - Blocks', $hide_title_bar = true, $script = "", $exclude_datatables_js = false, $meta="      <meta http-equiv='refresh' content='0;url=/students_blocks.php?student_id=".$StudentID."'/>");
 
 echo "&dollar;_POST: ";
-print_r($_POST);
+print("<div class='debug'><pre>");
+//print_r($_POST);
+print("</pre></div><!-- end debug -->");
 
-echo  "CourseTypeID: ".$CourseTypeID."\n--\n";
+//echo  "CourseTypeID: ".$CourseTypeID."<br />\n--<br />\n";
 
 // Select everything from blocks where coursetype matches. 
 $sql    = "SELECT * FROM BLOCKS_Blocks WHERE CourseType='".$CourseTypeID."' AND Year='".$config['current_year']."' ORDER BY id";
@@ -45,12 +47,11 @@ if ($result)
 	// for each block:
 	while($row = mysql_fetch_array($result))
 	{
-
-	$current_enrolments = Array();
-	$new_enrolments     = Array();
+		$current_enrolments = Array();
+		$new_enrolments     = Array();
 	
-		print("row:");
-		print_r($row);
+//		print("row:");
+//		print_r($row);
 
 // List all the current enrolments for this block
 		$sql_enrolments  = "SELECT * FROM BLOCKS_CourseEnrolment";
@@ -69,43 +70,81 @@ if ($result)
 				$current_enrolments[] = $row_enrolments;
 			}
 		} else {  die('Invalid query: ' . mysql_error());  }
-		
-//  list all the new enrolments
 
- 		echo "Current Enrolments:\n";
-		print_r($current_enrolments);
+// 		echo "Current Enrolments:\n";
+//		print_r($current_enrolments);
 
-		echo "New enrolments:\n";
-		if (isset($_POST['block'][ $row['id'] ])) {
-			print_r($_POST['block'][ $row['id'] ]);
+//		echo "New enrolments:\n";
+
+		if (isset($_POST['block'][ $row['id'] ]))
+		{
+//			print_r($_POST['block'][ $row['id'] ]);
+			
 //  if new == none, delete all current enrolments
 //  if more than one current, error!
 			if (count($current_enrolments) > 1)
 			{
 				print("<div class='error'>Error: more than one entry for this block.");
-			} else if (count($current_enrolments) < 1) {
+			}
+			else if (count($current_enrolments) == 1)
+			{
 //  if new == current, then do nothing
 				if ($_POST['block'][ $row['id'] ] == $current_enrolments[0]['CourseID'])
 				{
-					print("CourseID Match. Not doing anything.\n");
+					print("CourseID Match. Not doing anything.<br />\n");
 				}
 //  if new != current, then update
-				else if ($_POST['block'][ $row['id'] ] == $current_enrolments[0]['CourseID'])
+				else if ($_POST['block'][ $row['id'] ] != $current_enrolments[0]['CourseID'])
 				{
-					print(" Update: ".$_POST['block'][ $row['id'] ]."=".$current_enrolments[0]['CourseID']."\n");
-				}
+					$sql_update  = " UPDATE BLOCKS_CourseEnrolment SET ";
+					$sql_update .= "CourseID='".$_POST['block'][ $row['id'] ]."', ";
+					$sql_update .= "StudentID='".$StudentID."', ";
+					$sql_update .= "EnrolmentYear='".$config['current_year']."' ";
+					// second index 0 in $current_enrolments below is the row id from the database. it doesn't have a string index.
+					$sql_update .= "WHERE id='".$current_enrolments[0][0]."'\n";
+					print($sql_update."<br />\n");
+				
+					$result_update = mysql_query($sql_update, $link);
+
+					if ($result_update)
+					{
+						print("done\n");
+					} else {  die('Invalid query: ' . mysql_error());  }
+					}
 			}
 //  else insert.
 			else
 			{
-				print("Insert: ".$_POST['block'][ $row['id'] ]."=".$current_enrolments[0]['CourseID']."\n");
+				$sql_insert = "INSERT INTO BLOCKS_CourseEnrolment (CourseID, StudentID, EnrolmentYear) VALUES ('".$_POST['block'][ $row['id'] ]."', '".$StudentID."', '".$config['current_year']."')";
+				print($sql_insert."\n");
+				
+				$result_insert = mysql_query($sql_insert, $link);
+
+				if ($result_insert)
+				{
+					print("done\n");
+				} else {  die('Invalid query: ' . mysql_error());  }
+
 			}
 		} else {
-			print("No new enrolments for this block\n");
+//			print("No new enrolments for this block, We should delete any current ones...\n");
+			
+			if (count($current_enrolments) >= 1)
+			{
+				print_r($current_enrolments);
+				$sql_delete = "DELETE FROM BLOCKS_CourseEnrolment WHERE id='".$current_enrolments[0][0]."' AND StudentID='".$StudentID."'";
+				print($sql_delete);
+				$result_delete = mysql_query($sql_delete, $link);
+
+				if ($result_delete)
+				{
+					print("done\n");
+				} else {  die('Invalid query: ' . mysql_error());  }
+			}
 		}
 
 // we should make null an option? then if block type requires an option, it can be an error if we try to enrol as none.
-		print("\n------------------------------------------------\n\n");
+//		print("<br />\n------------------------------------------------<br /><br />\n\n");
 	}
 } else { print 2;  die('Invalid query: ' . mysql_error());  }
 

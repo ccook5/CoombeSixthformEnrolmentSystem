@@ -1,5 +1,5 @@
 <?php
-function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar = 'false', $script = '', $exclude_datatables_js = false)
+function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar = 'false', $script = '', $exclude_datatables_js = false, $meta = "")
 {
 ?>
 <!DOCTYPE html>
@@ -8,13 +8,15 @@ function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title><?php echo $title ?></title>
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
-  <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.js"></script>
+  <script type="text/javascript" language="javascript" src="javascripts/jquery-1.7.2.js"></script>
   <!-- this includes jquery widget as well -->
-  <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.21/jquery-ui.js"></script>
+  <script type="text/javascript" language="javascript" src="javascripts/jquery-ui.js"></script>
 <?php
+	echo $meta;
+
 	if ($exclude_datatables_js == false) {
 ?>
-  <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.js"></script>
+  <script type="text/javascript" language="javascript" src="javascripts/jquery.dataTables.js"></script>
   <script type="text/javascript" language="javascript" src="javascripts/jquery.jeditable.js"></script>
 <?php
 	}

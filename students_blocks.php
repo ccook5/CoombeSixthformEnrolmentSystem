@@ -21,7 +21,6 @@ print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $sc
 var StudentID = '".$StudentID."';
 
 $(document).ready( function() {
-	
 	var ResultsTable = $('#results').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_results.php?StudentID=".$StudentID."',
@@ -36,9 +35,7 @@ $(document).ready( function() {
 			{ 'sWidth'  : '5%', 'aTargets': [ 0, 1, -1, -2] }
 		]
 	} );
-
 	students_results(ResultsTable);
-	
 	/* Add a click handler to the rows - this could be used as a callback */
 	$('#students tbody').click( function( event ) {
 		$('#students_results').attr('src','/students_results.php');
@@ -52,6 +49,11 @@ $(document).ready( function() {
 		$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+$(event.target.parentNode).find('td:first').html());
 	} );
 } );
+function clear_column(ColumnID)
+{
+//	$('input[name=block['+ColumnID+'] ]').attr('checked',false);
+	$('input[name=\'block['+ColumnID+']\' ]').attr(\"checked\",false);
+}
 	");
 //
 function print_coursetype_selects($StudentType)
@@ -118,6 +120,28 @@ function get_students_current_enrolments($StudentID)
 	return $enrolments;
 }
 
+function find_longest_block($blocks)
+{
+	$x = 0;
+	$y = 0;
+	$c = 0;
+	while ( isset($blocks[$x]) )
+	{
+		$y = 0;
+		while ( isset($blocks[$x][$y]) )
+		{
+			$y++;
+//			echo (count($blocks[$i])."<br>");
+			print($y.",");
+		}
+		if ($y > $c) $c = $yl;
+		$x ++;
+		print $x.".";
+	}
+	print $c;
+	
+}
+
 /** Print the html table for the students enrolments.
   *
   * We use get_students_current_enrolments() to get a list of what they have allready.
@@ -131,10 +155,12 @@ function print_blocks_table($StudentID)
 	echo("      <table class='with-borders-horizontal'>\n");
 	echo("       <tr>\n");
 
-	$enrolments    = get_students_current_enrolments($StudentID);
-	$blocks        = Array();
-	$count_records = 0;
-	$i             = 0;
+	$enrolments         = get_students_current_enrolments($StudentID);
+	$blocks             = Array();
+	$count_records      = 0;
+	$i                  = 0;
+	$max_rows_in_blocks = 0;
+	$table_footer       = Array();
 	
 	// Get a list of the current blocks from the database. This should be a list like 'a','b','c',etc.
 	$sql_blocks    = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType=0 ORDER BY id";
@@ -144,7 +170,8 @@ function print_blocks_table($StudentID)
 	{
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
-			echo ("      <th>".$row_blocks['Name']."</th>");
+		    echo ("<td style='padding-bottom: 30px;'><table>");
+			echo ("      <thead><th>".$row_blocks['Name']."</th></thead>");
 			
 			/** Get all the current courses for the current block.
 			  *
@@ -162,7 +189,7 @@ function print_blocks_table($StudentID)
 				{
 					$count_records += 1;
 
-					$blocks[$i][ $row_blocks['Name'] ]  = "<input type=\"radio\" name=\"block[".$row_blocks['id']."]\" id=\"block[".$row_blocks['id']."]\" ";
+					$blocks[$i][ $row_blocks['Name'] ]  = "<input type=\"radio\" name=\"block[".$row_blocks['id']."]\" id=\"block[".$row_blocks['id']."][".$i."]\" ";
 					$blocks[$i][ $row_blocks['Name'] ] .= "value=\"".$row[0]."\"";
 					
 					// if student is allready enrolled on this course, then mark it as selected.
@@ -171,30 +198,55 @@ function print_blocks_table($StudentID)
 					} else {
 						$blocks[$i][ $row_blocks['Name'] ] .= " />";
 					}
-					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."]'>";
+					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."][".$i."]'>";
 					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName'];
 				  /*$blocks[$i][ $row_blocks['Name'] ] .= " (".get_places_left($row['id'])."&nbsp;of&nbsp;".$row['id'].$row['MaxPupils'].")";*/
 					$blocks[$i][ $row_blocks['Name'] ] .= "</label>";
 					
+					echo("<tr><td>");
+					echo($blocks[$i][ $row_blocks['Name'] ]);
+					echo("</td></tr>");
+					
 					$i += 1;
+					if ($i > $max_rows_in_blocks)
+					{
+						$max_rows_in_blocks = $i;
+					}
 				}
+				echo("</table>");
+				
+				echo "<input type='button' onClick=\"clear_column(".$row_blocks['id'].")\" value='Clear Block' style='position: absolute; bottom: -12px;' />";
 			} else {  die('Invalid query: ' . mysql_error());  }
 		}
 	} else {  die('Invalid query: ' . mysql_error());  }
 	
-	echo("       </tr>\n");
+//	find_longest_block($blocks);
+	
+/*	echo("       </tr>\n");
 	echo("       <tr>\n");
 
 	foreach($blocks as $r)
 	{	
+		$i = 0;
 		echo ("      <tr>\n");
 		foreach($r as $b)
 		{
 			echo("        <td>".$b."</td>\n");
 			$i += 1;
 		}
+		while($i < $max_rows_in_blocks)
+		{
+			echo("        <td></td>\n");
+			$i += 1;
+		}
 		echo("      </tr>\n");
 	}
+	echo("<tfoot><tr>");
+	foreach ($table_footer as $e)
+	{
+		echo($e);
+	}
+	echo("</tr></tfoot>");*/
 	echo("       </tr>\n");
 	echo("      </table>");
 }
@@ -233,7 +285,7 @@ print_blocks_table($StudentID);
        </tr>
        <tr>
         <td colspan="3" style="align: center">
-         <input type="submit" /> - <input type="reset" />
+         <input type="submit" value="Save"/> - <input type="reset" />
         </td>
        </tr>
       </table>

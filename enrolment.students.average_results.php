@@ -11,7 +11,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 		}, 30000);
 	});
 	
-	", $exclude_datatables_js = false);
+	");
 
 if (! isset($_GET['StudentID'])) {
 	echo "<div class='error'>No student Id found</div>";
@@ -84,7 +84,7 @@ if (!$result) {
 
    <div class='block' style=' margin-top: 0px;'>
    <table class='with-borders-horizontal'>
-    <tr><td colspan='4' stlye='text-align: center;'>GCSE GRADES - For Official Use Only</td></tr>
+    <tr><td colspan='4' stlye='text-align: center;'>GCSE GRADES</td></tr>
     <tr><td class='result-label'>English Lang.:</td>    <td class='result'><?php echo get_result('English Language'); ?></td></tr>
     <tr><td class='result-label'>Maths:</td>            <td class='result'><?php echo get_result('Maths'); ?></td></tr>
     <tr><td class='result-label'>Core Science:</td>     <td class='result'><?php echo get_result('Science Core'); ?></td></tr>
@@ -100,7 +100,7 @@ if (!$result) {
 <?php if ($equivalent_gcses == 0) { ?>
     <td colspan="2">No Results Found.</td>
 <?php } else { ?>
-    <td colspan="2">Average GCSE Score: <?php echo(round($total_points/$equivalent_gcses, 1)); ?></td>
+    <td colspan="2"><b>Average GCSE Score: <?php echo(round($total_points/$equivalent_gcses, 1)); ?></b></td>
 <?php } ?>
    </tr>	
    </table>
