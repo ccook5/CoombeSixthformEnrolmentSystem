@@ -3,16 +3,10 @@ require_once 'config.inc.php';
 require_once 'header.inc.php';
 require_once 'select_widget.php';
 
-print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_bar = false, $script = "
+print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', 
+			$hide_title_bar = false,
+			$script = "
 	$(document).ready(function() {
-		function restoreRow ( oTable, nRow ) {
-			var aData = oTable.fnGetData(nRow);
-			var jqTds = $('>td', nRow);
-			for ( var i=0, iLen=jqTds.length ; i<iLen ; i++ ) {
-				oTable.fnUpdate( aData[i], nRow, i, false );
-			}
-			oTable.fnDraw();
-		}
 
 ". create_select_builder('build_student_type_select', 'SELECT* FROM StudentTypes', 'student_types', 'id', 'CourseType')."
 
@@ -195,6 +189,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', $hide_title_
       </tr>
      </table>
    </div>
+   
    <div id="debug" class="debug"></div>
 
      <iframe frameborder=0 style="width: 78%; height: 410px;" id="students_results"></iframe>

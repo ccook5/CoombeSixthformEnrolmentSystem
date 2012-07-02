@@ -30,22 +30,22 @@ function update_grade_selectbox()
 	});
 };
 
+/** This runs when the user clicks the save button in a row. */
+function restoreRow ( oTable, nRow )
+{
+	var aData = oTable.fnGetData(nRow);
+	var jqTds = $('>td', nRow);
+	for ( var i=0, iLen=jqTds.length ; i<iLen ; i++ ) {
+		oTable.fnUpdate( aData[i], nRow, i, false );
+	}
+	oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
+	oTable.fnDraw();
+}
+	
 /** Code specific to the students_results.php page. */
 function students_results(ResultsTable)
 {
 
-/** This runs when the user clicks the save button in a row. */
-	function restoreRow ( oTable, nRow )
-	{
-		var aData = oTable.fnGetData(nRow);
-		var jqTds = $('>td', nRow);
-		for ( var i=0, iLen=jqTds.length ; i<iLen ; i++ ) {
-			oTable.fnUpdate( aData[i], nRow, i, false );
-		}
-		oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
-		oTable.fnDraw();
-	}
-	
 <?php
 // This block creates the javascript code that creates the selectbox elements.
 	echo(create_select_builder('build_GCSE_Type_select',     "SELECT * from GCSE_Qualification ORDER BY id",      'gcse_type',    'id', 'Type', 'Length'));

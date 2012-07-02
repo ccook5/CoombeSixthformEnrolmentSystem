@@ -145,7 +145,7 @@ function find_longest_block($blocks)
   * This table contains form elements that should let us submit changes to the enrolments.
   * This form should post the data to blocks_handler.php
   */
-function print_blocks_table($StudentID)
+function print_blocks_table($StudentID, $StudentType)
 {
 	global $config, $link;
 	
@@ -160,14 +160,14 @@ function print_blocks_table($StudentID)
 	$table_footer       = Array();
 	
 	// Get a list of the current blocks from the database. This should be a list like 'a','b','c',etc.
-	$sql_blocks    = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType=0 ORDER BY id";
+	$sql_blocks    = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType='".$StudentType."' ORDER BY id";
 	$result_blocks = mysql_query($sql_blocks, $link);
 
 	if ($result_blocks)
 	{
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
-		    echo ("<td style='padding-bottom: 30px;'><table>");
+		    echo ("<td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'><table>");
 			echo ("      <thead><th>".$row_blocks['Name']."</th></thead>");
 			
 			/** Get all the current courses for the current block.
@@ -197,14 +197,14 @@ function print_blocks_table($StudentID)
 					}
 					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."][".$i."]'>\n";
 					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName']."\n";
-					$blocks[$i][ $row_blocks['Name'] ] .= "</label>\n";
 					
-					$blocks[$i][ $row_blocks['Name'] ] .= "<div style='float: right;' >\n";
+					$blocks[$i][ $row_blocks['Name'] ] .= "<span style='float: right; vertical-align: top; font-size: 0.75em' >\n";
 				    $blocks[$i][ $row_blocks['Name'] ] .= " (".get_places_left($row[0]);
 					$blocks[$i][ $row_blocks['Name'] ] .= "/".$row['MaxPupils'].")\n";
-					$blocks[$i][ $row_blocks['Name'] ] .= "</div>\n";
+					$blocks[$i][ $row_blocks['Name'] ] .= "</span>\n";
+					$blocks[$i][ $row_blocks['Name'] ] .= "</label>\n";
 					
-					echo("<tr><td>\n");
+					echo("<tr><td style='height: 2.1em'>\n");
 					echo($blocks[$i][ $row_blocks['Name'] ]);
 					echo("</td></tr>\n");
 					
@@ -216,7 +216,7 @@ function print_blocks_table($StudentID)
 				}
 				echo("</table>");
 				
-				echo "<input type='button' onClick=\"clear_column(".$row_blocks['id'].")\" value='Clear Block' style='position: absolute; bottom: -12px;' />";
+				echo "<input type='button' onClick=\"clear_column(".$row_blocks['id'].")\" value='Clear Block' style='position: absolute; bottom: 2px; left: 2px;' />";
 			} else {  die('Invalid query: ' . mysql_error());  }
 		}
 	} else {  die('Invalid query: ' . mysql_error());  }
@@ -252,7 +252,7 @@ function print_blocks_table($StudentID)
        <tr>
         <td colspan="6" style="align: center">
 <?php
-print_blocks_table($StudentID);
+print_blocks_table($StudentID, $row['StudentType']);
 ?>
         </td>
        </tr>
