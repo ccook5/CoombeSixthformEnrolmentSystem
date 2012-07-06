@@ -1,16 +1,12 @@
 <?php 
-require_once 'config.inc.php';
-require_once 'header.inc.php';
-require_once 'select_widget.php';
+require_once '../config.inc.php';
+require_once '../header.inc.php';
+require_once '../select_widget.php';
 
-print_header($title = 'Coombe Sixth Form Enrolment - Blocks', 
+print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
 			$script = "
-	var orig_student_type = null;
-	var orig_student_name = null;
-		
 	$(document).ready(function() {
-		
 ". create_select_builder('build_student_type_select', 'SELECT* FROM StudentTypes', 'student_types', 'id', 'CourseType')."
 
 		
@@ -161,53 +157,24 @@ print_header($title = 'Coombe Sixth Form Enrolment - Blocks',
 				 * the old before continuing to edit mode          */
 				restoreRow( studentTable, nEditing );
 				editRow( studentTable, nRow );
-				$('iframe.student_blocks').fadeOut('slow');
 				nEditing = nRow;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Save Student Details') {
 				/* Editing this row and want to save it */
 				saveRow( studentTable, nEditing, 'Save' );
-				$('iframe.student_blocks').fadeIn('slow');
 				nEditing = null;
-				orig_student_type = null;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Add') {
 				/* Editing this row and want to save it */
 				saveRow( studentTable, nEditing, 'Add' );
-				$('iframe.student_blocks').fadeIn('slow');
 				nEditing = null;
 			}
 			else {
 				/* No edit in progress - lets start one */
 				editRow( studentTable, nRow );
-				$('iframe.student_blocks').fadeOut('slow');
 				nEditing = nRow;
 			}
 		} );
-		
-		
-		function StudentType_change()
-		{
-			//alert('orig_student_type: '+orig_student_type+'orig_student_name: '+orig_student_name);
-			//alert('current: '+$('select.student_types option:selected')[0].id);
-			if (orig_student_type != $('select.student_types option:selected')[0].id) {
-				alert('Please make sure you have un-enroled this student from the blocks from the previous type: '+orig_student_name);
-				//alert('This student will be un-enrolled from all '+orig_student_name+' courses if you save the students details with a different student type.'+orig_student_type+'.'+$('select.student_types')[0].selectedOptions[0].id);
-			}
-		}
-		
-		
-		function StudentType_focus()
-		{
-			if (orig_student_type == null) {
-//				alert('test');
-				orig_student_type = $('select.student_types option:selected')[0].id;
-				orig_student_name = $('select.student_types option:selected')[0].text;
-			}
-		}
-		
-		$('select.student_types').live( 'focus', StudentType_focus );
-		$('select.student_types').live('change', StudentType_change );
 	});
 ");
 ?>
@@ -222,9 +189,6 @@ print_header($title = 'Coombe Sixth Form Enrolment - Blocks',
 			<th width="7%">Student ID</th>
 			<th width="20%">First Name</th>
 			<th width="20%">Surname</th>
-			<th width="20%">Previous Institution</th>
-			<th width="7%">Enrolment Year</th>
-			<th width="20%">Student Type</th>
 			<th></th>
 			<th></th>
 			<th></th>
