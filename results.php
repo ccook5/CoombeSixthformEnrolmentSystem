@@ -10,7 +10,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 
 ". create_select_builder('build_student_type_select', 'SELECT* FROM StudentTypes', 'student_types', 'id', 'CourseType')."
 
-		function editRow ( oTable, nRow ) {
+		function editRow ( oTable, nRow, add ) {
 			var aData = oTable.fnGetData(nRow);
 			var jqTds = $('>td', nRow);
 			jqTds[0].innerHTML = '<input type=\"text\" value=\"'+aData[0]+'\">';
@@ -20,7 +20,13 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 			jqTds[4].innerHTML = '<input type=\"text\" value=\"'+aData[4]+'\">';
 			jqTds[5].innerHTML = build_student_type_select(aData[5]);
 // Col 6 doesnt need updating
-			jqTds[7].innerHTML = '<button class=\"edit\">Save Student Details</button>';
+			if (add == true) {
+				jqTds[7].innerHTML = '<button class=\"edit\">Add Student</button>';
+			}
+			else
+			{
+				jqTds[7].innerHTML = '<button class=\"edit\">Save Student Details</button>';
+			}
 		}
 		
 		function saveRow ( oTable, nRow, action ) {
@@ -88,7 +94,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 		/* Add a click handler to the rows - this could be used as a callback */
 		$('#students tbody').click( function( event ) {
 // TODO: this next line may not be neccesary...
-    		$('#students_results').attr('src','/students_results.php');
+//    		$('#students_results').attr('src','/students_results.php');
 			
 			$(studentTable.fnSettings().aoData).each(function (){
 				$(this.nTr).removeClass('row_selected');
@@ -103,9 +109,9 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 			
 			var aiNew = studentTable.fnAddData( [ '', '', '', '', '', '',
 				'<button class=\"results\">Edit Results</button>',
-				'<button class=\"edit\">Add</button>', '<button class=\"delete\">Delete</button>' ] );
+				'<button class=\"edit\">Add Student</button>', '<button class=\"delete\">Delete</button>' ] );
 			var nRow = studentTable.fnGetNodes( aiNew[0] );
-			editRow( studentTable, nRow );
+			editRow( studentTable, nRow, true );
 			nEditing = nRow;
 		} );
 		
@@ -137,7 +143,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 			if ( nEditing !== null && nEditing != nRow ) {
 				/* Currently editing - but not this row - restore the old before continuing to edit mode */
 				restoreRow( studentTable, nEditing );
-				editRow( studentTable, nRow );
+				editRow( studentTable, nRow, false );
 				nEditing = nRow;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Save Student Details') {
@@ -145,14 +151,14 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 				saveRow( studentTable, nEditing, 'Save' );
 				nEditing = null;
 			}
-			else if ( nEditing == nRow && this.innerHTML == 'Add') {
+			else if ( nEditing == nRow && this.innerHTML == 'Add Student') {
 				/* Editing this row and want to save it */
 				saveRow( studentTable, nEditing, 'Add' );
 				nEditing = null;
 			}
 			else {
 				/* No edit in progress - lets start one */
-				editRow( studentTable, nRow );
+				editRow( studentTable, nRow, false );
 				nEditing = nRow;
 			}
 		} );

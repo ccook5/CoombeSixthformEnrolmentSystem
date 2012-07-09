@@ -122,7 +122,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	}
 	else if ($action == "new")
 	{
-		$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."')";
+		$sql = "INSERT INTO GCSE_Results (SubjectID, GradeID, StudentID, EnrolmentYear) VALUES ('".$SubjectID."', '".$GradeID."', '".$StudentID."', '".$config['current_year']."')";
 	}
 	else if ($action == "update")
 	{

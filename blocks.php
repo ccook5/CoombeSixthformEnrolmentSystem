@@ -161,26 +161,26 @@ print_header($title = 'Coombe Sixth Form Enrolment - Blocks',
 				 * the old before continuing to edit mode          */
 				restoreRow( studentTable, nEditing );
 				editRow( studentTable, nRow );
-				$('iframe.student_blocks').fadeOut('slow');
+				$('iframe.students_blocks').fadeOut('slow');
 				nEditing = nRow;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Save Student Details') {
 				/* Editing this row and want to save it */
 				saveRow( studentTable, nEditing, 'Save' );
-				$('iframe.student_blocks').fadeIn('slow');
+				$('iframe.students_blocks').fadeIn('slow');
 				nEditing = null;
 				orig_student_type = null;
 			}
 			else if ( nEditing == nRow && this.innerHTML == 'Add') {
 				/* Editing this row and want to save it */
 				saveRow( studentTable, nEditing, 'Add' );
-				$('iframe.student_blocks').fadeIn('slow');
+				$('iframe.students_blocks').fadeIn('slow');
 				nEditing = null;
 			}
 			else {
 				/* No edit in progress - lets start one */
 				editRow( studentTable, nRow );
-				$('iframe.student_blocks').fadeOut('slow');
+				$('.students_blocks').fadeOut('slow');
 				nEditing = nRow;
 			}
 		} );

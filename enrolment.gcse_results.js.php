@@ -137,8 +137,7 @@ function students_results(ResultsTable)
   */
 	$('#results tbody').click( function( event )
 	{
-		$(ResultsTable.fnSettings().aoData).each( function ()
-		{
+		$(ResultsTable.fnSettings().aoData).each( function () {
 			$(this.nTr).removeClass('row_selected');
 		});
 		$(event.target.parentNode).addClass('row_selected');
@@ -167,8 +166,7 @@ function students_results(ResultsTable)
 		
 		if ( nEditing !== null && nEditing != nRow ) {
 			/* Currently editing - but not this row - restore the 
-			 * old before continuing to edit mode 
-			 */
+			 * old before continuing to edit mode                  */
 			restoreRow( ResultsTable, nEditing );
 		}
 		editRow( ResultsTable, nRow );
