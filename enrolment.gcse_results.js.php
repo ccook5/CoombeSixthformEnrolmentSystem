@@ -41,6 +41,8 @@ function restoreRow ( oTable, nRow )
 	oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
 	oTable.fnDraw();
 }
+
+
 	
 /** Code specific to the students_results.php page. */
 function students_results(ResultsTable)
@@ -52,7 +54,6 @@ function students_results(ResultsTable)
 	echo(create_select_builder('build_subject_names_select', "SELECT * from GCSE_Subjects",                       'subject_name', 'id', 'Name'));
 	echo(create_select_builder('build_GCSE_Grade_selects',   "SELECT * FROM GCSE_Grade ORDER BY QualificationID", 'gcse_grade',   'id', 'Grade', ''/*'Points'*/, 'QualificationID'));
 ?>
-
 /** This is run when a user clicks Edit or Save. 
   *
   * We take the value from some cells and create some select boxes with
@@ -94,35 +95,37 @@ function students_results(ResultsTable)
 	{
 		var jqSelects = $('select', nRow);
 		var jqTds = $('>td', nRow);
-		var xmlhttp;
 		
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{// code for IE6, IE5
-			xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');
-		}
-		xmlhttp.open('POST', 'ajax_update_students_results.php', false);
-		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		
-		http_data  = 'StudentID='  + jqTds[1].innerHTML;
-		http_data += '&ResultID='  + jqTds[0].innerHTML;
-		http_data += '&SubjectID=' + jqSelects[1].options[jqSelects[1].selectedIndex].id;
-		http_data += '&GradeID='   + $('select.gcse_grade > option')[jqSelects[2].selectedIndex].id;
-
+		var act      = 'delete';
 		if (action == 'Save') {
-			http_data  = 'action=update&' + http_data;
-			xmlhttp.send(http_data);
+			act  = 'update';
 		} else {
-			http_data  = 'action=new&' + http_data;
-			xmlhttp.send(http_data);
+			act  = 'new';
 		}
-		document.getElementById('debug').innerHTML = xmlhttp.responseText;
 
-		oTable.fnUpdate( jqSelects[0].options[jqSelects[0].selectedIndex].text, nRow, 2, false );
-		oTable.fnUpdate( jqSelects[1].options[jqSelects[1].selectedIndex].text, nRow, 3, false );
+		var request = $.ajax({
+			url: 'ajax_update_students_results.php',
+			type: 'POST',
+			data: {
+				action    : act, 
+				StudentID : jqTds[1].innerHTML,
+				ResultID  : jqTds[0].innerHTML,
+				SubjectID : jqSelects[1].options[jqSelects[1].selectedIndex].id,
+				GradeID   : $('select.gcse_grade > option')[jqSelects[2].selectedIndex].id
+			},
+			dataType: 'html'
+		});
+
+		request.done(function(msg) {
+			$('#debug').html( msg);
+		});
+
+		request.fail(function(jqXHR, textStatus) {
+		  alert( 'Request failed: ' + textStatus );
+		});
+
+		oTable.fnUpdate( jqSelects[0].options[jqSelects[0].selectedIndex].text,            nRow, 2, false );
+		oTable.fnUpdate( jqSelects[1].options[jqSelects[1].selectedIndex].text,            nRow, 3, false );
 		oTable.fnUpdate( $('select.gcse_grade > option')[jqSelects[2].selectedIndex].text, nRow, 4, false );
 		
 		oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
@@ -186,23 +189,21 @@ function students_results(ResultsTable)
 		var nRow     = $(this).parents('tr')[0];
 		var jqTds    = $('>td', nRow);
 		
-		var xmlhttp;
-		
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{// code for IE6, IE5
-			xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');
-		}
+		var request = $.ajax({
+			url: 'ajax_update_students_results.php',
+			type: 'POST',
+			data: { action  : 'delete',  ResultID  : jqTds[0].innerHTML },
+			dataType: 'html'
+		});
 
-		xmlhttp.open('POST', 'ajax_update_students_results.php', false);
-		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xmlhttp.send('action=delete&ResultID='+jqTds[0].innerHTML);
-	
-		document.getElementById('debug').innerHTML = xmlhttp.responseText;
-		
+		request.done(function(msg) {
+			$('#debug').html( msg);
+		});
+
+		request.fail(function(jqXHR, textStatus) {
+		  alert( 'Request failed: ' + textStatus );
+		});
+
 		ResultsTable.fnDeleteRow( nRow );
 	} );
 	
@@ -231,6 +232,11 @@ function students_results(ResultsTable)
 			/* Editing this row and want to save it */
 			saveRow( ResultsTable, nEditing, 'Add' );
 			nEditing = null;
+			// Reload the iframe so that the row gets an id. The delay is a 
+			//  little ugly, but it seems like the ajax request hasn't wuite 
+			//  gone through if we don't delay. Test with and without.
+			//  We might get a problem when the server is under load.
+			setTimeout(function() { window.location.reload(); }, 250);
 		}
 		else {
 			/* No edit in progress - lets start one */

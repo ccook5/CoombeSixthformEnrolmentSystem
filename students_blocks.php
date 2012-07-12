@@ -5,7 +5,8 @@ require_once('config.inc.php');
 include      'header.inc.php';
 
 if (! isset($_GET['student_id'])) {
-	echo "<div class='error'>No student Id found</div>";
+	die( "<div class='error'>No student Id found</div>" );
+} else if ($_GET['student_id'] == "null") {
 	die;
 } else {
 	$StudentID = mysql_real_escape_string($_GET['student_id']);
@@ -18,44 +19,13 @@ if ($config["debug"] != true) {
 }
 
 print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $script = "
-var StudentID = '".$StudentID."';
 
-$(document).ready( function() {
-	var ResultsTable = $('#results').dataTable( {
-		'bProcessing': true,
-		'sAjaxSource': 'get_results.php?StudentID=".$StudentID."',
-		'sScrollY'   : '200px',
-		'bFilter'    : false,
-		'bPaginate'  : false,
-		'aoColumnDefs': [".$hide_columns."
-// Center the first 2 (id + student id), grade(third last) and last two columns (edit/delete buttons)
-			{ 'sClass'  : 'center', 'aTargets': [ 0, 1, -1, -2, -3 ] },
-			
-// Minimise the width of the first two and last two columns (edit/delete buttons)
-			{ 'sWidth'  : '5%', 'aTargets': [ 0, 1, -1, -2] }
-		]
-	} );
-	students_results(ResultsTable);
-	/* Add a click handler to the rows - this could be used as a callback */
-	$('#students tbody').click( function( event ) {
-		$('#students_results').attr('src','/students_results.php');
-		
-		$(studentTable.fnSettings().aoData).each(function (){
-			$(this.nTr).removeClass('row_selected');
-		});
-		$(event.target.parentNode).addClass('row_selected');
-		
-		$('#students_results').attr('src','/students_results.php?student_id='+$(event.target.parentNode).find('td:first').html());
-		$('#average_results').attr('src','/enrolment.students.average_results.php?StudentID='+$(event.target.parentNode).find('td:first').html());
-	} );
-} );
 function clear_column(ColumnID)
 {
-//	$('input[name=block['+ColumnID+'] ]').attr('checked',false);
-	$('input[name=\'block['+ColumnID+']\' ]').attr(\"checked\",false);
+	$('input[name=\'block['+ColumnID+']\' ]').attr(\"checked\", false);
 }
 	");
-//
+
 function print_coursetype_selects($StudentType)
 {
 	global $config, $link;
@@ -69,6 +39,7 @@ function print_coursetype_selects($StudentType)
 		{
 			if ($StudentType == $row['id']) {
 				echo "         Student Type: ".$row['CourseType']."\n";
+				echo "         <input type=\"hidden\" name=\"CourseTypeID\" value=\"".$StudentType."\" />";
 			}
 		}
 	}
@@ -100,7 +71,8 @@ function get_students_current_enrolments($StudentID)
 	global $config, $link;
 	
 	$sql_enrolments  = "SELECT * FROM BLOCKS_CourseEnrolment INNER JOIN BLOCKS_Course ON CourseID=BLOCKS_Course.id";
-	$sql_enrolments .= " INNER JOIN BLOCKS_CourseDef ON BLOCKS_Course.CourseDefID=BLOCKS_CourseDef.id WHERE BLOCKS_CourseEnrolment.StudentID='".$StudentID."'";
+	$sql_enrolments .= " INNER JOIN BLOCKS_CourseDef ON BLOCKS_Course.CourseDefID=BLOCKS_CourseDef.id";
+	$sql_enrolments .= " WHERE BLOCKS_CourseEnrolment.StudentID='".$StudentID."'";
 
 	$result_enrolments = mysql_query($sql_enrolments, $link);
 
@@ -115,28 +87,6 @@ function get_students_current_enrolments($StudentID)
 		}
 	}
 	return $enrolments;
-}
-
-function find_longest_block($blocks)
-{
-	$x = 0;
-	$y = 0;
-	$c = 0;
-	while ( isset($blocks[$x]) )
-	{
-		$y = 0;
-		while ( isset($blocks[$x][$y]) )
-		{
-			$y++;
-//			echo (count($blocks[$i])."<br>");
-//			print($y.",");
-		}
-		if ($y > $c) $c = $yl;
-		$x ++;
-//		print $x.".";
-	}
-//	print $c;
-	
 }
 
 /** Print the html table for the students enrolments.
@@ -168,7 +118,7 @@ function print_blocks_table($StudentID, $StudentType)
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
 		    echo ("<td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'><table>");
-			echo ("      <thead><th>".$row_blocks['Name']."</th></thead>");
+			echo ("      <thead><th width='10%'>".$row_blocks['Name']."</th></thead>");
 			
 			/** Get all the current courses for the current block.
 			  *
@@ -193,14 +143,14 @@ function print_blocks_table($StudentID, $StudentType)
 					if (isset($enrolments[ $row['BlockID'] ]) && $enrolments[ $row['BlockID'] ] == $row[ 0 ]) {
 						$blocks[$i][ $row_blocks['Name'] ] .= " checked />\n";
 					} else {
-						$blocks[$i][ $row_blocks['Name'] ] .= " />\n";
+						$blocks[$i][ $row_blocks['Name'] ] .= " />\n"; 
 					}
 					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."][".$i."]'>\n";
 					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName']."\n";
-					
-					$blocks[$i][ $row_blocks['Name'] ] .= "<span style='float: right; vertical-align: top; font-size: 0.75em' >\n";
-				    $blocks[$i][ $row_blocks['Name'] ] .= " (".get_places_left($row[0]);
-					$blocks[$i][ $row_blocks['Name'] ] .= "/".$row['MaxPupils'].")\n";
+
+					$blocks[$i][ $row_blocks['Name'] ] .= "<span style='float: right; vertical-align: top; font-size: 0.65em' >";
+				    $blocks[$i][ $row_blocks['Name'] ] .= "(".get_places_left($row[0]);
+					$blocks[$i][ $row_blocks['Name'] ] .= "/".$row['MaxPupils'].")";
 					$blocks[$i][ $row_blocks['Name'] ] .= "</span>\n";
 					$blocks[$i][ $row_blocks['Name'] ] .= "</label>\n";
 					
@@ -224,6 +174,16 @@ function print_blocks_table($StudentID, $StudentType)
 	echo("       </tr>\n");
 	echo("      </table>");
 }
+
+	$sql = "SELECT MobileNumber, SequenceNumber, StudentType FROM students WHERE id=\"".$StudentID."\"";
+	$result = mysql_query($sql, $link);
+
+	$row = 0;
+	if (!$result) {  die('Invalid query: ' . mysql_error());  }
+	else if (mysql_num_rows($result) == 1)
+	{
+		$i = 0;
+		$row = mysql_fetch_array($result);
 ?>
    <div class='block' >
     <form action="blocks_handler.php" method="post">
@@ -231,19 +191,7 @@ function print_blocks_table($StudentID, $StudentType)
      <div id="dynamic">
       <table class='with-borders-horizontal'>
        <tr>
-<?php
-	$sql = "SELECT MobileNumber, SequenceNumber, StudentType FROM students WHERE id=\"".$StudentID."\"";
-	$result = mysql_query($sql, $link);
-
-	$row = 0;
-	if (!$result) {  die('Invalid query: ' . mysql_error());  }
-	else
-	{
-		$i = 0;
-		$row = mysql_fetch_array($result);
-	}
-?>
-        <td>Mobile Number:   <input type='text' value='<?php echo $row['MobileNumber'];   ?>' /></td>
+ <!--       <td>Mobile Number:   <input type='text' value='<?php echo $row['MobileNumber'];   ?>' /></td> -->
         <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>' /></td>
         <td>
 <?php print_coursetype_selects($row['StudentType']); ?>
@@ -251,9 +199,7 @@ function print_blocks_table($StudentID, $StudentType)
        </tr>
        <tr>
         <td colspan="6" style="align: center">
-<?php
-print_blocks_table($StudentID, $row['StudentType']);
-?>
+<?php print_blocks_table($StudentID, $row['StudentType']); ?>
         </td>
        </tr>
        <tr>
@@ -265,6 +211,6 @@ print_blocks_table($StudentID, $row['StudentType']);
      </div><!-- id=dynamic //-->
     </form>
    </div><!-- class=block //-->
-  
+<?php } ?>  
  </body>
 </html>

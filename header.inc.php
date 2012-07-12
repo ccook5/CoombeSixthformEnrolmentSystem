@@ -21,6 +21,8 @@ function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar
 <?php
 	}
 ?>
+  <link   type="text/css"        rel="stylesheet"      href="/stylesheets/jquery.ui.all.css" />
+  
   <link   type="text/css"        rel="stylesheet"      href="/stylesheets/enrolment.gcse_results.css" />
   
   <script type="text/javascript" language="javascript" src="/enrolment.gcse_results.js.php" charset="UTF-8" ></script>

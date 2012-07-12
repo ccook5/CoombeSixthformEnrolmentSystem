@@ -4,8 +4,7 @@ require_once 'config.inc.php';
 include      'header.inc.php';
 
 if (! isset($_GET['student_id'])) {
-	echo "<div class='error'>No student Id found</div>";
-	die;
+	die( "<div class='error'>No student Id found</div>" );
 } else {
 	$StudentID = mysql_real_escape_string($_GET['student_id']);
 }
@@ -41,13 +40,9 @@ $(document).ready( function() {
 	} );
 
 	students_results(ResultsTable);
-}
-	
-);
-
+} );
 	");
 ?>
-
    <div class='block' >
     <table class='with-borders-horizontal'>
      <tr >

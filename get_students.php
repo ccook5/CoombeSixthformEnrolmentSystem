@@ -6,6 +6,7 @@ require_once('config.inc.php');
 $sql_student_types    = "SELECT * from StudentTypes";
 $result_student_types = mysql_query($sql_student_types, $link);
 
+
 if (!$result_student_types)
 {
   die('Invalid query: ' . mysql_error());
@@ -19,7 +20,7 @@ else
 }
 
 // Query
-$sql    = "SELECT * from students WHERE EnrolmentYear=".$config['current_year'];
+$sql    = "SELECT * from students WHERE EnrolmentYear='".$config['current_year']."'";
 $result = mysql_query($sql, $link);
 
 if (!$result)
@@ -30,8 +31,8 @@ else
 {
 echo("{\n");
 echo("  \"sEcho\": 1, ");
-echo("  \"iTotalRecords\": \"57\",");
-echo("  \"iTotalDisplayRecords\": \"57\",");
+echo("  \"iTotalRecords\": \"".mysql_num_rows($result)."\",");
+echo("  \"iTotalDisplayRecords\": \"".mysql_num_rows($result)."\",");
 echo("  \"aaData\": [\n");
 
 $first_loop = True;
@@ -48,9 +49,9 @@ $first_loop = True;
 	echo('    "'.$row['LastName']."\",\n");
 	echo('    "'.$row['PreviousInstitution']."\",\n");
 	echo('    "'.$row['EnrolmentYear']."\",\n");
-	if ($student_types[ $row['StudentType'] ] == "")
+	if (!isset($student_types[ $row['StudentType'] ]) || $student_types[ $row['StudentType'] ] == "")
 	{
-		echo('    "'.$row['StudentType']."\"\n");
+		echo('    "'.$row['StudentType']."\",\n");
 	}
 	else
 	{
