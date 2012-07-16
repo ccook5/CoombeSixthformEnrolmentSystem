@@ -1,6 +1,7 @@
 <?php 
 require_once 'config.inc.php';
 require_once 'header.inc.php';
+require_once 'footer.inc.php';
 require_once 'select_widget.php';
 
 print_header($title         = 'Coombe Sixth Form Enrolment - Blocks', 
@@ -291,5 +292,8 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
   <iframe frameborder="0" style="width: 79%; height: 480px;" id="students_blocks"></iframe>
   <iframe frameborder="0" style="width: 19%; height: 420px; float: right;" id="average_results"></iframe>
 </div>
-  </body>
-</html>
+
+<?php
+print_footer();
+?>
+
