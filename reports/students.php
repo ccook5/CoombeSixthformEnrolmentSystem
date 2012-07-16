@@ -10,7 +10,7 @@ print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $s
 $sql = "SELECT * FROM StudentTypes";
 $result = mysql_query($sql, $link);
 
-while ($row = mysql_fetch_array($result)) {		
+while ($row = mysql_fetch_array($result)) {
 	print("  <h1>".$row['CourseType']."</h1>");
 
 	print("  <table class='with-borders'>");

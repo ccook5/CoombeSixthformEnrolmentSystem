@@ -2,6 +2,7 @@
 
 require_once('config.inc.php');
 require_once('header.inc.php');
+require_once('footer.inc.php');
 
 if (! isset($_GET['student_id'])) {
 	die( "<div class='error'>No student Id found</div>" );

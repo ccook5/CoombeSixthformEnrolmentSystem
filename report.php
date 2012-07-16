@@ -112,10 +112,10 @@ switch ($type)
 	default:
 ?>
   <ul>
-   <li><a href="/report.php?type=courses">View all course instances and enrolled students.</a></li>
-   <li><a href="/report.php?type=students">View all students and their courses</a></li>
-   <li><a href="/report.php?type=waiting">View subjecct waiting lists</a></li>
-   <li><a href="/report.php?type=remaining">View places remaining.</a></li>
+   <li><a href="/reports/courses.php">View all course instances and enrolled students.</a></li>
+   <li><a href="/reports/students.php">View all students and their courses</a></li>
+   <li><a href="/reports/waiting.php">View subject waiting lists</a></li>
+   <li><a href="/reports/remaining.php">View places remaining.</a></li>
   </ul>
 <?php
 		break;
