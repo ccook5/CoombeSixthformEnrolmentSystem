@@ -35,9 +35,10 @@ function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar
     if ($hide_title_bar == false) {
       echo "  <div class='header'><h1>".$title."</h1></div>";
 ?>    <div class="main-menu">
-	 <a href="/admin/index.php">Admin</a> |
+	 <a href="/results.php">GCSE Results</a> |
 	 <a href="/blocks.php">Blocks</a> |
-	 <a href="/results.php">GCSE Results</a>
+	 <a href="/admin/index.php">Admin</a> |
+	 <a href="/report.php">Reports</a>&nbsp;&nbsp;
 	</div>
 <?php
     }
