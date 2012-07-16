@@ -1,8 +1,7 @@
 <?php 
 $debug = false;
-require_once('config.inc.php');
-require_once('header.inc.php');
-require_once('footer.inc.php');
+require_once 'config.inc.php';
+include      'header.inc.php';
 
 if (! isset($_GET['student_id'])) {
 	die( "<div class='error'>No student Id found</div>" );
@@ -73,7 +72,5 @@ $(document).ready( function() {
      </table>
    </div>
    <div id="debug" class="debug"></div>
-<?php
-print_footer();
-?>
-
+ </body>
+</html>

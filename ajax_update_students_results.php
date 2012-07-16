@@ -1,9 +1,8 @@
 <?php
 
 require_once('config.inc.php');
-require_once('header.inc.php');
-require_once('footer.inc.php');
 
+include 'header.inc.php';
 function print_html_select($sql, $column_to_show, 
 							$select_id = "",    $select_name="", 
 							$select_class = "", $select_style = "", 
@@ -93,8 +92,9 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
     <tr><td><input type="submit" /></td></tr>
    </table>
   </form>
+ </body>
+</html>
 <?php
-	print_footer();
 } else {
 	$action = mysql_real_escape_string($_POST['action']);
 	$ResultID = mysql_real_escape_string($_POST['ResultID']);
@@ -129,12 +129,15 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 		$sql = "UPDATE GCSE_Results SET SubjectID='".$SubjectID."', GradeID='".$GradeID."', StudentID='".$StudentID."' WHERE id='".$ResultID."'";
 	}
 
+	print($sql);
 	$result = mysql_query($sql, $link);
 
 	if (!$result)
 	{
-		print('sql:'.$sql);
-		die('Invalid query: ' . mysql_error());
+	  die('Invalid query: ' . mysql_error());
+	}
+	else
+	{
 	}
 }
 ?>

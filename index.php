@@ -24,6 +24,5 @@ print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $s
     </td>
    </tr>
   </table>
-<?php
-print_footer();
-?>
+ </body>
+</html>

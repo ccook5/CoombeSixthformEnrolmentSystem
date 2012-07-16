@@ -1,6 +1,5 @@
 <?php
 require_once('config.inc.php');
-require_once('footer.inc.php');
 
 if (! isset($_POST['action']))
 {
@@ -47,8 +46,9 @@ print_header($title = 'Coombe Sixth form enrolment form. - students_details test
      <tr><td><input type="submit" /></td></tr>
    </form>
   </table>
+ </body>
+</html>
 <?php
-	print_footer();
 } else {
 	$action    = mysql_real_escape_string($_POST['action']);
 	$StudentID = mysql_real_escape_string($_POST['StudentID']);
