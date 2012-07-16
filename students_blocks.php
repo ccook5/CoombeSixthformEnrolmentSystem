@@ -1,8 +1,7 @@
 <?php
 
 require_once('config.inc.php');
-
-include      'header.inc.php';
+require_once('header.inc.php');
 
 if (! isset($_GET['student_id'])) {
 	die( "<div class='error'>No student Id found</div>" );
@@ -175,15 +174,15 @@ function print_blocks_table($StudentID, $StudentType)
 	echo("      </table>");
 }
 
-	$sql = "SELECT MobileNumber, SequenceNumber, StudentType FROM students WHERE id=\"".$StudentID."\"";
-	$result = mysql_query($sql, $link);
+$sql = "SELECT MobileNumber, SequenceNumber, StudentType FROM students WHERE id=\"".$StudentID."\"";
+$result = mysql_query($sql, $link);
 
-	$row = 0;
-	if (!$result) {  die('Invalid query: ' . mysql_error());  }
-	else if (mysql_num_rows($result) == 1)
-	{
-		$i = 0;
-		$row = mysql_fetch_array($result);
+$row = 0;
+if (!$result) {  die('Invalid query: ' . mysql_error());  }
+else if (mysql_num_rows($result) == 1)
+{
+	$i = 0;
+	$row = mysql_fetch_array($result);
 ?>
    <div class='block' >
     <form action="blocks_handler.php" method="post">
@@ -211,6 +210,8 @@ function print_blocks_table($StudentID, $StudentType)
      </div><!-- id=dynamic //-->
     </form>
    </div><!-- class=block //-->
-<?php } ?>  
- </body>
-</html>
+<?php
+}
+
+print_footer();
+?>  
