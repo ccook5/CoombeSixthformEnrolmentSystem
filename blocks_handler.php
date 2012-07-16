@@ -12,7 +12,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - Blocks',
 				$hide_title_bar        = true, 
 				$script                = "", 
 				$exclude_datatables_js = true, 
-				$meta                  ="      <meta http-equiv='refresh' content='10;url=/students_blocks.php?student_id=".$StudentID."'/>");
+				$meta                  ="      <meta http-equiv='refresh' content='1;url=/students_blocks.php?student_id=".$StudentID."'/>");
 
 // delete all the current enrolments
 if (isset($_POST['StudentID']))
