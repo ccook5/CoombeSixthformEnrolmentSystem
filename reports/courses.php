@@ -1,8 +1,8 @@
 <?php 
 
-require_once 'config.inc.php';
-require_once 'header.inc.php';
-require_once 'footer.inc.php';
+require_once '../config.inc.php';
+require_once '../header.inc.php';
+require_once '../footer.inc.php';
 
 print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "");
 

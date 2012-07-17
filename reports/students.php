@@ -1,13 +1,13 @@
 <?php 
 
-require_once 'config.inc.php';
-require_once 'header.inc.php';
-require_once 'footer.inc.php';
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../footer.inc.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "");
 
 // sql query - get a list of student types
-$sql = "SELECT * FROM StudentTypes";
+$sql = "SELECT StudentTypes.id, CourseType FROM StudentTypes INNER JOIN students ON StudentTypes.id=students.StudentType WHERE EnrolmentYear=2012 GROUP BY CourseType;";
 $result = mysql_query($sql, $link);
 
 while ($row = mysql_fetch_array($result)) {

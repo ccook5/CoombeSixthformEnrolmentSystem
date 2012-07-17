@@ -1,12 +1,15 @@
 <?php
 
-require_once('config.inc.php');
-require_once('header.inc.php');
-require_once('footer.inc.php');
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../footer.inc.php');
 
-print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "");
+print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "",
+			$exclude_datatables_js = true, 
+			$meta                  ="      <meta http-equiv='refresh' content='5;url=/reports/remaining.php'/>");
 
-function get_places_left($courseID)
+/** returns the number of places taken on a course. */
+function get_places_taken($courseID)
 {
 	global $config, $link;
 	$sql_places = "SELECT * FROM BLOCKS_CourseEnrolment WHERE EnrolmentYear=".$config['current_year']." AND CourseID='".$courseID."' ORDER BY id";
@@ -27,7 +30,7 @@ function print_blocks_table($StudentType)
 {
 	global $config, $link;
 
-	echo("      <table class='with-borders-horizontal'>\n");
+	echo("      <table style='margin: 0px;'>\n");
 	echo("       <tr>\n");
 
 	$blocks             = Array();
@@ -42,7 +45,7 @@ function print_blocks_table($StudentType)
 	{
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
-		    echo ("<td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'><table>");
+		    echo ("<td style='padding: 0px; margin: 0px; position: relative;'><table>");
 			echo ("      <thead><th width='10%'>".$row_blocks['Name']."</th></thead>");
 
 			/** Get all the current courses for the current block.
@@ -51,8 +54,7 @@ function print_blocks_table($StudentType)
 			  * later on in the code, so this isn't inefficient. 
 			  */
 			$sql    = "SELECT * FROM BLOCKS_Course INNER JOIN BLOCKS_CourseDef ON CourseDefID=BLOCKS_CourseDef.id";
-			$sql   .= " INNER JOIN StudentTypes ON Type=StudentTypes.id";
-			$sql   .= " WHERE EnrolmentYear=".$config['current_year']." AND BlockID=".$row_blocks['id'];
+			$sql   .= " WHERE EnrolmentYear='".$config['current_year']."' AND BlockID='".$row_blocks['id']."' AND BLOCKS_CourseDef.Type='".$StudentType."';";
 			$result = mysql_query($sql, $link);
 
 			if ($result) {
@@ -61,14 +63,26 @@ function print_blocks_table($StudentType)
 				{
 					$html = $row['SubjectName']."\n";
 
-					$html .= "<span style='float: right; vertical-align: top; font-size: 0.65em' >";
-					$html .= "(".get_places_left($row[0]);
+					$remaining_places = get_places_taken($row[0]);
+					$max_places = $row['MaxPupils'];
+					
+					$html .= "<span style='float: right; vertical-align: top;' >";
+					$html .= "(".get_places_taken($row[0]);
 					$html .= "/".$row['MaxPupils'].")";
 					$html .= "</span>\n";
 
 					$blocks[$i][ $row_blocks['Name'] ] = $html;
 
-					echo("<tr><td style='height: 2.1em'>\n");
+					$bgcolour = "";
+					
+					if ( get_places_taken($row[0]) > ($row['MaxPupils'] - 2) ) {
+						$bgcolour = "background: red;";
+					} else if ( get_places_taken($row[0]) > ($row['MaxPupils'] - 5) ) {
+						$bgcolour = "background: orange;";
+					} else {
+					}
+					
+					echo("<tr><td style='height: 1.1em; ".$bgcolour."'>\n");
 					echo($blocks[$i][ $row_blocks['Name'] ]);
 					echo("</td></tr>\n");
 
@@ -85,7 +99,7 @@ function print_blocks_table($StudentType)
 }
 
 // sql query - get a list of student types
-$sql = "SELECT * FROM StudentTypes";
+$sql = "select StudentTypes.id, CourseType from StudentTypes inner join students on StudentTypes.id=students.StudentType WHERE EnrolmentYear=2012 GROUP BY CourseType;";
 $result = mysql_query($sql, $link);
 
 if (!$result) {  die('Invalid query: ' . mysql_error());  }
@@ -98,7 +112,7 @@ while ($row = mysql_fetch_array($result)) {
       <table class='with-borders-horizontal'>
        <tr>
         <td colspan="6" style="align: center">
-<?php print_blocks_table($row['CourseType']); ?>
+<?php print_blocks_table($row['id']); ?>
         </td>
        </tr>
       </table>
