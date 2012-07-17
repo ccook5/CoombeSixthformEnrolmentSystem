@@ -721,6 +721,22 @@ table.average_results tr td {
 	padding: 5px;
 }
 
+table.report-courses-students {
+	width: 40%;
+	border-collapse: collapse;
+	margin: 5px;
+	padding-left: 20px;
+}
+
+table.report-courses-students tr td {
+	border: 1px solid grey;
+	padding: 5px;
+}
+
+div.report-courses {
+	padding-left: 20px;
+}
+
 .result-label {
 	font-size: 80%;
 }
