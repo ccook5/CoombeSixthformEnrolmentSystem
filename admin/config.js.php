@@ -1,6 +1,6 @@
 <?php
 header('Content-type: text/javascript'); 
-require_once '../config.inc.php';
+require_once('../config.inc.php');
 ?>
 
 $(document).ready(function() {
@@ -31,27 +31,33 @@ $(document).ready(function() {
   */
 	function saveRow ( oTable, nRow, action )
 	{
-		var jqInputs = $('input', nRow);
+		var jqInputs  = $('input',  nRow);
 		var jqSelects = $('select', nRow);
-		
-		var xmlhttp;
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{// code for IE6, IE5
-			xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');
-		}
-		xmlhttp.open('POST', 'ajax_update_students.php', false);
-		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		
+		var act       = "new";
+
 		if (action == 'Save') {
-			xmlhttp.send('action=update&student_id='+jqInputs[0].value+'&FirstName='+jqInputs[1].value+'&LastName='+jqInputs[2].value+'&StudentType='+jqSelects[0].options[jqSelects[0].selectedIndex].value+'&PreviousInstitution='+jqInputs[3].value+'&EnrolmentYear='+jqInputs[4].value);
-		} else {
-			xmlhttp.send('action=new&student_id='+jqInputs[0].value+'&FirstName='+jqInputs[1].value+'&LastName='+jqInputs[2].value+'&StudentType='+jqSelects[0].options[jqSelects[0].selectedIndex].value+'&PreviousInstitution='+jqInputs[3].value+'&EnrolmentYear='+jqInputs[4].value);
+			act = 'update';
 		}
-		document.getElementById('debug').innerHTML = xmlhttp.responseText;
+
+		var request = $.ajax({
+			url: 'ajax_update_config.php',
+			type: 'POST',
+			data: { 
+				action             : act,
+				setting            : jqInputs[0].value,
+				value              : jqInputs[1].value,
+				about              : jqInputs[0].value
+			},
+			dataType: 'html'
+		} );
+
+		request.done(function( msg ) {
+			$('#debug').html( msg );
+		} );
+
+		request.fail(function(jqXHR, textStatus) {
+			alert( 'Request failed: ' + textStatus );
+		} )
 
 		oTable.fnUpdate( jqInputs[0].value, nRow, 0, false );
 		oTable.fnUpdate( jqInputs[1].value, nRow, 1, false );
@@ -103,27 +109,28 @@ $(document).ready(function() {
 	$('.delete').live('click', function (e)
 	{
 		e.preventDefault();
-		
+
 		var nRow     = $(this).parents('tr')[0];
 		var jqTds    = $('>td', nRow);
-		
-		var xmlhttp;
-		
-		if (window.XMLHttpRequest)
-		{// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{// code for IE6, IE5
-			xmlhttp=new ActiveXObject('Microsoft.XMLHTTP');
-		}
 
-		xmlhttp.open('POST', 'ajax_update_students_results.php', false);
-		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xmlhttp.send('action=delete&ResultID='+jqTds[0].innerHTML);
-	
-		document.getElementById('debug').innerHTML = xmlhttp.responseText;
-		
+		var request = $.ajax({
+			url: 'ajax_update_config.php',
+			type: 'POST',
+			data: { 
+				action             : 'delete',
+				setting            : jqTds[0].innerHTML
+			},
+			dataType: 'html'
+		} );
+
+		request.done(function( msg ) {
+			$('#debug').html( msg );
+		} );
+
+		request.fail(function(jqXHR, textStatus) {
+			alert( 'Request failed: ' + textStatus );
+		} )
+
 		settingsTable.fnDeleteRow( nRow );
 	} );
 		
