@@ -1,13 +1,11 @@
 <?php
 
-require_once('config.inc.php');
-require_once('header.inc.php');
-require_once('footer.inc.php');
-
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../footer.inc.php');
 
 if (! isset($_POST['action']) )
 {
-
 	print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
 
 		$(document).ready(function()
@@ -17,8 +15,8 @@ if (! isset($_POST['action']) )
 		
 		$('select.gcse_type').live('change', update_grade_selectbox );", $exclude_datatables_js = false);
 ?>
-  <h4>ajax_update_settings.php tester</h4>
-  <form action="ajax_update_settings.php" method="post"> 
+  <h4>ajax_update_config.php tester</h4>
+  <form action="ajax_update_config.php" method="post"> 
    <table style='width: 300px; border: 1px solid black;' >
     <tr>
      <td>Action</td>
@@ -38,7 +36,7 @@ if (! isset($_POST['action']) )
     </tr>
     <tr>
      <td>About</td>
-     <td><textarea rows="2" cols="20"></textarea></td>
+     <td><textarea name="about" rows="2" cols="20"></textarea></td>
     </tr>
     <tr><td><input type="submit" /></td></tr>
    </table>
@@ -47,14 +45,14 @@ if (! isset($_POST['action']) )
 	print_footer();
 } else {
 	$action = mysql_real_escape_string($_POST['action']);
-	$ResultID = mysql_real_escape_string($_POST['ResultID']);
+	$setting = mysql_real_escape_string($_POST['setting']);
 
 	print("action = ".$action);
 
 	if ($action == "delete") { //We have all the info we need
 	}
-	else if ($action == "update" or $action == "new") {
-		$setting       = mysql_real_escape_string($_POST['setting']);
+	else if ($action == "update" or $action == "new")
+	{
 		$value         = mysql_real_escape_string($_POST['value']);
 		$about         = mysql_real_escape_string($_POST['about']);
 

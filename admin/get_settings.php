@@ -31,7 +31,7 @@ else
 	echo('    "'.$row['setting']."\",\n");
 	echo('    "'.$row['value']."\",\n");
 	echo('    "'.$row['Type']."\",\n");
-	echo('    "'.$row['ShortHelp']."\",\n");
+	echo('    "'.$row['about']."\",\n");
 	echo("    \"\",\n");
 	echo("    \"\"\n");
 	echo("    ]");

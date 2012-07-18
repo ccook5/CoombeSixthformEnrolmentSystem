@@ -5,6 +5,18 @@ require_once('../config.inc.php');
 
 $(document).ready(function() {
 
+/** This runs when the user clicks the save button in a row. */
+	function restoreRow ( oTable, nRow )
+	{
+		var aData = oTable.fnGetData(nRow);
+		var jqTds = $('>td', nRow);
+		for ( var i=0, iLen=jqTds.length ; i<iLen ; i++ ) {
+			oTable.fnUpdate( aData[i], nRow, i, false );
+		}
+		oTable.fnUpdate( '<button class=\"edit\">Edit Setting</button>', nRow, 3, false );
+		oTable.fnDraw();
+	}
+
 /** This is run when a user clicks Edit or Save. 
   *
   * We take the value from some cells and create some select boxes with
@@ -23,8 +35,8 @@ $(document).ready(function() {
 		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'">';
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = '<input type="text" value="'+aData[2]+'">';
-// Col 4 doesnt need updating
-		jqTds[5].innerHTML = '<button class="edit">Save Setting</button>';
+
+		jqTds[3].innerHTML = '<button class="edit">Save Setting</button>';
 	}
 		
 /** Post the data from this row to ajax_update_students_results.php via AJAX.
@@ -46,7 +58,7 @@ $(document).ready(function() {
 				action             : act,
 				setting            : jqInputs[0].value,
 				value              : jqInputs[1].value,
-				about              : jqInputs[0].value
+				about              : jqInputs[2].value
 			},
 			dataType: 'html'
 		} );
@@ -133,6 +145,16 @@ $(document).ready(function() {
 
 		settingsTable.fnDeleteRow( nRow );
 	} );
+	
+	$('#new_setting').click( function (e) {
+		e.preventDefault();
+		
+		var aiNew = settingsTable.fnAddData( [ '', '', '',
+			'<button class=\"edit\">Add Setting</button>', '<button class=\"delete\">Delete</button>' ] );
+		var nRow = settingsTable.fnGetNodes( aiNew[0] );
+		editRow( settingsTable, nRow, true );
+		nEditing = nRow;
+	} );
 		
 	$('.edit').live('click', function (e)
 	{
@@ -146,12 +168,12 @@ $(document).ready(function() {
 			editRow( settingsTable, nRow );
 			nEditing = nRow;
 		}
-		else if ( nEditing == nRow && this.innerHTML == 'Save Student Details') {
+		else if ( nEditing == nRow && this.innerHTML == 'Save Setting') {
 			/* Editing this row and want to save it */
 			saveRow( settingsTable, nEditing, 'Save' );
 			nEditing = null;
 		}
-		else if ( nEditing == nRow && this.innerHTML == 'Add') {
+		else if ( nEditing == nRow && this.innerHTML == 'Add Setting') {
 			/* Editing this row and want to save it */
 			saveRow( settingsTable, nEditing, 'Add' );
 			nEditing = null;
@@ -162,4 +184,4 @@ $(document).ready(function() {
 			nEditing = nRow;
 		}
 	} );
-});
+} );

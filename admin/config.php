@@ -15,6 +15,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
     <table class='with-borders-horizontal'>
      <tr >
       <td>
+       <p><a id="new_setting" href="">Add Setting</a></p>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="settings">
          <thead>

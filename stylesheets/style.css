@@ -1,28 +1,28 @@
 BODY  {
-	margin:      0px;
-	font-family: arial, helvetica, sans-serif;
+	margin:             0px;
+	font-family:        arial, helvetica, sans-serif;
 } 
 
 DIV.header {
-	background-image:  url("/images/menu_bkd.png"); 
-	background-repeat: repeat-x; 
-	margin:            0px; 
-	padding:           5px; 
-	padding-left:      20px; 
-	color:             white; 
-	font-family:       arial, helvetica, sans-serif;
+	background-image:   url("/images/menu_bkd.png"); 
+	background-repeat:  repeat-x; 
+	margin:             0px; 
+	padding:            5px; 
+	padding-left:       20px; 
+	color:              white; 
+	font-family:        arial, helvetica, sans-serif;
 }
 
 DIV.main-menu {
-	text-align:             right;
+	text-align:         right;
 }
 
 TABLE.main-menu {
-	width: 100%;
+	width:              100%;
 }
 
 TABLE.main-menu TR TD {
-	width: 50%;
+	width:              50%;
 }
 
 DIV.menu-block {
@@ -125,10 +125,10 @@ DIV.guidelines-block-inner {
 }
 
 LABEL {
-	width: 80%;
-	display:inline-block;
-	vertical-align: top;
-	margin-left: 3px;
+	width:              80%;
+	display:            inline-block;
+	vertical-align:     top;
+	margin-left:        3px;
 }
 
 /*
@@ -746,7 +746,7 @@ div.report-courses {
 }
 
 .debug {
-	display: none;
+/*	display: none; */
 }
 
 .footer {
