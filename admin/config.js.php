@@ -28,7 +28,7 @@ $(document).ready(function() {
   * Finally, we change the Edit button to a Save button. When clicked, the 
   * callback functions action depends on the value of this.
   */
-	function editRow ( oTable, nRow )
+	function editRow ( oTable, nRow, add )
 	{
 		var aData = oTable.fnGetData(nRow);
 		var jqTds = $('>td', nRow);
@@ -36,7 +36,13 @@ $(document).ready(function() {
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = '<input type="text" value="'+aData[2]+'">';
 
-		jqTds[3].innerHTML = '<button class="edit">Save Setting</button>';
+		if (add == true) {
+			jqTds[3].innerHTML = '<button class=\"edit\">Add Setting</button>';
+		}
+		else
+		{
+			jqTds[3].innerHTML = '<button class=\"edit\">Save Setting</button>';
+		}
 	}
 		
 /** Post the data from this row to ajax_update_students_results.php via AJAX.

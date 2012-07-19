@@ -73,7 +73,7 @@ if (! isset($_POST['action']) )
 	}
 	else if ($action == "update")
 	{
-		$sql = "UPDATE GCSE_Results SET setting='".$setting."', value='".$value."', about='".$about."' WHERE setting='".$setting."'";
+		$sql = "UPDATE configuration SET setting='".$setting."', value='".$value."', about='".$about."' WHERE setting='".$setting."'";
 	}
 
 	$result = mysql_query($sql, $link);
