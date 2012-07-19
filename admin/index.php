@@ -15,7 +15,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 	   </li>
 	   <li>Blocks
 	    <ul>
-	     <li><a href="">Student Types</a></li>
+	     <li><a href="studenttypes.php">Student Types</a></li>
 	     <li><a href="">Block Names</a></li>
 	     <li><a href="">Courses</a></li>
 	     <li><a href="">Blocks</a></li>
