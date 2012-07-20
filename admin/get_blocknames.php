@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.inc.php');
+require_once('../config.inc.php');
 
 // Query
 $sql_student_types    = "SELECT * from StudentTypes";
@@ -19,7 +19,7 @@ else
 }
 
 // Query
-$sql    = "SELECT * from students WHERE EnrolmentYear='".$config['current_year']."'";
+$sql    = "SELECT * from BLOCKS_Blocks WHERE Year='".$config['current_year']."'";
 $result = mysql_query($sql, $link);
 
 if (!$result)
@@ -47,20 +47,16 @@ else
 		
 		echo("    [\n");
 		echo('    "'.$row['id']."\",\n");
-		echo('    "'.$row['FirstName']."\",\n");
-		echo('    "'.$row['LastName']."\",\n");
-		echo('    "'.$row['PreviousInstitution']."\",\n");
-		echo('    "'.$row['EnrolmentYear']."\",\n");
-		
-		if (!isset($student_types[ $row['StudentType'] ]) || $student_types[ $row['StudentType'] ] == "")
+		echo('    "'.$row['Name']."\",\n");
+		if (!isset($student_types[ $row['CourseType'] ]) || $student_types[ $row['CourseType'] ] == "")
 		{
-			echo('    "'.$row['StudentType']."\",\n");
+			echo('    "'.$row['CourseType']."\",\n");
 		}
 		else
 		{
-			echo('    "'.$student_types[ $row['StudentType'] ]."\",\n");
+			echo('    "'.$student_types[ $row['CourseType'] ]."\",\n");
 		}
-		echo("    \"\",\n");
+		echo('    "'.$row['Year']."\",\n");
 		echo("    \"\",\n");
 		echo("    \"\"\n");
 		echo("    ]");

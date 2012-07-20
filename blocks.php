@@ -122,7 +122,7 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
 		$('#students tbody').click( function( event ) {
 			load_iframes( $(event.target.parentNode).find('td:first').html() );
 			
-			$(studentTable.fnSettings().aoData).each(function (){
+			$(studentTable.fnSettings().aoData).each(function () {
 				$(this.nTr).removeClass('row_selected');
 			});
 			$(event.target.parentNode).addClass('row_selected');
