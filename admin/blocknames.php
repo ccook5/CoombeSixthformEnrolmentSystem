@@ -1,7 +1,7 @@
 <?php 
-require_once '../config.inc.php';
-require_once '../header.inc.php';
-require_once '../select_widget.php';
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../select_widget.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 

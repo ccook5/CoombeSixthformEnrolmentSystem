@@ -18,13 +18,18 @@ $(document).ready(function() {
 		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'">';
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = build_student_type_select(aData[2]);
-		jqTds[3].innerHTML = '<input type="text" value="<?php print $config['current_year']; ?>" disabled="disabled" >';
-	
-		oTable.fnUpdate( '<button class=\"edit\">Edit Block</button>', nRow, 4, false );
+
+		oTable.fnUpdate( '<button class="edit">Edit</button>', nRow, 3, false );
 		oTable.fnDraw();
 	}
 
 /** This is run when a user clicks Edit or Save. 
+  *
+  * We take the value from some cells and create some select boxes with
+  * those entries pre-selected.
+  *
+  * We trigger the above function to update the grade select box depending 
+  * on the pre-selected value from GCSE_Type.
   *
   * Finally, we change the Edit button to a Save button. When clicked, the 
   * callback functions action depends on the value of this.
@@ -33,43 +38,39 @@ $(document).ready(function() {
 	{
 		var aData = oTable.fnGetData(nRow);
 		var jqTds = $('>td', nRow);
-		
 		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'" disabled="disabled">';
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = build_student_type_select(aData[2]);
-		jqTds[3].innerHTML = '<input type="text" value="<?php print $config['current_year']; ?>" disabled="disabled" >';
-	
+
 		if (add == true) {
-			jqTds[4].innerHTML = '<button class="edit">Add</button>';
+			jqTds[3].innerHTML = '<button class=\"edit\">Add</button>';
 		}
 		else
 		{
-			jqTds[4].innerHTML = '<button class="edit">Save</button>';
+			jqTds[3].innerHTML = '<button class=\"edit\">Save</button>';
 		}
 	}
 		
-/** Post the data from this row to ajax_update_blocknames.php via AJAX.
+/** Post the data from this row to ajax_update_students_results.php via AJAX.
   */
 	function saveRow ( oTable, nRow, action )
 	{
 		var jqInputs  = $('input',  nRow);
 		var jqSelects = $('select', nRow);
 		var act       = "new";
-		var i = 0;
 
 		if (action == 'Save') {
 			act = 'update';
 		}
 
 		var request = $.ajax({
-			url: 'ajax_update_blocknames.php',
+			url: 'ajax_update_courses.php',
 			type: 'POST',
 			data: { 
 				action             : act,
 				id                 : jqInputs[0].value,
-				name               : jqInputs[1].value,
-				coursetype         : jqSelects[0].selectedOptions[0].id,
-				year               : jqInputs[2].value
+				subjectname        : jqInputs[1].value,
+				type               : jqSelects[0].selectedOptions[0].id,
 			},
 			dataType: 'html'
 		} );
@@ -82,26 +83,24 @@ $(document).ready(function() {
 			alert( 'Request failed: ' + textStatus );
 		} )
 
-
 		oTable.fnUpdate( jqInputs[0].value, nRow, 0, false );
 		oTable.fnUpdate( jqInputs[1].value, nRow, 1, false );
 		oTable.fnUpdate( jqSelects[0].options[jqSelects[0].selectedIndex].value, nRow, 2, false );
-		oTable.fnUpdate( jqInputs[2].value, nRow, 3, false );
-
-		oTable.fnUpdate( '<button class="edit">Edit</button>', nRow, 4, false );
+		
+		oTable.fnUpdate( '<button class="edit">Edit</button>', nRow, 3, false );
 		oTable.fnDraw();
 	}
 
 	var nEditing = null;
 	
-	var Table = $('#blocknames').dataTable( {
+	var Table = $('#settings').dataTable( {
 		'bProcessing': true,
-		'sAjaxSource': 'get_blocknames.php',
+		'sAjaxSource': 'get_courses.php',
 		'sScrollY'   : '120px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
-			$('td:eq(4)', nRow).html( '<button class=\"edit\">Edit</button>' );
-			$('td:eq(5)', nRow).html( '<button class=\"delete\">Delete</button>' );
+			$('td:eq(3)', nRow).html( '<button class="edit">Edit</button>' );
+			$('td:eq(4)', nRow).html( '<button class="delete">Delete</button>' );
 		}
 		//'aoColumnDefs': [ {
 		///	'sClass'  : 'center',
@@ -115,7 +114,7 @@ $(document).ready(function() {
 
 /** Add a click handler to the rows. This adds a highlight to the currently selected row. 
   */
-	$('#blocknames tbody').click( function( event ) {
+	$('#settings tbody').click( function( event ) {
 		$(Table.fnSettings().aoData).each(function (){
 			$(this.nTr).removeClass('row_selected');
 		});
@@ -124,7 +123,7 @@ $(document).ready(function() {
 	
 	var nEditing = null;
 
-	$('#blocknames .edit_results').live('click', function (event) {
+	$('#settings .edit_results').live('click', function (event) {
 		event.preventDefault();
 	} );
 	
@@ -139,11 +138,11 @@ $(document).ready(function() {
 		var jqTds    = $('>td', nRow);
 
 		var request = $.ajax({
-			url: 'ajax_update_blocknames.php',
+			url: 'ajax_update_courses.php',
 			type: 'POST',
 			data: { 
 				action             : 'delete',
-				id                 : jqTds[0].innerHTML
+				id            : jqTds[0].innerHTML
 			},
 			dataType: 'html'
 		} );
@@ -159,10 +158,10 @@ $(document).ready(function() {
 		Table.fnDeleteRow( nRow );
 	} );
 	
-	$('#new_block').click( function (e) {
+	$('#new_setting').click( function (e) {
 		e.preventDefault();
 		
-		var aiNew = Table.fnAddData( [ '', '', '', '',
+		var aiNew = Table.fnAddData( [ '', '', '',
 			'<button class=\"edit\">Add</button>', '<button class=\"delete\">Delete</button>' ] );
 		var nRow = Table.fnGetNodes( aiNew[0] );
 		editRow( Table, nRow, true );
@@ -181,12 +180,12 @@ $(document).ready(function() {
 			editRow( Table, nRow );
 			nEditing = nRow;
 		}
-		else if ( nEditing == nRow && this.innerHTML == 'Save') {
+		else if ( nEditing == nRow && this.innerHTML == 'Save Setting') {
 			/* Editing this row and want to save it */
 			saveRow( Table, nEditing, 'Save' );
 			nEditing = null;
 		}
-		else if ( nEditing == nRow && this.innerHTML == 'Add') {
+		else if ( nEditing == nRow && this.innerHTML == 'Add Setting') {
 			/* Editing this row and want to save it */
 			saveRow( Table, nEditing, 'Add' );
 			nEditing = null;
