@@ -3,6 +3,7 @@
 require_once('../config.inc.php');
 require_once('../header.inc.php');
 require_once('../footer.inc.php');
+require_once('../functions.inc.php');
 
 if (! isset($_POST['action']) )
 {
@@ -47,30 +48,25 @@ if (! isset($_POST['action']) )
   </form>
 <?php
 	print_footer();
-} else {
+}
+else
+{
 	$action = mysql_real_escape_string($_POST['action']);
-	$id = mysql_real_escape_string($_POST['id']);
+	
+	$id = get_post_val('id');
+
+	$name         = get_post_val('name');
+	$coursetype   = get_post_val('coursetype');
+	$year         = get_post_val('year');
 
 	print("action = ".$action);
-
-	if ($action == "delete") { //We have all the info we need
-	}
-	else if ($action == "update" or $action == "new")
-	{
-		print_r($_POST);
-		$name         = mysql_real_escape_string($_POST['name']);
-		$coursetype   = mysql_real_escape_string($_POST['coursetype']);
-		$year         = mysql_real_escape_string($_POST['year']);
-
-		print("<p>&dollar;id         = ".$id."</p>");
-		print("<p>&dollar;Name       = ".$name."</p>");
-		print("<p>&dollar;CourseType = ".$coursetype."</p>");
-	}
-	else {
-		print("<div class='error'>Error: Incorrect Action</div>");
-	}
 	
-	if ($action == "delete") {
+	print("<p>&dollar;id         = ".$id."</p>");
+	print("<p>&dollar;Name       = ".$name."</p>");
+	print("<p>&dollar;CourseType = ".$coursetype."</p>");
+
+	if ($action == "delete")
+	{
 		$sql = "DELETE FROM BLOCKS_Blocks WHERE id='".$id."'";
 	}
 	else if ($action == "new")
@@ -80,6 +76,10 @@ if (! isset($_POST['action']) )
 	else if ($action == "update")
 	{
 		$sql = "UPDATE BLOCKS_Blocks SET id='".$id."', Name='".$name."', CourseType='".$coursetype."' WHERE id='".$id."'";
+	}
+	else
+	{
+		print("<div class='error'>Error: Incorrect Action</div>");
 	}
 
 	$result = mysql_query($sql, $link);

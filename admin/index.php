@@ -1,10 +1,13 @@
 <?php 
-require_once '../config.inc.php';
-require_once '../header.inc.php';
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('auth.inc.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
 			$script = "");
+			
+if (is_authenticated()) {
 ?>
   <div class='block' >
    <table class='with-borders-horizontal'>
@@ -35,5 +38,8 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
   </div>
    
   <div id="debug" class="debug"></div>
+<?php
+}
+?>
  </body>
 </html>

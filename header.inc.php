@@ -24,6 +24,7 @@ function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar
   <link   type="text/css" rel="stylesheet" href="/css/style.css" />
   <link   type="text/css" rel="stylesheet" href="/css/coombe-metro/jquery-ui-1.8.21.custom.css" />
   <link   type="text/css" rel="stylesheet" href="/css/jquery.ui.all.css" />
+  
   <link   type="text/css" rel="stylesheet" href="/css/enrolment.gcse_results.css" />
   
 
@@ -49,7 +50,7 @@ function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar
     <a href="/admin/index.php">Admin</a> |
     <a href="/report.php">Reports</a>&nbsp;&nbsp;
    </div>
-<?php
+<?php 
     }
 }
 ?>

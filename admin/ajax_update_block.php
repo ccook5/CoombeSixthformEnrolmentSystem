@@ -3,6 +3,9 @@
 require_once('../config.inc.php');
 require_once('../header.inc.php');
 require_once('../footer.inc.php');
+require_once('../functions.inc.php');
+
+//TODO : this file should be called something different, like ajax_update_block_course.
 
 if (! isset($_POST['action']) )
 {
@@ -40,7 +43,7 @@ if (! isset($_POST['action']) )
     </tr>
     <tr>
      <td>MaxPupils</td>
-     <td><input type='text' name='BlockID' /></td>
+     <td><input type='text' name='MaxPupils' /></td>
     </tr>
     <tr>
      <td>CourseDefID</td>
@@ -51,37 +54,49 @@ if (! isset($_POST['action']) )
   </form>
 <?php
 	print_footer();
-} else {
+}
+else
+{
 	$action = mysql_real_escape_string($_POST['action']);
-	$id = mysql_real_escape_string($_POST['id']);
+	$id = get_post_val('id');
+
+	$BlockID         = get_post_val('BlockID');
+	$MaxPupils       = get_post_val('MaxPupils');
+	$CourseDefID     = get_post_val('CourseDefID');
 
 	print("action = ".$action);
 
-	if ($action == "delete") { //We have all the info we need
-	}
-	else if ($action == "update" or $action == "new")
-	{
-		$value         = mysql_real_escape_string($_POST['value']);
-		$about         = mysql_real_escape_string($_POST['about']);
+	print("<p>&dollar;BlockID     = ".$BlockID."</p>");
+	print("<p>&dollar;MaxPupils   = ".$MaxPupils."</p>");
+	print("<p>&dollar;CourseDefID = ".$CourseDefID."</p>");
 
-		print("<p>&dollar;setting = ".$setting."</p>");
-		print("<p>&dollar;value   = ".$value."</p>");
-		print("<p>&dollar;about   = ".$about."</p>");
-	}
-	else {
-		print("<div class='error'>Error: Incorrect Action</div>");
-	}
-	
-	if ($action == "delete") {
-		$sql = "DELETE FROM BLOCKS_Course WHERE id='".$id."'";
+	if ($action == "delete")
+	{
+		if (isset($_POST['id']) )
+		{
+			$sql = "DELETE FROM BLOCKS_Course WHERE id='".$id."'";
+		}
+		else
+		{
+			$sql  = "DELETE FROM BLOCKS_Course WHERE BlockID='".$BlockID."' ";
+			$sql .= "AND MaxPupils='".$MaxPupils."' AND CourseDefID='".$CourseDefID."' AND EnrolmentYear='".$config['current_year']."'";
+		}
 	}
 	else if ($action == "new")
 	{
-		$sql = "INSERT INTO configuration (setting, value, about) VALUES ('".$setting."', '".$value."', '".$about."')";
+		$sql = "INSERT INTO BLOCKS_Course (BlockID, MaxPupils, CourseDefID, EnrolmentYear) VALUES ('".$BlockID."', '".$MaxPupils."', '".$CourseDefID."', '".$config['current_year']."');";
 	}
 	else if ($action == "update")
 	{
-		$sql = "UPDATE configuration SET setting='".$setting."', value='".$value."', about='".$about."' WHERE setting='".$setting."'";
+		$sql  = "UPDATE BLOCKS_Course SET BlockID='".$BlockID."', MaxPupils='".$MaxPupils;
+		if (isset($_POST['CourseDefID']))
+		{
+			$sql .= "', CourseDefID='".$CourseDefID;
+		}
+		$sql .= "', EnrolmentYear='".$config['current_year']."' WHERE id='".$id."'";
+	}
+	else {
+		print("<div class='error'>Error: Incorrect Action</div>");
 	}
 
 	$result = mysql_query($sql, $link);

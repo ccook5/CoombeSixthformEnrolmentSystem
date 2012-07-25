@@ -17,8 +17,8 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 			}
 		});
 	} );
-", $exclude_datatables_js = false, $meta = "",
-			$extra_script="config.js.php");
+", $exclude_datatables_js = true, $meta = "",
+			$extra_script="");
 ?>
    <div id="tabs">
     <ul>
