@@ -180,12 +180,12 @@ $(document).ready(function() {
 			editRow( Table, nRow );
 			nEditing = nRow;
 		}
-		else if ( nEditing == nRow && this.innerHTML == 'Save Setting') {
+		else if ( nEditing == nRow && this.innerHTML == 'Save') {
 			/* Editing this row and want to save it */
 			saveRow( Table, nEditing, 'Save' );
 			nEditing = null;
 		}
-		else if ( nEditing == nRow && this.innerHTML == 'Add Setting') {
+		else if ( nEditing == nRow && this.innerHTML == 'Add') {
 			/* Editing this row and want to save it */
 			saveRow( Table, nEditing, 'Add' );
 			nEditing = null;

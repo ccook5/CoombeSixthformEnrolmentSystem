@@ -7,38 +7,43 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 			$hide_title_bar = false, 
 			$script = "
 	$(document).ready(function() {
+		$( '#tabs' ).tabs({
+			ajaxOptions: {
+				error: function( xhr, status, index, anchor ) {
+					$( anchor.hash ).html(
+						\"Couldn\'t load this tab. We'll try to fix this as soon as possible. \" +
+						\"If this wouldn\'t be a demo.\" );
+				}
+			}
+		});
 	} );
 ", $exclude_datatables_js = false, $meta = "",
 			$extra_script="config.js.php");
 ?>
-   <div class='block' >
-    <table class='with-borders-horizontal'>
-     <tr >
-      <td>
-       <p><a id="new_setting" href="">Add Setting</a></p>
-       <div id="dynamic">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="settings">
-         <thead>
-          <tr>
-			<th width="20%">Setting</th>
-			<th width="20%">Value</th>
-			<th width="20%">About</th>
-			<th></th>
-			<th></th>
-          </tr>
-         </thead>
-         <tbody>
-          <tr>
-           <td colspan="5" class="dataTables_empty">Loading data from server</td>
-          </tr>
-         </tbody>
-        </table>
-	   </div>
-      </td>
-     </tr>
-    </table>
+   <div id="tabs">
+    <ul>
+<?php
+$sql = "SELECT * FROM StudentTypes;";
+$result = mysql_query($sql, $link);
+
+$course_types = Array();
+
+if (!$result)
+{
+  die('Invalid query: ' . mysql_error());
+}
+else
+{
+  while($row = mysql_fetch_array($result))
+  {
+	echo('     <li><a href="block.php?block_id='.($row['id'])."\">\n");
+	echo('      '.$row['CourseType']."</a></li>\n");
+  }
+}
+?>
+    </ul>
    </div>
-   
+ 
    <div id="debug" class="debug"></div>
  </body>
 </html>

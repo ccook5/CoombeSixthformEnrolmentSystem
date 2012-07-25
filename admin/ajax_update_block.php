@@ -15,8 +15,8 @@ if (! isset($_POST['action']) )
 		
 		$('select.gcse_type').live('change', update_grade_selectbox );", $exclude_datatables_js = false);
 ?>
-  <h4>ajax_update_courses.php tester</h4>
-  <form action="ajax_update_courses.php" method="post"> 
+  <h4>ajax_update_block.php tester</h4>
+  <form action="ajax_update_block.php" method="post"> 
    <table style='width: 300px; border: 1px solid black;' >
     <tr>
      <td>Action</td>
@@ -31,12 +31,20 @@ if (! isset($_POST['action']) )
      <td><input type='text' name='id' /></td>
     </tr>
     <tr>
-     <td>subjectname</td>
-     <td><input type='text' name='subjectname' /></td>
+     <td>BlockID</td>
+     <td><input type='text' name='BlockID' /></td>
     </tr>
     <tr>
-     <td>coursetype</td>
-     <td><input type='text' name='type' /></td>
+     <td>EnrolmentYear</td>
+     <td><input type='text' name='EnrolmentYear' value='<?php echo $config['current_year']; ?>' /></td>
+    </tr>
+    <tr>
+     <td>MaxPupils</td>
+     <td><input type='text' name='BlockID' /></td>
+    </tr>
+    <tr>
+     <td>CourseDefID</td>
+     <td><input type='text' name='CourseDefID' /></td>
     </tr>
     <tr><td><input type="submit" /></td></tr>
    </table>
@@ -53,28 +61,27 @@ if (! isset($_POST['action']) )
 	}
 	else if ($action == "update" or $action == "new")
 	{
-		print_r($_POST);
-		$subjectname  = mysql_real_escape_string($_POST['subjectname']);
-		$type   = mysql_real_escape_string($_POST['type']);
+		$value         = mysql_real_escape_string($_POST['value']);
+		$about         = mysql_real_escape_string($_POST['about']);
 
-		print("<p>&dollar;id          = ".$id."</p>");
-		print("<p>&dollar;SubjectName = ".$subjectname."</p>");
-		print("<p>&dollar;Type        = ".$type."</p>");
+		print("<p>&dollar;setting = ".$setting."</p>");
+		print("<p>&dollar;value   = ".$value."</p>");
+		print("<p>&dollar;about   = ".$about."</p>");
 	}
 	else {
 		print("<div class='error'>Error: Incorrect Action</div>");
 	}
 	
 	if ($action == "delete") {
-		$sql = "DELETE FROM BLOCKS_CourseDef WHERE id='".$id."'";
+		$sql = "DELETE FROM BLOCKS_Course WHERE id='".$id."'";
 	}
 	else if ($action == "new")
 	{
-		$sql = "INSERT INTO BLOCKS_CourseDef (SubjectName, Type) VALUES ('".$subjectname."', '".$type."')";
+		$sql = "INSERT INTO configuration (setting, value, about) VALUES ('".$setting."', '".$value."', '".$about."')";
 	}
 	else if ($action == "update")
 	{
-		$sql = "UPDATE BLOCKS_CourseDef SET id='".$id."', SubjectName='".$subjectname."', Type='".$type."' WHERE id='".$id."'";
+		$sql = "UPDATE configuration SET setting='".$setting."', value='".$value."', about='".$about."' WHERE setting='".$setting."'";
 	}
 
 	$result = mysql_query($sql, $link);
