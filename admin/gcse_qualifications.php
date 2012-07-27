@@ -9,20 +9,22 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 	$(document).ready(function() {
 	} );
 ", $exclude_datatables_js = false, $meta = "",
-			$extra_script="config.js.php");
+			$extra_script="gcse_qualifications.js.php");
 ?>
    <div class='block' >
     <table class='with-borders-horizontal'>
      <tr >
       <td>
-       <p><a id="new_setting" href="">Add Setting</a></p>
+       <p><a id="new_qualification" href="">Add</a></p>
        <div id="dynamic">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="settings">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="qualifications">
          <thead>
           <tr>
-			<th width="20%">Setting</th>
-			<th width="20%">Value</th>
-			<th width="20%">About</th>
+			<th width="20%">id</th>
+			<th width="20%">Type</th>
+			<th width="20%">Length</th>
+			<th width="20%">Equivalent GCSE</th>
+			<th width="20%">Notes</th>
 			<th></th>
 			<th></th>
           </tr>
