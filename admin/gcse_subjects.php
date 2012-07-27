@@ -9,20 +9,19 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 	$(document).ready(function() {
 	} );
 ", $exclude_datatables_js = false, $meta = "",
-			$extra_script="config.js.php");
+			$extra_script="gcse_subjects.js.php");
 ?>
    <div class='block' >
     <table class='with-borders-horizontal'>
      <tr >
       <td>
-       <p><a id="new_setting" href="">Add Setting</a></p>
+       <p><a id="new_subject" href="">Add Subject</a></p>
        <div id="dynamic">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="settings">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="subjects">
          <thead>
           <tr>
-			<th width="20%">Setting</th>
-			<th width="20%">Value</th>
-			<th width="20%">About</th>
+			<th width="20%">id</th>
+			<th width="20%">SubjectName</th>
 			<th></th>
 			<th></th>
           </tr>
