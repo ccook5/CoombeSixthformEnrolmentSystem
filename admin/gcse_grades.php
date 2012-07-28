@@ -1,7 +1,7 @@
 <?php 
-require_once '../config.inc.php';
-require_once '../header.inc.php';
-require_once '../select_widget.php';
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../select_widget.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
@@ -9,20 +9,21 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 	$(document).ready(function() {
 	} );
 ", $exclude_datatables_js = false, $meta = "",
-			$extra_script="config.js.php");
+			$extra_script="gcse_grades.js.php");
 ?>
    <div class='block' >
     <table class='with-borders-horizontal'>
      <tr >
       <td>
-       <p><a id="new_setting" href="">Add Setting</a></p>
+       <p><a id="new" href="">Add Grade</a></p>
        <div id="dynamic">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="settings">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="grades">
          <thead>
           <tr>
-			<th width="20%">Setting</th>
-			<th width="20%">Value</th>
-			<th width="20%">About</th>
+			<th width="10%">id</th>
+			<th width="20%">Grade</th>
+			<th width="20%">Points</th>
+			<th width="20%">QualificationID</th>
 			<th></th>
 			<th></th>
           </tr>

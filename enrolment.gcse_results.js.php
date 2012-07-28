@@ -1,6 +1,6 @@
 <?php header('Content-type: text/javascript'); 
-require_once 'config.inc.php';
-require_once 'select_widget.php';
+require_once('config.inc.php');
+require_once('select_widget.php');
 ?>
 
 /** Updates the grade selectbox depending on the gcse type. 
