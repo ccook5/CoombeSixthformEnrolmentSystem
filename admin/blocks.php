@@ -28,7 +28,7 @@ else
 
 if (! isset($_GET['block_id']))
 {
-    print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $script = "", $exclude_datatables_js = false, $meta="<meta http-equiv='refresh' content='0;url=blocks.php?block_id=".$first_course."'>");
+    print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "", $exclude_datatables_js = false, $meta="<meta http-equiv='refresh' content='0;url=blocks.php?block_id=".$first_course."'>");
 	die();
 }
 else if ($_GET['block_id'] == "null")
@@ -40,7 +40,7 @@ else
 	$block_id = mysql_real_escape_string($_GET['block_id']);
 }
 
-print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $script = "
+print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "
 	$(function() {
 		$( '#slider' ).slider(
 		{
