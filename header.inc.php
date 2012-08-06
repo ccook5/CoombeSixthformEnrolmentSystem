@@ -1,4 +1,9 @@
 <?php
+/** Starts printing an html header block, including an opening (but not a closing) <html> tag. 
+  *
+  * $hide_title_bar - if True, hides the green title bar.
+  * $script - javascript code. this should just be javascript, you don't need to add any javascript tags.
+  */
 function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar = 'false', $script = '', $exclude_datatables_js = false, $meta = "", $extra_script = "")
 {
 ?>
