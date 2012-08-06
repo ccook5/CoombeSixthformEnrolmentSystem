@@ -96,7 +96,7 @@ $(document).ready(function() {
 	var Table = $('#settings').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_courses.php',
-		'sScrollY'   : '120px',
+		'sScrollY'   : '500px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(3)', nRow).html( '<button class="edit">Edit</button>' );
