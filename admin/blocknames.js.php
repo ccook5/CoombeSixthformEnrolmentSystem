@@ -97,7 +97,7 @@ $(document).ready(function() {
 	var Table = $('#blocknames').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_blocknames.php',
-		'sScrollY'   : '120px',
+		'sScrollY'   : '500px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(4)', nRow).html( '<button class=\"edit\">Edit</button>' );
