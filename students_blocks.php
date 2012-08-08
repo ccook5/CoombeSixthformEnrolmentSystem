@@ -114,7 +114,7 @@ function print_blocks_table($StudentID, $StudentType)
 		{
 		    echo ("           <td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'>\n");
 			echo ("            <table>\n");
-			echo ("             <thead><th width='10%'>".$row_blocks['Name']."(".$row_blocks['id'].")</th></thead>\n");
+			echo ("             <thead><th width='10%'>".$row_blocks['Name']."</th></thead>\n");
 			
 			/** Get all the current courses for the current block.
 			  */
@@ -144,7 +144,7 @@ function print_blocks_table($StudentID, $StudentType)
                   value='<?php echo $row[0]; ?>'
                   <?php echo $checked; ?> /> 
                 <label for='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count;?>]'>
-                  <?php echo $row['SubjectName'].'('.$row[0].')'; ?>
+                  <?php echo $row['SubjectName']; ?>
    
                   <span class='places_left' >
                    <?php echo '('.get_places_left($row[0])."/".$row['MaxPupils'].")\n"; ?>
