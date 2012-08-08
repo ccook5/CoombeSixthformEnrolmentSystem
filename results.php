@@ -1,8 +1,8 @@
 <?php 
-require_once 'config.inc.php';
-require_once 'header.inc.php';
-require_once 'footer.inc.php';
-require_once 'select_widget.php';
+require_once('config.inc.php');
+require_once('header.inc.php');
+require_once('footer.inc.php');
+require_once('select_widget.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results', 
 			$hide_title_bar = false,
@@ -153,7 +153,7 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
 			var ID       = jqTds[0].innerHTML;
 			
 			var request = $.ajax({
-				url: 'ajax_update_students.php',
+				url: 'api/ajax_update_students.php',
 				type: 'POST',
 				data: {action : act, StudentID : ID },
 				dataType: 'html'

@@ -60,7 +60,7 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
 			}
 
 			var request = $.ajax({
-				url: 'ajax_update_students.php',
+				url: 'api/ajax_update_students.php',
 				type: 'POST',
 				data: {action              : act,
 				       StudentID           : jqInputs[0].value,
@@ -157,7 +157,7 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
 			var ID       = jqTds[0].innerHTML;
 			
 			var request = $.ajax({
-				url: 'ajax_update_students.php',
+				url: 'api/ajax_update_students.php',
 				type: 'POST',
 				data: {action : act, StudentID : ID },
 				dataType: 'html'
@@ -288,10 +288,10 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
    </div>
    
    <div id="debug" class="debug"></div>
-<div id="test">
-  <iframe frameborder="0" style="width: 79%; height: 480px;" id="students_blocks"></iframe>
-  <iframe frameborder="0" style="width: 19%; height: 420px; float: right;" id="average_results"></iframe>
-</div>
+   <div id="test">
+    <iframe frameborder="0" style="width: 79%; height: 480px;" id="students_blocks"></iframe>
+    <iframe frameborder="0" style="width: 19%; height: 420px; float: right;" id="average_results"></iframe>
+   </div>
 
 <?php
 print_footer();

@@ -3,11 +3,10 @@
 require_once('config.inc.php');
 require_once('header.inc.php');
 require_once('footer.inc.php');
+require_once('functions.inc.php');
 
-if (! isset($_GET['student_id'])) {
+if (! isset($_GET['student_id']) || $_GET['student_id'] == "null") {
 	die( "<div class='error'>No student Id found</div>" );
-} else if ($_GET['student_id'] == "null") {
-	die;
 } else {
 	$StudentID = mysql_real_escape_string($_GET['student_id']);
 }
@@ -24,7 +23,7 @@ function clear_column(ColumnID)
 {
 	$('input[name=\'block['+ColumnID+']\' ]').attr(\"checked\", false);
 }
-	");
+ ");
 
 function print_coursetype_selects($StudentType)
 {
@@ -49,14 +48,15 @@ function print_coursetype_selects($StudentType)
 function get_places_left($courseID)
 {
 	global $config, $link;
-	$sql_places = "SELECT * FROM BLOCKS_CourseEnrolment WHERE EnrolmentYear=".$config['current_year']." AND CourseID='".$courseID."' ORDER BY id";
+	$sql_places    = "SELECT * FROM BLOCKS_CourseEnrolment WHERE EnrolmentYear=".$config['current_year']." AND CourseID='".$courseID."' ORDER BY id";
 	$result_places = mysql_query($sql_places, $link);
 
-	if (!$result_places) {  die('Invalid query: ' . mysql_error());  }
-	else
+	if ($result_places) 
 	{
 		return mysql_num_rows($result_places);
 	}
+	
+	die('Invalid query: ' . mysql_error());
 	return 0;
 }
 
@@ -78,15 +78,15 @@ function get_students_current_enrolments($StudentID)
 
 	$enrolments = Array();
 
-	if (!$result_enrolments) {  die('Invalid query: ' . mysql_error());  }
-	else
+	if ($result_enrolments)
 	{
 		while($row_enrolments = mysql_fetch_array($result_enrolments))
 		{
 			$enrolments[ $row_enrolments['BlockID'] ] = $row_enrolments['CourseID'];
 		}
+	    return $enrolments;
 	}
-	return $enrolments;
+	die('Invalid query: ' . mysql_error());
 }
 
 /** Print the html table for the students enrolments.
@@ -99,88 +99,85 @@ function print_blocks_table($StudentID, $StudentType)
 {
 	global $config, $link;
 	
-	echo("      <table class='with-borders-horizontal'>\n");
-	echo("       <tr>\n");
-
 	$enrolments         = get_students_current_enrolments($StudentID);
-	$blocks             = Array();
-	$count_records      = 0;
-	$i                  = 0;
-	$max_rows_in_blocks = 0;
-	$table_footer       = Array();
 	
 	// Get a list of the current blocks from the database. This should be a list like 'a','b','c',etc.
 	$sql_blocks    = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType='".$StudentType."' ORDER BY id";
 	$result_blocks = mysql_query($sql_blocks, $link);
 
+	echo("         <table class='with-borders-horizontal'>\n");
+	echo("          <tr>\n");
+
 	if ($result_blocks)
 	{
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
-		    echo ("<td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'><table>");
-			echo ("      <thead><th width='10%'>".$row_blocks['Name']."</th></thead>");
+		    echo ("           <td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'>\n");
+			echo ("            <table>\n");
+			echo ("             <thead><th width='10%'>".$row_blocks['Name']."(".$row_blocks['id'].")</th></thead>\n");
 			
 			/** Get all the current courses for the current block.
-			  *
-			  * We build a list for each block, then print by row in a loop 
-			  * later on in the code, so this isn't inefficient. 
 			  */
 			$sql    = "SELECT * FROM BLOCKS_Course INNER JOIN BLOCKS_CourseDef ON CourseDefID=BLOCKS_CourseDef.id";
-			$sql   .= " INNER JOIN StudentTypes ON Type=StudentTypes.id";
+//			$sql   .= " INNER JOIN StudentTypes ON Type=StudentTypes.id";
 			$sql   .= " WHERE EnrolmentYear=".$config['current_year']." AND BlockID=".$row_blocks['id'];
 			$result = mysql_query($sql, $link);
 
 			if ($result) {
-				$i = 0;
+				$row_count = 0;
 				while($row = mysql_fetch_array($result))
 				{
-					$count_records += 1;
-
-					$blocks[$i][ $row_blocks['Name'] ]  = "<input type=\"radio\" name=\"block[".$row_blocks['id']."]\" id=\"block[".$row_blocks['id']."][".$i."]\" ";
-					$blocks[$i][ $row_blocks['Name'] ] .= "value=\"".$row[0]."\"";
-					
+					$checked = "";
 					// if student is allready enrolled on this course, then mark it as selected.
-					if (isset($enrolments[ $row['BlockID'] ]) && $enrolments[ $row['BlockID'] ] == $row[ 0 ]) {
-						$blocks[$i][ $row_blocks['Name'] ] .= " checked />\n";
-					} else {
-						$blocks[$i][ $row_blocks['Name'] ] .= " />\n"; 
-					}
-					$blocks[$i][ $row_blocks['Name'] ] .= "<label for='block[".$row_blocks['id']."][".$i."]'>\n";
-					$blocks[$i][ $row_blocks['Name'] ] .= $row['SubjectName']."\n";
 
-					$blocks[$i][ $row_blocks['Name'] ] .= "<span style='float: right; vertical-align: top; font-size: 0.65em' >";
-				    $blocks[$i][ $row_blocks['Name'] ] .= "(".get_places_left($row[0]);
-					$blocks[$i][ $row_blocks['Name'] ] .= "/".$row['MaxPupils'].")";
-					$blocks[$i][ $row_blocks['Name'] ] .= "</span>\n";
-					$blocks[$i][ $row_blocks['Name'] ] .= "</label>\n";
-					
-					echo("<tr><td style='height: 2.1em'>\n");
-					echo($blocks[$i][ $row_blocks['Name'] ]);
-					echo("</td></tr>\n");
-					
-					$i += 1;
-					if ($i > $max_rows_in_blocks)
+					if (isset($enrolments[ $row['BlockID'] ]) && $enrolments[ $row['BlockID'] ] == $row[0])
 					{
-						$max_rows_in_blocks = $i;
+						$checked = " checked ";
 					}
+?>
+              <tr>
+               <td style='height: 2.1em'>
+                <input 
+                  type='radio' 
+                  name='block[<?php echo $row_blocks['id']; ?>]' 
+    	          id='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count; ?>]'
+                  value='<?php echo $row[0]; ?>'
+                  <?php echo $checked; ?> /> 
+                <label for='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count;?>]'>
+                  <?php echo $row['SubjectName'].'('.$row[0].')'; ?>
+   
+                  <span class='places_left' >
+                   <?php echo '('.get_places_left($row[0])."/".$row['MaxPupils'].")\n"; ?>
+                  </span>
+                </label>			
+               </td>
+              </tr>
+<?php		
+					$row_count ++;
 				}
-				echo("</table>");
-				
-				echo "<input type='button' onClick=\"clear_column(".$row_blocks['id'].")\" value='Clear Block' style='position: absolute; bottom: 2px; left: 2px;' />";
+?>
+             </table>
+				 
+             <input type='button'
+              onClick='clear_column("<?php echo $row_blocks['id']; ?>")'
+              value='Clear Block' 
+              class='clear_block-button' 
+             />
+<?php
 			} else {  die('Invalid query: ' . mysql_error());  }
 		}
 	} else {  die('Invalid query: ' . mysql_error());  }
 		
-	echo("       </tr>\n");
-	echo("      </table>");
+	echo("             </tr>\n");
+	echo("            </table>\n");
 }
 
-$sql = "SELECT MobileNumber, SequenceNumber, StudentType FROM students WHERE id=\"".$StudentID."\"";
+$sql = "SELECT * FROM students WHERE id=\"".$StudentID."\" AND EnrolmentYear=\"".$config['current_year']."\"";
 $result = mysql_query($sql, $link);
 
 $row = 0;
 if (!$result) {  die('Invalid query: ' . mysql_error());  }
-else if (mysql_num_rows($result) == 1)
+else if (mysql_num_rows($result) > 0)
 {
 	$i = 0;
 	$row = mysql_fetch_array($result);

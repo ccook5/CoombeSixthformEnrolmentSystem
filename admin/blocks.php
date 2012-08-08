@@ -109,7 +109,7 @@ print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $s
 
 		request.done(function( msg ) {
 			$('#debug').html( msg );
-			alert('success1:'+msg);
+//			alert('success1:'+msg);
 			$('#course_'+course_id).remove();
 		} );
 
@@ -136,7 +136,7 @@ print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $s
 
 		request.done(function( msg ) {
 			$('#debug').html( msg );
-			alert('success2:'+msg);
+//			alert('success2:'+msg);
 			$('#course_'+course_id).remove();
 		} );
 
@@ -273,7 +273,7 @@ echo("       </tr>\n");
 echo("       <tr><td colspan='".$cols."'>\n");
 
 // Get a list of the current course definitions
-$sql    = "SELECT * FROM BLOCKS_CourseDef WHERE Type='".$block_id."' ORDER BY id";
+$sql    = "SELECT * FROM BLOCKS_CourseDef WHERE Type='".$block_id."' ORDER BY SubjectName";
 $result = mysql_query($sql, $link);
 
 if ($result)

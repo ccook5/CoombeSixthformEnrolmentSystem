@@ -50,7 +50,7 @@ if (! isset($_POST['action']) )
 }
 else
 {
-	$action = mysql_real_escape_string($_POST['action']);
+	$action = get_post_val('action');
 	
 	$id             = get_post_val('id');
 	$Type           = get_post_val('Type');

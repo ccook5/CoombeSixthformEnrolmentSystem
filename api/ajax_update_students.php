@@ -1,14 +1,21 @@
 <?php
-require_once('config.inc.php');
-require_once('footer.inc.php');
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../footer.inc.php');
+require_once('../functions.inc.php');
+
+$ajax_filename = 'ajax_update_students.php';
+	
+$sql = '';
 
 if (! isset($_POST['action']))
 {
-print_header($title = 'Coombe Sixth form enrolment form. - students_details tester', $hide_title_bar = true, $script = "", $exclude_datatables_js = false);
+    print_header($title = 'Coombe Sixth form enrolment form. - students_details tester', $hide_title_bar = true, $script = "", $exclude_datatables_js = false);
 
+	echo("  <h4>".$ajax_filename." tester</h4>\n");
+    echo("  <form action=\"".$ajax_filename."\" method=\"post\">\n");
 ?>
   <table style='width: 300px; border: 1px solid black;' >
-   <form action="ajax_update_students.php" method="post"> 
     <tr>
      <td>Action</td>
      <td><select name='action'><option>delete</option><option>new</option><option>update</option></select></td>
@@ -45,64 +52,32 @@ print_header($title = 'Coombe Sixth form enrolment form. - students_details test
      </tr>
      <tr><td>Previous Institution:</td><td><input type="text" name="PreviousInstitution" /></td></tr>
      <tr><td><input type="submit" /></td></tr>
+    </table>
    </form>
-  </table>
 <?php
 	print_footer();
-} else {
-	$action    = mysql_real_escape_string($_POST['action']);
-	$StudentID = mysql_real_escape_string($_POST['StudentID']);
+}
+else
+{
+	$action    = get_post_val('action');
+	$StudentID = get_post_val('StudentID');
 
-	if ($action == "delete") { //We have all the info we need
-	}
-	else if ($action == "update" or $action == "new") {
-		$FirstName           = mysql_real_escape_string($_POST['FirstName']);
-		$LastName            = mysql_real_escape_string($_POST['LastName']);
-		$StudentType         = mysql_real_escape_string($_POST['StudentType']);
-		$PreviousInstitution = mysql_real_escape_string($_POST['PreviousInstitution']);
-		$EnrolmentYear       = mysql_real_escape_string($_POST['EnrolmentYear']);
-	} else {
-		print("<div class='error'>Error: Incorrect Action</div>");
-	}
+	$FirstName           = get_post_val('FirstName');
+	$LastName            = get_post_val('LastName');
+	$StudentType         = get_post_val('StudentType');
+	$PreviousInstitution = get_post_val('PreviousInstitution');
+	$EnrolmentYear       = get_post_val('EnrolmentYear');
 
 	if ($action == "delete") {
-		$sql           = "DELETE FROM GCSE_Results WHERE StudentID='".$StudentID."' AND EnrolmentYear='".$config['current_year']."'";
-		$result        = mysql_query($sql, $link);
+		delete_all_results_for_student($StudentID);
 
-		if (!$result)
-		{
-			die('Invalid query: ' . mysql_error()." On line ".__line__);
-		}
-		
-		$sql           = "DELETE FROM BLOCKS_courseenrolment WHERE StudentID='".$StudentID."' AND EnrolmentYear='".$config['current_year']."'";
-		$result        = mysql_query($sql, $link);
+		delete_all_courseenrolments_for_student($StudentID);
 
-		if (!$result)
-		{
-			die('Invalid query: ' . mysql_error()." On line ".__line__);
-		}
 		$sql = "DELETE FROM students WHERE id='".$StudentID."' AND EnrolmentYear='".$config['current_year']."'";
 	}
 	else if ($action == "update" or $action == "new")
 	{
-	//Convert Student type to an integer/key value from the student type table
-		$sql_student_types    = "SELECT * FROM StudentTypes WHERE CourseType='".$StudentType."' LIMIT 1";
-		$result_student_types = mysql_query($sql_student_types, $link);
-
-		if (!$result_student_types) {
-			print("sql: ".$sql_student_types );
-			die('Invalid query: ' . mysql_error()." On line ".__line__);
-		} else {
-			if (mysql_num_rows($result_student_types) < 1) {
-				die('Error: Not enough Rows');
-			}
-			$row_student_type = mysql_fetch_assoc($result_student_types);
-			
-			if ($row_student_type['CourseType'] == $StudentType) {
-				$StudentType = $row_student_type['id'];
-			}
-		}
-		$sql = '';
+		$StudentType = get_studenttype_as_id($StudentType);
 	// if $action = new then make the sql query INSERT
 		if ($action == "new")
 		{
@@ -120,11 +95,11 @@ print_header($title = 'Coombe Sixth form enrolment form. - students_details test
 			$sql .= "PreviousInstitution='".$PreviousInstitution."' ";
 			$sql .= "WHERE id='".$StudentID."'";
 		}
+	} else {
+	    print("<div class='error'>Error: Incorrect Action</div>");
 	}
 
-	$result = mysql_query($sql, $link);
-
-	if (!$result)
+	if (! mysql_query($sql, $link))
 	{
 		print("sql: ".$sql);
 		die('Invalid query: ' . mysql_error()." On line ".__line__);

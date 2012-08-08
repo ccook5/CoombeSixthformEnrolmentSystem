@@ -124,6 +124,18 @@ DIV.guidelines-block-inner {
 	background: 		#a6d4f8;
 }
 
+SPAN.places_left {
+    float:              right;
+	vertical-align:     top;
+	font-size:          0.65em;
+}
+
+.clear_block-button {
+    position:           absolute;
+    bottom:             2px;
+	left:               2px;'
+}
+
 LABEL {
 	width:              80%;
 	display:            inline-block;
@@ -729,6 +741,11 @@ table.report-courses-students {
 }
 
 table.report-courses-students tr td {
+	border: 1px solid grey;
+	padding: 5px;
+}
+
+table.report-courses-students thead th {
 	border: 1px solid grey;
 	padding: 5px;
 }
