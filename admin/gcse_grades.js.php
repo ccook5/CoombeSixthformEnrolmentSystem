@@ -72,8 +72,8 @@ $(document).ready(function()
 			jqTds[<?php echo $edit_column; ?>].innerHTML = '<button class=\"edit\">Save</button>';
 		}
 	}
-		
-/** Post the data from this row to ajax_update_students_results.php via AJAX.
+
+/** Post the data from this row to a php script via AJAX.
   */
 	function saveRow ( oTable, nRow, action )
 	{

@@ -93,7 +93,7 @@ function get_students_current_enrolments($StudentID)
   *
   * We use get_students_current_enrolments() to get a list of what they have allready.
   * This table contains form elements that should let us submit changes to the enrolments.
-  * This form should post the data to blocks_handler.php
+  * This form should post the data to /api/blocks_handler.php
   */
 function print_blocks_table($StudentID, $StudentType)
 {
@@ -183,7 +183,7 @@ else if (mysql_num_rows($result) > 0)
 	$row = mysql_fetch_array($result);
 ?>
    <div class='block' >
-    <form action="blocks_handler.php" method="post">
+    <form action="api/blocks_handler.php" method="post">
      <input type="hidden" name="StudentID" value="<?php echo $StudentID; ?>" />
      <div id="dynamic">
       <table class='with-borders-horizontal'>

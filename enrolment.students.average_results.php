@@ -14,8 +14,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	");
 
 if (! isset($_GET['StudentID'])) {
-	echo "<div class='error'>No student Id found</div>";
-	die;
+	die( "<div class='error'>No student Id found</div>");
 } else {
 	$StudentID = mysql_real_escape_string($_GET['StudentID']);
 }
@@ -27,16 +26,15 @@ function get_result($Subject)
 	$sql    = "SELECT * FROM GCSE_Subjects WHERE Name=\"".$Subject."\" LIMIT 1";
 	$result = mysql_query($sql, $link);
 
-	$score = 0;
-
+	$score     = 0;
 	$SubjectID = 0;
+	
 	if (!$result) {
 		die('Invalid query: ' . mysql_error());
 	} else {
 		$SubjectID = mysql_result($result, 0);
 	}
-	
-	
+
 	$sql    = "SELECT GradeID FROM GCSE_Results WHERE StudentID=\"".$StudentID."\" AND SubjectID=\"".$SubjectID."\" LIMIT 1";
 	$result = mysql_query($sql, $link);
 
@@ -97,11 +95,15 @@ if (!$result) {
     <td>Equivalient GCSEs: <?php echo $equivalent_gcses; ?></td>
    </tr>
    <tr>
-<?php if ($equivalent_gcses == 0) { ?>
-    <td colspan="2">No Results Found.</td>
-<?php } else { ?>
-    <td colspan="2"><b>Average GCSE Score: <?php echo(round($total_points/$equivalent_gcses, 1)); ?></b></td>
-<?php } ?>
+    <td colspan="2">
+<?php
+	if ($equivalent_gcses == 0) {
+		echo("No Results Found.\n");
+    } else {
+        echo("<b>Average GCSE Score: ".round($total_points/$equivalent_gcses, 1)."</b>");
+    }
+?>
+    </td>
    </tr>	
    </table>
   </div>

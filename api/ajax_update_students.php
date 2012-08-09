@@ -25,11 +25,11 @@ if (! isset($_POST['action']))
      <td>
       <select name='EnrolmentYear'> 
        <option>2010</option><option>2011</option>
-       <option>2012</option><option>2013</option>
+       <option selected="selected">2012</option><option>2013</option>
       </select>
      </td>
     </tr>
-    <tr><td>ID</td>        <td><input type='text' name='student_id' /></td></tr>
+    <tr><td>ID</td>        <td><input type='text' name='StudentID' /></td></tr>
     <tr><td>First Name</td><td><input type='text' name='FirstName'  /></td></tr>
     <tr><td>Last Name</td> <td><input type='text' name='LastName'   /></td></tr>
     <tr><td>Student Type</td>
@@ -61,6 +61,9 @@ else
 {
 	$action    = get_post_val('action');
 	$StudentID = get_post_val('StudentID');
+	
+	echo $StudentID;
+	print_r($_POST);
 
 	$FirstName           = get_post_val('FirstName');
 	$LastName            = get_post_val('LastName');
@@ -77,7 +80,12 @@ else
 	}
 	else if ($action == "update" or $action == "new")
 	{
-		$StudentType = get_studenttype_as_id($StudentType);
+		echo 1;
+		if (! is_numeric($StudentType) ) {
+			echo $StudentType;
+			$StudentType = get_studenttype_as_id($StudentType);
+		}
+		echo 2;
 	// if $action = new then make the sql query INSERT
 		if ($action == "new")
 		{
@@ -99,10 +107,13 @@ else
 	    print("<div class='error'>Error: Incorrect Action</div>");
 	}
 
+	echo "$SQL: '".$sql."'";
 	if (! mysql_query($sql, $link))
 	{
 		print("sql: ".$sql);
 		die('Invalid query: ' . mysql_error()." On line ".__line__);
+	} else {
+		echo "success";
 	}
 }
 ?>

@@ -128,7 +128,7 @@ $(document).ready(function() {
 		event.preventDefault();
 	} );
 	
-/** Delete Click handler. Calls 'ajax_update_students_results.php 
+/** Delete Click handler. Calls a php script
   * via AJAX, then deletes the row in the datatable.
   */
 	$('.delete').live('click', function (e)

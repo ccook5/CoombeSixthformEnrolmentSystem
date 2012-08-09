@@ -39,6 +39,7 @@ function get_studenttype_as_id($StudentType)
 		die('Invalid query: ' . mysql_error()." On line ".__line__);
 	} else {
 		if (mysql_num_rows($result_student_types) < 1) {
+			print("sql: ".$sql );
 			die('Error: Not enough Rows');
 		}
 		$row_student_type = mysql_fetch_assoc($result_student_types);

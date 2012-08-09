@@ -207,7 +207,6 @@ foreach($course_types as $ct_key => $ct_value)
   *
   * We use get_students_current_enrolments() to get a list of what they have allready.
   * This table contains form elements that should let us submit changes to the enrolments.
-  * This form should post the data to blocks_handler.php
   */
 
 echo("      <div class='block'><table class='with-borders-horizontal'>\n");

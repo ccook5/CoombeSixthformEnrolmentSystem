@@ -1,8 +1,9 @@
 <?php
 
-require_once('config.inc.php');
-require_once('header.inc.php');
-require_once('footer.inc.php');
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../footer.inc.php');
+require_once('../functions.inc.php');
 
 function print_html_select($sql, $column_to_show, 
 							$select_id = "",    $select_name="", 
@@ -53,7 +54,7 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	$('select.gcse_type').live('change', update_grade_selectbox );", $exclude_datatables_js = false);
 ?>
   <h4>ajax_update_students_results.php tester</h4>
-  <form action="ajax_update_students_results.php" method="post"> 
+  <form action="api/ajax_update_students_results.php" method="post"> 
    <table style='width: 300px; border: 1px solid black;' >
     <tr>
      <td>Action</td>
@@ -96,8 +97,8 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 <?php
 	print_footer();
 } else {
-	$action = mysql_real_escape_string($_POST['action']);
-	$ResultID = mysql_real_escape_string($_POST['ResultID']);
+	$action = get_post_val('action');
+	$ResultID = get_post_val('ResultID');
 
 	print("action = ".$action);
 	
@@ -105,9 +106,9 @@ print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = tru
 	//We have all the info we need
 	}
 	else if ($action == "update" or $action == "new") {
-		$StudentID       = mysql_real_escape_string($_POST['StudentID']);
-		$SubjectID       = mysql_real_escape_string($_POST['SubjectID']);
-		$GradeID         = mysql_real_escape_string($_POST['GradeID']);
+		$StudentID       = get_post_val('StudentID');
+		$SubjectID       = get_post_val('SubjectID');
+		$GradeID         = get_post_val('GradeID');
 		
 		print("<p>&dollar;StudentID = ".$StudentID."</p>");
 		print("<p>&dollar;SubjectID = ".$SubjectID."</p>");

@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.inc.php');
+require_once('../config.inc.php');
 
 // Query
 $sql_student_types    = "SELECT * from StudentTypes";
@@ -51,7 +51,7 @@ else
 		echo('    "'.$row['LastName']."\",\n");
 		echo('    "'.$row['PreviousInstitution']."\",\n");
 		echo('    "'.$row['EnrolmentYear']."\",\n");
-		
+
 		if (!isset($student_types[ $row['StudentType'] ]) || $student_types[ $row['StudentType'] ] == "")
 		{
 			echo('    "'.$row['StudentType']."\",\n");

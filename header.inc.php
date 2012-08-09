@@ -30,10 +30,8 @@ function print_header($title = "Coombe Sixth Form Registration", $hide_title_bar
   <link   type="text/css" rel="stylesheet" href="/css/coombe-metro/jquery-ui-1.8.21.custom.css" />
   <link   type="text/css" rel="stylesheet" href="/css/jquery.ui.all.css" />
   
-  <link   type="text/css" rel="stylesheet" href="/css/enrolment.gcse_results.css" />
+  <link   type="text/css" rel="stylesheet" href="/css/datatables.css" />
   
-
-  <script type="text/javascript" language="javascript" src="/enrolment.gcse_results.js.php" charset="UTF-8" ></script>
 <?php 
 	if (! empty($extra_script))
 	{

@@ -20,7 +20,7 @@ function update_grade_selectbox()
 	$('option.gcse_grade').each( function(index) {
 		if (this.value != $('select.gcse_type option:selected')[0].id) { 
 			if (this.parentElement.nodeName != 'SPAN') {
-				$(this).wrap('<span style=\"none\" />');
+				$(this).wrap('<span style="none" />');
 			}
 		} else { 
 			if (this.parentElement.nodeName == 'SPAN') {
@@ -38,7 +38,7 @@ function restoreRow ( oTable, nRow )
 	for ( var i=0, iLen=jqTds.length ; i<iLen ; i++ ) {
 		oTable.fnUpdate( aData[i], nRow, i, false );
 	}
-	oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
+	oTable.fnUpdate( '<button class="edit">Edit</button>', nRow, 5, false );
 	oTable.fnDraw();
 }
 
@@ -104,7 +104,7 @@ function students_results(ResultsTable)
 		}
 
 		var request = $.ajax({
-			url: 'ajax_update_students_results.php',
+			url: 'api/ajax_update_students_results.php',
 			type: 'POST',
 			data: {
 				action    : act, 
@@ -179,7 +179,7 @@ function students_results(ResultsTable)
 		ResultsTable.fnUpdate( '<button class=\"edit\">Add</button>', nRow, 5, false );
 	} );
 
-/** Delete Click handler. Calls 'ajax_update_students_results.php 
+/** Delete Click handler. Calls a php script 
   * via AJAX, then deletes the row in the datatable.
   */
 	$('.delete').live('click', function (e)
@@ -190,7 +190,7 @@ function students_results(ResultsTable)
 		var jqTds    = $('>td', nRow);
 		
 		var request = $.ajax({
-			url: 'ajax_update_students_results.php',
+			url: 'api/ajax_update_students_results.php',
 			type: 'POST',
 			data: { action  : 'delete',  ResultID  : jqTds[0].innerHTML },
 			dataType: 'html'

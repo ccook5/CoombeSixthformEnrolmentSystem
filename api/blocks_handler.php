@@ -1,8 +1,8 @@
 <?php
-require_once('config.inc.php');
-require_once('header.inc.php');
-require_once('footer.inc.php');
-require_once('functions.inc.php');
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../footer.inc.php');
+require_once('../functions.inc.php');
 
 $StudentID    = get_post_val('StudentID');
 $CourseTypeID = get_post_val('CourseTypeID');

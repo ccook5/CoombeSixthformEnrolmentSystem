@@ -42,7 +42,7 @@ $(document).ready( function() {
 
 	students_results(ResultsTable);
 } );
-	");
+	", $exclude_datatables_js = false, $meta = "", $extra_script = "/students_results.js.php");
 ?>
    <div class='block' >
     <table class='with-borders-horizontal'>
