@@ -13,6 +13,9 @@ DIV.header {
 	font-family:        arial, helvetica, sans-serif;
 }
 
+/************************************************************
+ * Main Menu
+ ************************************************************/
 DIV.main-menu {
 	text-align:         right;
 }
@@ -26,39 +29,101 @@ TABLE.main-menu TR TD {
 }
 
 DIV.menu-block {
-	border:				1px solid #65B4ED; 
-	border-radius: 		3px;  
-	padding: 			2px;  
+	border:				4px double #65B4ED; 
+	border-radius: 		3px;
 	margin: 			40px; 
 	background-color: 	#a6d4f8; 
 	box-shadow: 		3px 3px 5px #888;
-}
-
-DIV.menu-block-inner {
-	border: 			1px solid #65B4ED; 
-	border-radius: 		3px; 
-	padding: 			5px; 
-	background: 		#a6d4f8;
-	
 	padding:            10px;
 	text-align:         center;
 	font-size:          300%
 }
 
+/****************************************************************
+ * a block on the page with a double border and a drop shaddow
+ ****************************************************************/
 DIV.block {
 	border:             3px double #C5C1B1; 
-	border-radius:      4px;  
+	border-radius:      3px;  
 	padding:            5px;  
+	margin:             10px; 
+	margin-top:         0px; 
+	background-color:   #faf9f4; 
+	box-shadow:         2px 2px 3px #888;
+}
+
+DIV.average_results {
+	border:             3px double #C5C1B1; 
+	border-radius:      3px;  
+	padding:            0px;  
 	margin:             20px; 
 	background-color:   #faf9f4; 
 	box-shadow:         2px 2px 3px #888;
 }
 
-DIV.block TABLE {
-	border:				1px double #C5C1B1; 
-	border-radius: 		3px; 
+DIV.average_results TABLE.average_results {
+	border-radius:      3px;  
+	width: 100%;
 	border-collapse: 	collapse; 
-	width: 				100%;
+}
+
+TABLE.average_results TR {
+	border-bottom:				1px double #C5C1B1;
+}
+TABLE.average_results TR:last-child {
+	border-bottom:				0px double #C5C1B1;
+}
+
+TABLE.average_results TR TD {
+	padding: 			5px;
+}
+
+TABLE.admin-blocks {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+TABLE.admin-blocks TR {
+}
+
+TABLE.admin-blocks TR TD {
+	padding: 1px;
+	margin: 0px;
+	padding-bottom: 30px;
+	position: relative;
+}
+
+TABLE.admin-blocks TABLE {
+	border-collapse: collapse;
+}
+
+TABLE.admin-blocks TABLE TR {
+}
+
+TABLE.admin-blocks TABLE TR Th {
+	border: 1px solid #C5C1B1;
+}
+
+TABLE.admin-blocks TABLE TR TD {
+	border: 1px solid #C5C1B1;
+	height: 2.1em;
+}
+
+TABLE.admin-blocks TABLE TR TD DIV {
+	float: right;
+}
+
+TABLE.admin-blocks TABLE TR TD DIV SPAN {
+	border: 1px solid #C5C1B1;
+	border-radius: 3px;
+}
+
+DIV.block TABLE {
+	vertical-align: 	top;
+}
+
+DIV.block TABLE TR TD {
+	vertical-align: 	top;
 }
 
 DIV.block TABLE.with-borders TR {
@@ -71,40 +136,34 @@ DIV.block TABLE.with-borders TR TD {
 	vertical-align: 	top;
 }
 
+DIV.block TABLE.with-borders-horizontal {
+	border: 			3px double #d8d7d1;
+}
+
 DIV.block TABLE.with-borders-horizontal TR {
 	border: 			1px solid #d8d7d1;
 }
 
 DIV.block TABLE.with-borders-horizontal TR TD {
 	border:				0px solid #d8d7d1; 
-	padding: 			5px;
-	vertical-align: 	top;
+	padding: 			2px;
 }
 
-TABLE.with-borders {
+
+DIV.block TABLE.with-borders {
 	border:				1px solid #C5C1B1; 
 	border-radius: 		3px; 
 	border-collapse: 	collapse; 
 	width: 				100%;
 }
 
-TABLE.with-borders TR {
+DIV.block TABLE.with-borders TR {
 	border: 			1px solid #d8d7d1;
 }
 
-TABLE.with-borders TR TD {
+DIV.block TABLE.with-borders TR TD {
 	border:				1px solid #C5C1B1;
-	padding: 			5px;
-	vertical-align: 	top;
-}
-
-TABLE.with-borders-horizontal TR {
-	border: 			1px solid #d8d7d1;
-}
-
-TABLE.with-borders-horizontal TR TD {
-	border:				0px solid #d8d7d1; 
-	padding: 			5px;
+	padding: 			2px;
 	vertical-align: 	top;
 }
 
@@ -124,22 +183,27 @@ DIV.guidelines-block-inner {
 	background: 		#a6d4f8;
 }
 
-SPAN.places_left {
-    float:              right;
-	vertical-align:     top;
-	font-size:          0.65em;
+INPUT[type="radio"] {
+	margin: 0px;
+	padding: 0px;
+}
+
+.places_left {
+	float: right;
+	position: relative;
+	right: 0px;
+	padding: 0px;
+	font-size:          0.60em;
+	vertical-align: text-top;
 }
 
 .clear_block-button {
     position:           absolute;
     bottom:             2px;
-	left:               2px;'
+	left:               2px;
 }
 
 LABEL {
-	width:              80%;
-	display:            inline-block;
-	vertical-align:     top;
 	margin-left:        3px;
 }
 
@@ -151,15 +215,6 @@ div.box {
 	background-color:   #E5E5FF;
 }
 
-table.average_results {
-	border-collapse: collapse;
-	margin: 5px;
-}
-
-table.average_results tr td {
-	border: 1px solid grey;
-	padding: 5px;
-}
 
 table.report-courses-students {
 	width: 40%;

@@ -1,6 +1,7 @@
 <?php
-function print_footer()
+function print_footer($show_links= True)
 {
+	if ($show_links) {
 ?>
   <div class="footer">
    <a href="https://github.com/ccook5/CoombeSixthformEnrolmentSystem">project page</a>
@@ -9,5 +10,6 @@ function print_footer()
  </body>
 </html>
 <?php
+	}
 }
 ?>

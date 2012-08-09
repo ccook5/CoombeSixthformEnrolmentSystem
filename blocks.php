@@ -38,10 +38,9 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
    </div>
    
    <div id="debug" class="debug"></div>
-   <div id="test">
-    <iframe frameborder="0" style="width: 79%; height: 480px;" id="students_blocks"></iframe>
-    <iframe frameborder="0" style="width: 19%; height: 420px; float: right;" id="average_results"></iframe>
-   </div>
+   
+   <iframe frameborder="0" style="width: 20%; height: 480px; overflow: visible; float: right;" id="average_results"></iframe>
+   <iframe frameborder="0" style="width: 80%; height: 530px; float: right;" id="students_blocks"></iframe>
 
 <?php
 print_footer();

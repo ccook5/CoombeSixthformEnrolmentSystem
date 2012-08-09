@@ -24,7 +24,7 @@ $(document).ready( function() {
 	var ResultsTable = $('#results').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_results.php?StudentID=".$StudentID."',
-		'sScrollY'   : '200px',
+		'sScrollY'   : '280px',
 		'bFilter'    : false,
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
@@ -45,10 +45,7 @@ $(document).ready( function() {
 	", $exclude_datatables_js = false, $meta = "", $extra_script = "/students_results.js.php");
 ?>
    <div class='block' >
-    <table class='with-borders-horizontal'>
-     <tr >
-      <td>
-       <p><a id="new_result" href="">Add New Result</a></p>
+       <span><a id="new_result" href="">Add New Result</a></span>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="results">
          <thead>
@@ -68,12 +65,10 @@ $(document).ready( function() {
           </tr>
          </tbody>
         </table>
-       </td>
-      </tr>
-     </table>
-   </div>
+	   </div><!-- class=dynamic -->
+   </div><!-- class=block -->
    <div id="debug" class="debug"></div>
 <?php
-print_footer();
+print_footer($show_links=false);
 ?>
 

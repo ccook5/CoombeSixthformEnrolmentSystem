@@ -87,7 +87,7 @@ $(document).ready(function() {
 	var Table = $('#studenttypes').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_studenttypes.php',
-		'sScrollY'   : '120px',
+		'sScrollY'   : '520px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(2)', nRow).html( '<button class=\"edit\">Edit</button>' );
@@ -118,7 +118,6 @@ $(document).ready(function() {
 		event.preventDefault();
 	} );
 	
-/
 /** Delete Click handler. Calls a php script 
   * via AJAX, then deletes the row in the datatable.
   */

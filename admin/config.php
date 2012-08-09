@@ -1,21 +1,17 @@
 <?php 
-require_once '../config.inc.php';
-require_once '../header.inc.php';
-require_once '../select_widget.php';
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+require_once('../select_widget.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
-			$script = "
-	$(document).ready(function() {
-	} );
-", $exclude_datatables_js = false, $meta = "",
+			$script = "", 
+			$exclude_datatables_js = false,
+			$meta = "",
 			$extra_script="config.js.php");
 ?>
    <div class='block' >
-    <table class='with-borders-horizontal'>
-     <tr >
-      <td>
-       <p><a id="new_setting" href="">Add Setting</a></p>
+       <span><a id="new_setting" href="">Add Setting</a></span>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="settings">
          <thead>
@@ -33,11 +29,8 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
           </tr>
          </tbody>
         </table>
-	   </div>
-      </td>
-     </tr>
-    </table>
-   </div>
+	   </div><!-- class=dynamic -->
+   </div><!-- class=block -->
    
    <div id="debug" class="debug"></div>
  </body>

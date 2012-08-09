@@ -37,8 +37,8 @@ function print_coursetype_selects($StudentType)
 		while($row = mysql_fetch_array($result))
 		{
 			if ($StudentType == $row['id']) {
-				echo "         Student Type: ".$row['CourseType']."\n";
-				echo "         <input type=\"hidden\" name=\"CourseTypeID\" value=\"".$StudentType."\" />";
+				echo "         <td>Student Type: </td><td>".$row['CourseType']."\n";
+				echo "         <input type=\"hidden\" name=\"CourseTypeID\" value=\"".$StudentType."\" /></td>";
 			}
 		}
 	}
@@ -105,7 +105,7 @@ function print_blocks_table($StudentID, $StudentType)
 	$sql_blocks    = "SELECT * FROM BLOCKS_Blocks WHERE Year=".$config['current_year']." AND CourseType='".$StudentType."' ORDER BY id";
 	$result_blocks = mysql_query($sql_blocks, $link);
 
-	echo("         <table class='with-borders-horizontal'>\n");
+//	echo("         <table class='with-borders-horizontal'>\n");
 	echo("          <tr>\n");
 
 	if ($result_blocks)
@@ -113,7 +113,7 @@ function print_blocks_table($StudentID, $StudentType)
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
 		    echo ("           <td style='padding: 0px; margin: 0px; padding-bottom: 30px; position: relative;'>\n");
-			echo ("            <table>\n");
+			echo ("            <table class='with-borders'>\n");
 			echo ("             <thead><th width='10%'>".$row_blocks['Name']."</th></thead>\n");
 			
 			/** Get all the current courses for the current block.
@@ -144,12 +144,11 @@ function print_blocks_table($StudentID, $StudentType)
                   value='<?php echo $row[0]; ?>'
                   <?php echo $checked; ?> /> 
                 <label for='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count;?>]'>
-                  <?php echo $row['SubjectName']; ?>
-   
-                  <span class='places_left' >
+                  <span><?php echo $row['SubjectName']; ?></span>		
+                </label>
+                  <div class='places_left' >
                    <?php echo '('.get_places_left($row[0])."/".$row['MaxPupils'].")\n"; ?>
-                  </span>
-                </label>			
+                  </div>	
                </td>
               </tr>
 <?php		
@@ -169,7 +168,7 @@ function print_blocks_table($StudentID, $StudentType)
 	} else {  die('Invalid query: ' . mysql_error());  }
 		
 	echo("             </tr>\n");
-	echo("            </table>\n");
+//	echo("            </table>\n");
 }
 
 $sql = "SELECT * FROM students WHERE id=\"".$StudentID."\" AND EnrolmentYear=\"".$config['current_year']."\"";
@@ -186,19 +185,17 @@ else if (mysql_num_rows($result) > 0)
     <form action="api/blocks_handler.php" method="post">
      <input type="hidden" name="StudentID" value="<?php echo $StudentID; ?>" />
      <div id="dynamic">
-      <table class='with-borders-horizontal'>
+      <table>
        <tr>
  <!--       <td>Mobile Number:   <input type='text' value='<?php echo $row['MobileNumber'];   ?>' /></td> -->
-        <td>Sequence Number: <input type='text' value='<?php echo $row['SequenceNumber']; ?>' /></td>
-        <td>
+        <td>Sequence Number:</td><td><input type='text' value='<?php echo $row['SequenceNumber']; ?>' /></td>
 <?php print_coursetype_selects($row['StudentType']); ?>
-        </td>
        </tr>
-       <tr>
-        <td colspan="6" style="align: center">
+<!--       <tr>
+        <td colspan="6" style="align: center"> -->
 <?php print_blocks_table($StudentID, $row['StudentType']); ?>
-        </td>
-       </tr>
+<!--        </td>
+       </tr> -->
        <tr>
         <td colspan="3" style="align: center">
          <input type="submit" value="Save"/> - <input type="reset" />
@@ -211,5 +208,5 @@ else if (mysql_num_rows($result) > 0)
 <?php
 }
 
-print_footer();
+print_footer($show_links=false);
 ?>  

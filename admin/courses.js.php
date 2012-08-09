@@ -3,11 +3,11 @@ header('Content-type: text/javascript');
 require_once('../config.inc.php');
 require_once('../select_widget.php');
 
-print create_select_builder('build_student_type_select', 'SELECT * FROM StudentTypes', 'student_types', 'id', 'CourseType');
-
 ?>
 
 $(document).ready(function() {
+
+<?php print create_select_builder('build_student_type_select', 'SELECT * FROM StudentTypes', 'student_types', 'id', 'CourseType'); ?>
 
 /** This runs when the user clicks the save button in a row. */
 	function restoreRow ( oTable, nRow )
@@ -43,11 +43,11 @@ $(document).ready(function() {
 		jqTds[2].innerHTML = build_student_type_select(aData[2]);
 
 		if (add == true) {
-			jqTds[3].innerHTML = '<button class=\"edit\">Add</button>';
+			jqTds[3].innerHTML = '<button class="edit">Add</button>';
 		}
 		else
 		{
-			jqTds[3].innerHTML = '<button class=\"edit\">Save</button>';
+			jqTds[3].innerHTML = '<button class="edit">Save</button>';
 		}
 	}
 
@@ -70,7 +70,7 @@ $(document).ready(function() {
 				action             : act,
 				id                 : jqInputs[0].value,
 				subjectname        : jqInputs[1].value,
-				type               : jqSelects[0].selectedOptions[0].id,
+				type               : jqSelects[0].options[jqSelects[0].selectedIndex].id,
 			},
 			dataType: 'html'
 		} );
@@ -163,7 +163,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var aiNew = Table.fnAddData( [ '', '', '',
-			'<button class=\"edit\">Add</button>', '<button class=\"delete\">Delete</button>' ] );
+			'<button class="edit">Add</button>', '<button class="delete">Delete</button>' ] );
 		var nRow = Table.fnGetNodes( aiNew[0] );
 		editRow( Table, nRow, true );
 		nEditing = nRow;

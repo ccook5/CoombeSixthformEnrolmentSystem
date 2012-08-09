@@ -10,9 +10,6 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 if (is_authenticated()) {
 ?>
   <div class='block' >
-   <table class='with-borders-horizontal'>
-    <tr >
-     <td>
       <ul>
        <li><a href="config.php">Configuration</a>
 	   </li>
@@ -32,9 +29,6 @@ if (is_authenticated()) {
 		</ul>
 	   </li>
 	  </ul>
-     </td>
-    </tr>
-   </table>
   </div>
    
   <div id="debug" class="debug"></div>

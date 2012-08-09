@@ -80,12 +80,9 @@ else
 	}
 	else if ($action == "update" or $action == "new")
 	{
-		echo 1;
 		if (! is_numeric($StudentType) ) {
-			echo $StudentType;
 			$StudentType = get_studenttype_as_id($StudentType);
 		}
-		echo 2;
 	// if $action = new then make the sql query INSERT
 		if ($action == "new")
 		{
@@ -107,7 +104,7 @@ else
 	    print("<div class='error'>Error: Incorrect Action</div>");
 	}
 
-	echo "$SQL: '".$sql."'";
+	echo "&dollar;SQL: '".$sql."'";
 	if (! mysql_query($sql, $link))
 	{
 		print("sql: ".$sql);

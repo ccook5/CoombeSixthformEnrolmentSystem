@@ -5,17 +5,13 @@ require_once '../select_widget.php';
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
-			$script = "
-	$(document).ready(function() {
-	} );
-", $exclude_datatables_js = false, $meta = "",
+			$script = "", 
+			$exclude_datatables_js = false, 
+			$meta = "",
 			$extra_script="gcse_subjects.js.php");
 ?>
    <div class='block' >
-    <table class='with-borders-horizontal'>
-     <tr >
-      <td>
-       <p><a id="new_subject" href="">Add Subject</a></p>
+       <span><a id="new_subject" href="">Add Subject</a></span>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="subjects">
          <thead>
@@ -33,9 +29,6 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
          </tbody>
         </table>
 	   </div>
-      </td>
-     </tr>
-    </table>
    </div>
    
    <div id="debug" class="debug"></div>

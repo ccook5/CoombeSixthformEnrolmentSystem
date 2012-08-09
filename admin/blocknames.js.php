@@ -68,7 +68,7 @@ $(document).ready(function() {
 				action             : act,
 				id                 : jqInputs[0].value,
 				name               : jqInputs[1].value,
-				coursetype         : jqSelects[0].selectedOptions[0].id,
+				coursetype         : jqSelects[0].options[jqSelects[0].selectedIndex].id,
 				year               : jqInputs[2].value
 			},
 			dataType: 'html'
@@ -163,7 +163,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var aiNew = Table.fnAddData( [ '', '', '', '',
-			'<button class=\"edit\">Add</button>', '<button class=\"delete\">Delete</button>' ] );
+			'<button class="edit">Add</button>', '<button class="delete">Delete</button>' ] );
 		var nRow = Table.fnGetNodes( aiNew[0] );
 		editRow( Table, nRow, true );
 		nEditing = nRow;

@@ -40,8 +40,8 @@ print_header($title = 'Coombe Sixth Form Enrolment - GCSE Results',
  
    <div id="debug" class="debug"></div>
 
-   <iframe frameborder=0 style="width: 78%; height: 410px;" id="students_results"></iframe>
-   <iframe frameborder=0 style="width: 18%; height: 410px; float: right;" id="average_results"></iframe>
+   <iframe frameborder=0 style="width: 20%; height: 410px; float: right;" id="average_results"></iframe>
+   <iframe frameborder=0 style="width: 80%; float: right; height: 410px;" id="students_results"></iframe>
 
 <?php
 print_footer();

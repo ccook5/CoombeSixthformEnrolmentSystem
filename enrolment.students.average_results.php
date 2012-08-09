@@ -3,14 +3,12 @@ require_once('config.inc.php');
 require_once('header.inc.php');
 
 print_header($title = 'Coombe Sixth form enrolment form.', $hide_title_bar = true, $script = "
-
 	$(document).ready(function()
 	{
 		setInterval(function(){
 			location.reload();
 		}, 30000);
 	});
-	
 	");
 
 if (! isset($_GET['StudentID'])) {
@@ -19,51 +17,36 @@ if (! isset($_GET['StudentID'])) {
 	$StudentID = mysql_real_escape_string($_GET['StudentID']);
 }
 
+/** Takes a Subject Name (as text) and returns a score.
+ */
 function get_result($Subject)
 {
 	global $StudentID, $link;
 	
-	$sql    = "SELECT * FROM GCSE_Subjects WHERE Name=\"".$Subject."\" LIMIT 1";
+	$sql  = "SELECT GCSE_Grade.Grade FROM GCSE_Results";
+	$sql .= " INNER JOIN GCSE_Subjects ON GCSE_Results.SubjectID=GCSE_Subjects.id";
+	$sql .= " INNER JOIN GCSE_Grade ON GCSE_Results.GradeID=GCSE_Grade.id";
+	$sql .= " INNER JOIN GCSE_Qualification ON GCSE_Grade.QualificationID=GCSE_Qualification.id";
+	$sql .= " WHERE GCSE_Subjects.Name='".$Subject."' AND GCSE_Results.StudentID='".$StudentID."' LIMIT 1;";
 	$result = mysql_query($sql, $link);
-
-	$score     = 0;
-	$SubjectID = 0;
-	
-	if (!$result) {
-		die('Invalid query: ' . mysql_error());
-	} else {
-		$SubjectID = mysql_result($result, 0);
-	}
-
-	$sql    = "SELECT GradeID FROM GCSE_Results WHERE StudentID=\"".$StudentID."\" AND SubjectID=\"".$SubjectID."\" LIMIT 1";
-	$result = mysql_query($sql, $link);
-
-	$GradeID = 0;
-	if (!$result) {
-		die('Invalid query: ' . mysql_error());
-	} else {
-		if (mysql_num_rows($result) != 1) {
-			return "Not found";
-		} else {
-			$GradeID = mysql_result($result, 0);
-		}
-	}
-	
-	$sql = "SELECT Grade FROM GCSE_Grade WHERE id=".$GradeID." LIMIT 1";
-	$result = mysql_query($sql, $link);
-	
-	$score = 0;
 
 	if (!$result) {
 		die('Invalid query: ' . mysql_error());
-	} else {
-		$score = mysql_result($result, 0);
 	}
 	
-	return $score;
+	if (mysql_num_rows($result) < 1) {
+		return "Not found";
+	} else if (mysql_num_rows($result) > 1) {
+		return "Too many found";
+	}
+
+	return mysql_result($result, 0);
 }
 
-$sql = "SELECT * FROM GCSE_Results INNER JOIN GCSE_Grade ON GCSE_Results.GradeID=GCSE_Grade.id INNER JOIN GCSE_Qualification ON GCSE_Grade.QualificationID=GCSE_Qualification.id WHERE GCSE_Results.StudentID='".$StudentID."'";
+$sql  = "SELECT * FROM GCSE_Results";
+$sql .= " INNER JOIN GCSE_Grade ON GCSE_Results.GradeID=GCSE_Grade.id";
+$sql .= " INNER JOIN GCSE_Qualification ON GCSE_Grade.QualificationID=GCSE_Qualification.id";
+$sql .= " WHERE GCSE_Results.StudentID='".$StudentID."'";
 $result = mysql_query($sql, $link);
 
 $total_points     = 0.0;
@@ -80,9 +63,10 @@ if (!$result) {
 }
 ?>
 
-   <div class='block' style=' margin-top: 0px;'>
-   <table class='with-borders-horizontal'>
-    <tr><td colspan='4' stlye='text-align: center;'>GCSE GRADES</td></tr>
+  <div class='average_results' style='margin-top: 0px;'>
+   <table class='average_results' cellspacing=0>
+    <tr><td colspan='2'>GCSE GRADES</td></tr>
+	
     <tr><td class='result-label'>English Lang.:</td>    <td class='result'><?php echo get_result('English Language'); ?></td></tr>
     <tr><td class='result-label'>Maths:</td>            <td class='result'><?php echo get_result('Maths'); ?></td></tr>
     <tr><td class='result-label'>Core Science:</td>     <td class='result'><?php echo get_result('Science Core'); ?></td></tr>

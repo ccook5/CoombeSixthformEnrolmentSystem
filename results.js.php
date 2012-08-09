@@ -173,7 +173,7 @@ $(document).ready(function() {
 			});
 			
 			request = $.ajax({
-				url: 'remove_all_gcse_results_for_students.php',
+				url: 'remove_all_gcse_results_for_student.php',
 				type: 'POST',
 				data: {StudentID : ID },
 				dataType: 'html'
