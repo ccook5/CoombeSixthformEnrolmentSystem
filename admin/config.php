@@ -19,8 +19,8 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 			<th width="20%">Setting</th>
 			<th width="20%">Value</th>
 			<th width="20%">About</th>
-			<th></th>
-			<th></th>
+			<th width="2%"></th>
+			<th width="2%"></th>
           </tr>
          </thead>
          <tbody>
