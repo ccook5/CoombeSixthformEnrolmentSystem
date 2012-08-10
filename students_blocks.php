@@ -136,14 +136,14 @@ function print_blocks_table($StudentID, $StudentType)
 					}
 ?>
               <tr>
-               <td style='height: 2.1em'>
+               <td style='height: 2.3em'>
                 <input 
                   type='radio' 
                   name='block[<?php echo $row_blocks['id']; ?>]' 
     	          id='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count; ?>]'
                   value='<?php echo $row[0]; ?>'
                   <?php echo $checked; ?> /> 
-                <label for='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count;?>]'>
+                <label class='blocks-label' for='block[<?php echo $row_blocks['id']; ?>][<?php echo $row_count;?>]'>
                   <span><?php echo $row['SubjectName']; ?></span>		
                 </label>
                   <div class='places_left' >

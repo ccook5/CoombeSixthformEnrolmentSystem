@@ -1,31 +1,27 @@
 <?php 
 require_once('../config.inc.php');
 require_once('../header.inc.php');
-require_once('../select_widget.php');
+//require_once('../select_widget.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
-			$script = "
-	$(document).ready(function() {
-	} );
-", $exclude_datatables_js = false, $meta = "",
+			$script = "", 
+			$exclude_datatables_js = false, 
+			$meta = "",
 			$extra_script="gcse_grades.js.php");
 ?>
    <div class='block' >
-    <table class='with-borders-horizontal'>
-     <tr >
-      <td>
-       <p><a id="new" href="">Add Grade</a></p>
+       <span><a id="new" href="">Add Grade</a></span>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="grades">
          <thead>
           <tr>
-			<th width="10%">id</th>
+			<th width="2%">id</th>
 			<th width="20%">Grade</th>
-			<th width="20%">Points</th>
+			<th width="5%">Points</th>
 			<th width="20%">QualificationID</th>
-			<th></th>
-			<th></th>
+			<th width="2%"></th>
+			<th width="2%"></th>
           </tr>
          </thead>
          <tbody>
@@ -35,9 +31,6 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
          </tbody>
         </table>
 	   </div>
-      </td>
-     </tr>
-    </table>
    </div>
    
    <div id="debug" class="debug"></div>

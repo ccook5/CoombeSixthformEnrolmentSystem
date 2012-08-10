@@ -12,7 +12,7 @@ print_header($title         = 'Coombe Sixth Form Enrolment - Blocks',
 
 ?>
    <div class='block' >
-       <p><a id="new_student" href="">Add New Student</a></p>
+       <span><a id="new_student" href="">Add New Student</a></span>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="students">
          <thead>

@@ -15,7 +15,7 @@ $(document).ready(function() {
 		var aData = oTable.fnGetData(nRow);
 		var jqTds = $('>td', nRow);
 		
-		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'">';
+		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'" disabled="disabled" >';
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = build_student_type_select(aData[2]);
 		jqTds[3].innerHTML = '<input type="text" value="<?php print $config['current_year']; ?>" disabled="disabled" >';
@@ -97,7 +97,6 @@ $(document).ready(function() {
 	var Table = $('#blocknames').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_blocknames.php',
-		'sScrollY'   : '500px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(4)', nRow).html( '<button class=\"edit\">Edit</button>' );

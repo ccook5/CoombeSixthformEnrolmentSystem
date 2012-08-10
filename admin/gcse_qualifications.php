@@ -1,7 +1,7 @@
 <?php 
-require_once '../config.inc.php';
-require_once '../header.inc.php';
-require_once '../select_widget.php';
+require_once('../config.inc.php');
+require_once('../header.inc.php');
+//require_once('../select_widget.php');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Admin', 
 			$hide_title_bar = false, 
@@ -11,18 +11,18 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
 			$extra_script="gcse_qualifications.js.php");
 ?>
    <div class='block' >
-       <span><a id="new_qualification" href="">Add</a></span>
+       <span><a id="new" href="">Add</a></span>
        <div id="dynamic">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="qualifications">
          <thead>
           <tr>
-			<th width="20%">id</th>
+			<th width="5%">id</th>
 			<th width="20%">Type</th>
 			<th width="20%">Length</th>
 			<th width="20%">Equivalent GCSE</th>
 			<th width="20%">Notes</th>
-			<th></th>
-			<th></th>
+			<th width="2%"></th>
+			<th width="2%"></th>
           </tr>
          </thead>
          <tbody>

@@ -1,28 +1,32 @@
 <?php
-header('Content-type: text/javascript'); 
+header('Content-type: text/javascript');
+
 require_once('../config.inc.php');
+require_once('../select_widget.php');
+
+$table_id = '#qualifications';
+$AJAXSource = '/api/get_gcse_qualifications.php';
+$AJAXUpdate = '/api/ajax_update_gcse_grades.php';
+// Query -- id, Type, Length, EquivalentGCSE
+$edit_column = 5;
+$del_column  = 6;
 ?>
 
 $(document).ready(function()
 {
 	var nEditing = null;
 	
-	var Table = $('#qualifications').dataTable( {
+	var Table = $('<?php echo $table_id; ?>').dataTable( {
 		'bProcessing': true,
-		'sAjaxSource': '/api/get_gcse_qualifications.php',
-		'sScrollY'   : '120px',
+		'sAjaxSource': '<?php echo $AJAXSource; ?>',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
-			$('td:eq(5)', nRow).html( '<button class=\"edit\">Edit</button>' );
-			$('td:eq(6)', nRow).html( '<button class=\"delete\">Delete</button>' );
+			$('td:eq(<?php echo $edit_column; ?>)', nRow).html( '<button class=\"edit\">Edit</button>' );
+			$('td:eq(<?php echo $del_column; ?>)', nRow).html( '<button class=\"delete\">Delete</button>' );
 		}
-		//'aoColumnDefs': [ {
-		///	'sClass'  : 'center',
-		//	'aTargets': [ -1, -2 ]
-		//} ]
 	} );
-	
-//		makes buttons into jquery buttons
+
+// Makes buttons into jquery buttons
 	$(".edit").button();
 	$(".delete").button();
 
@@ -34,7 +38,7 @@ $(document).ready(function()
 		for ( var i=0, iLen=jqTds.length ; i<iLen ; i++ ) {
 			oTable.fnUpdate( aData[i], nRow, i, false );
 		}
-		oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
+		oTable.fnUpdate( '<button class="edit">Edit</button>', nRow, 5, false );
 		oTable.fnDraw();
 	}
 
@@ -53,7 +57,7 @@ $(document).ready(function()
 	{
 		var aData = oTable.fnGetData(nRow);
 		var jqTds = $('>td', nRow);
-		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'">';
+		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'" disabled="disabled">';
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = '<input type="text" value="'+aData[2]+'">';
 		jqTds[3].innerHTML = '<input type="text" value="'+aData[3]+'">';
@@ -108,7 +112,7 @@ $(document).ready(function()
 		oTable.fnUpdate( jqInputs[3].value, nRow, 3, false );
 		oTable.fnUpdate( jqInputs[4].value, nRow, 4, false );
 		
-		oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, 5, false );
+		oTable.fnUpdate( '<button class="edit">Edit</button>', nRow, 5, false );
 		oTable.fnDraw();
 	}
 
@@ -158,11 +162,11 @@ $(document).ready(function()
 	Table.fnDeleteRow( nRow );
 	} );
 	
-	$('#new_qualification').click( function (e) {
+	$('#new').click( function (e) {
 		e.preventDefault();
 		
 		var aiNew = Table.fnAddData( [ '', '', '', '', '',
-			'<button class=\"edit\">Add</button>', '<button class=\"delete\">Delete</button>' ] );
+			'<button class="edit">Add</button>', '<button class="delete">Delete</button>' ] );
 		var nRow = Table.fnGetNodes( aiNew[0] );
 		editRow( Table, nRow, true );
 		nEditing = nRow;

@@ -16,10 +16,10 @@ print_header($title = 'Coombe Sixth Form Enrolment - Admin',
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="subjects">
          <thead>
           <tr>
-			<th width="20%">id</th>
-			<th width="20%">SubjectName</th>
-			<th></th>
-			<th></th>
+			<th width="5%">id</th>
+			<th width="85%">SubjectName</th>
+			<th width="5%"></th>
+			<th width="5%"></th>
           </tr>
          </thead>
          <tbody>

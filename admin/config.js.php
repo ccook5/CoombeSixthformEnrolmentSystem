@@ -89,7 +89,6 @@ $(document).ready(function() {
 	var settingsTable = $('#settings').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': 'get_settings.php',
-		'sScrollY'   : '520px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(3)', nRow).html( '<button class=\"edit\">Edit Setting</button>' );

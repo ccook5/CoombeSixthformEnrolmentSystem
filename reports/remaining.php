@@ -30,7 +30,7 @@ function print_blocks_table($StudentType)
 {
 	global $config, $link;
 
-	echo("      <table style='margin: 0px;'>\n");
+	echo("      <table class='report-remaining' >\n");
 	echo("       <tr>\n");
 
 	$blocks             = Array();
@@ -45,7 +45,7 @@ function print_blocks_table($StudentType)
 	{
 		while($row_blocks = mysql_fetch_array($result_blocks))
 		{
-		    echo ("<td style='padding: 0px; margin: 0px; position: relative;'><table>");
+		    echo ("<td ><table class='report-remaining-inner' >");
 			echo ("      <thead><th width='10%'>".$row_blocks['Name']."</th></thead>");
 
 			/** Get all the current courses for the current block.
@@ -109,13 +109,7 @@ while ($row = mysql_fetch_array($result)) {
 ?>
    <div class='block' >
      <div id="dynamic">
-      <table class='with-borders-horizontal'>
-       <tr>
-        <td colspan="6" style="align: center">
 <?php print_blocks_table($row['id']); ?>
-        </td>
-       </tr>
-      </table>
      </div><!-- id=dynamic //-->
    </div><!-- class=block //-->
 <?php

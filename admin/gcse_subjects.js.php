@@ -10,7 +10,6 @@ $(document).ready(function()
 	var Table = $('#subjects').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': '/api/get_gcse_subjects.php',
-		'sScrollY'   : '120px',
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(2)', nRow).html( '<button class=\"edit\">Edit</button>' );

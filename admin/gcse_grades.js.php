@@ -1,5 +1,6 @@
 <?php
-header('Content-type: text/javascript'); 
+header('Content-type: text/javascript');
+
 require_once('../config.inc.php');
 require_once('../select_widget.php');
 
@@ -17,15 +18,13 @@ $(document).ready(function()
 	var Table    = $('<?php echo $table_id; ?>').dataTable( {
 		'bProcessing': true,
 		'sAjaxSource': '<?php echo $AJAXSource; ?>',
-/*		'sScrollY'   : '220px',*/
 		'bPaginate'  : false,
 		'fnRowCallback': function( nRow, aData, iDisplayIndex ) {
 			$('td:eq(<?php echo $edit_column; ?>)', nRow).html( '<button class=\"edit\">Edit</button>' );
 			$('td:eq(<?php echo $del_column; ?>)', nRow).html( '<button class=\"delete\">Delete</button>' );
 		}
 	} );
-	
-	
+
 <?php	echo(create_select_builder('build_GCSE_Type_select',     "SELECT * from GCSE_Qualification ORDER BY id",      'gcse_type',    'id', 'Type', 'Length')); ?>
 	
 //		makes buttons into jquery buttons
@@ -59,7 +58,7 @@ $(document).ready(function()
 	{
 		var aData = oTable.fnGetData(nRow);
 		var jqTds = $('>td', nRow);
-		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'">';
+		jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'" disabled="disabled">';
 		jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
 		jqTds[2].innerHTML = '<input type="text" value="'+aData[2]+'">';
 		jqTds[3].innerHTML = build_GCSE_Type_select    (aData[3]);
@@ -74,11 +73,21 @@ $(document).ready(function()
 	}
 
 /** Post the data from this row to a php script via AJAX.
+  *
+  * Return false if there is a problem with the data.
   */
 	function saveRow ( oTable, nRow, action )
 	{
 		var jqInputs  = $('input',  nRow);
 		var jqSelects = $('select', nRow);
+		
+		//test if Points value is numeric.
+		if (! $.isNumeric(jqInputs[2].value) ) 
+		{
+			alert("Points must be a number. (Recieved value: "+jqInputs[2].value+" )");
+			return false;
+		}
+		
 		var act       = "new";
 
 		if (action == 'Save') {
@@ -104,6 +113,7 @@ $(document).ready(function()
 
 		request.fail(function(jqXHR, textStatus) {
 			alert( 'Request failed: ' + textStatus );
+			return false;
 		} )
 
 		oTable.fnUpdate( jqInputs[0].value, nRow, 0, false );
@@ -113,6 +123,7 @@ $(document).ready(function()
 		
 		oTable.fnUpdate( '<button class=\"edit\">Edit</button>', nRow, <?php echo $edit_column; ?>, false );
 		oTable.fnDraw();
+		return true;
 	}
 
 /** Add a click handler to the rows. This adds a highlight to the currently selected row. 
@@ -185,13 +196,15 @@ $(document).ready(function()
 		}
 		else if ( nEditing == nRow && this.innerHTML == 'Save') {
 			/* Editing this row and want to save it */
-			saveRow( Table, nEditing, 'Save' );
-			nEditing = null;
+			if (saveRow( Table, nEditing, 'Save' )) {
+				nEditing = null;
+			}
 		}
 		else if ( nEditing == nRow && this.innerHTML == 'Add') {
 			/* Editing this row and want to save it */
-			saveRow( Table, nEditing, 'Add' );
-			nEditing = null;
+			if (saveRow( Table, nEditing, 'Add' )) {
+				nEditing = null;
+			}
 		}
 		else {
 			/* No edit in progress - lets start one */

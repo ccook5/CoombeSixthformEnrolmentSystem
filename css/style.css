@@ -126,13 +126,20 @@ DIV.block TABLE TR TD {
 	vertical-align: 	top;
 }
 
+DIV.block TABLE.with-borders {
+	border:				1px solid #C5C1B1; 
+	border-radius: 		3px; 
+	border-collapse: 	collapse; 
+	width: 				100%;
+}
+
 DIV.block TABLE.with-borders TR {
 	border: 			1px solid #d8d7d1;
 }
 
 DIV.block TABLE.with-borders TR TD {
 	border:				1px solid #C5C1B1;
-	padding: 			5px;
+	padding: 			2px;
 	vertical-align: 	top;
 }
 
@@ -150,22 +157,6 @@ DIV.block TABLE.with-borders-horizontal TR TD {
 }
 
 
-DIV.block TABLE.with-borders {
-	border:				1px solid #C5C1B1; 
-	border-radius: 		3px; 
-	border-collapse: 	collapse; 
-	width: 				100%;
-}
-
-DIV.block TABLE.with-borders TR {
-	border: 			1px solid #d8d7d1;
-}
-
-DIV.block TABLE.with-borders TR TD {
-	border:				1px solid #C5C1B1;
-	padding: 			2px;
-	vertical-align: 	top;
-}
 
 DIV.guidelines-block {
 	border:				1px solid #65B4ED; 
@@ -188,6 +179,10 @@ INPUT[type="radio"] {
 	padding: 0px;
 }
 
+.blocks-label {
+	font-size: 0.90em;
+}
+
 .places_left {
 	float: right;
 	position: relative;
@@ -207,7 +202,7 @@ LABEL {
 	margin-left:        3px;
 }
 
-div.box {
+DIV.box {
 	height:             100px;
 	padding:            10px;
 	overflow:           auto;
@@ -216,25 +211,55 @@ div.box {
 }
 
 
-table.report-courses-students {
-	width: 40%;
+TABLE.report-courses-students {
+	width:              40%;
+	border-collapse:    collapse;
+	margin:             5px;
+	padding-left:       20px;
+}
+
+TABLE.report-courses-students tr td {
+	border:             1px solid #C5C1B1;
+	padding:            5px;
+}
+
+TABLE.report-courses-students thead th {
+	border:             1px solid #C5C1B1;
+	padding:            5px;
+}
+
+DIV.report-courses {
+	padding-left:       20px;
+}
+
+TABLE.report-remaining {
+	margin:             0px;
+	padding: 0px;
+	width:              100%;
+}
+
+TABLE.report-remaining TR TD {
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+}
+
+TABLE.report-remaining-inner {
+	margin:             0px;
+	padding: 0px;
+	width:              100%;
 	border-collapse: collapse;
-	margin: 5px;
-	padding-left: 20px;
 }
 
-table.report-courses-students tr td {
-	border: 1px solid grey;
-	padding: 5px;
+TABLE.report-remaining-inner THEAD TH {
+	border:             1px solid #C5C1B1;
+	padding:            5px;
 }
-
-table.report-courses-students thead th {
-	border: 1px solid grey;
-	padding: 5px;
-}
-
-div.report-courses {
-	padding-left: 20px;
+TABLE.report-remaining-inner TR TD {
+	padding: 4px;
+	margin: 0px;
+	position: relative;
+	border: 1px solid #C5C1B1;
 }
 
 .result-label {
@@ -246,7 +271,7 @@ div.report-courses {
 }
 
 .debug {
-//	display: none;
+	display: none;
 }
 
 .footer {
