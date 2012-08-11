@@ -4,9 +4,41 @@ require_once('../config.inc.php');
 require_once('../header.inc.php');
 require_once('../footer.inc.php');
 
-print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, $script = "",
+print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false, 
+			$script = "
+			
+function keydown(event)
+{
+	var act = 'Up';
+	if (event.keyIdentifier == 'Up') {
+		act = 'Up';
+	} else if (event.keyIdentifier == 'Down') {
+		act = 'Down';
+	}
+
+	var request = $.ajax({
+		url: '/api/update_next_enrolee.php',
+		type: 'POST',
+		data: {Action : act}
+	});
+
+	request.done(function(msg) {
+	  $('#debug').html( msg );
+	});
+
+	request.fail(function(jqXHR, textStatus) {
+	  alert( 'Request failed: ' + textStatus );
+	});
+}
+
+$(document).ready( function() {
+	var objBody;
+	objBody = document.body;
+	objBody.onkeydown=keydown;
+});
+			",
 			$exclude_datatables_js = true, 
-			$meta                  ="      <meta http-equiv='refresh' content='5;url=/reports/remaining.php'/>");
+			$meta                  ="      <meta http-equiv='refresh' content='50;url=/reports/remaining.php'/>");
 
 /** returns the number of places taken on a course. */
 function get_places_taken($courseID)
