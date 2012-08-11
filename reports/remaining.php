@@ -99,7 +99,7 @@ function print_blocks_table($StudentType)
 }
 
 // sql query - get a list of student types
-$sql = "select StudentTypes.id, CourseType from StudentTypes inner join students on StudentTypes.id=students.StudentType WHERE EnrolmentYear=2012 GROUP BY CourseType;";
+$sql = "select StudentTypes.id, CourseType from StudentTypes;";
 $result = mysql_query($sql, $link);
 
 if (!$result) {  die('Invalid query: ' . mysql_error());  }

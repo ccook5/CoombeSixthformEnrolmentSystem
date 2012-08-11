@@ -8,7 +8,7 @@ var orig_student_name = null;
 		
 $(document).ready(function() {
 		
-<?php print create_select_builder('build_student_type_select', 'SELECT* FROM StudentTypes', 'student_types', 'id', 'CourseType'); ?>
+<?php print create_select_builder('build_student_type_select', 'SELECT * FROM StudentTypes ORDER BY CourseType', 'student_types', 'id', 'CourseType'); ?>
 
 /** This is run when a user clicks Edit or Save. 
   *
