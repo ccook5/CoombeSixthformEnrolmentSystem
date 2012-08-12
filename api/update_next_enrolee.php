@@ -15,13 +15,18 @@ print_header($title = 'Coombe Sixth Form Enrolment - Blocks',
 				
 $current = $config['next_enrolee'];
 
-if ($Action == "Up") {
+echo $current;
+echo $Action;
+if ($Action === "Up") {
 	$current ++;
-} else if ($Action == "Down") {
+} else if ($Action === "Down") {
 	$current --;
 } else {
 	die;
 }
+
+
+echo $current;
 
 $sql  = "UPDATE configuration SET value=".$current." WHERE setting='next_enrolee';";
 

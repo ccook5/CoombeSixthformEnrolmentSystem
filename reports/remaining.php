@@ -9,11 +9,10 @@ print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = false,
 			
 function keydown(event)
 {
-	var act = 'Up';
-	if (event.keyIdentifier == 'Up') {
-		act = 'Up';
-	} else if (event.keyIdentifier == 'Down') {
-		act = 'Down';
+	if (event.keyIdentifier == 'U+00DB') {
+		var act = 'Up';
+	} else if (event.keyIdentifier == 'U+00DD') {
+		var act = 'Down';
 	}
 
 	var request = $.ajax({
