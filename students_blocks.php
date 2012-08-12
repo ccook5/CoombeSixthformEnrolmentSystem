@@ -1,10 +1,17 @@
 <?php
-
 require_once('config.inc.php');
 require_once('header.inc.php');
 require_once('footer.inc.php');
 require_once('functions.inc.php');
 
+print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $script = "
+
+function clear_column(ColumnID)
+{
+	$('input[name=\'block['+ColumnID+']\' ]').attr(\"checked\", false);
+}
+ ");
+ 
 if (! isset($_GET['student_id']) || $_GET['student_id'] == "null") {
 	die( "<div class='error'>No student Id found</div>" );
 } else {
@@ -16,14 +23,6 @@ $hide_columns = "";
 if ($config["debug"] != true) {
 	$hide_columns = "				{ 'bVisible': false, 'aTargets': [ 0, 1 ] },\n";
 }
-
-print_header($title = 'Coombe Sixth Form Enrolment', $hide_title_bar = true, $script = "
-
-function clear_column(ColumnID)
-{
-	$('input[name=\'block['+ColumnID+']\' ]').attr(\"checked\", false);
-}
- ");
 
 function print_coursetype_selects($StudentType)
 {
@@ -45,7 +44,7 @@ function print_coursetype_selects($StudentType)
 	return 0;
 }
 	
-function get_places_left($courseID)
+function get_places_taken($courseID)
 {
 	global $config, $link;
 	$sql_places    = "SELECT * FROM BLOCKS_CourseEnrolment WHERE EnrolmentYear=".$config['current_year']." AND CourseID='".$courseID."' ORDER BY id";
@@ -134,9 +133,18 @@ function print_blocks_table($StudentID, $StudentType)
 					{
 						$checked = " checked ";
 					}
+					$places_taken = get_places_taken($row[0]);
+					$max_pupils   = $row['MaxPupils'];
+					$bgcolour     = "";
+					
+					if ( $max_pupils - $places_taken < 2 ) {
+						$bgcolour = "background: red;";
+					} else if ($max_pupils - $places_taken <  5 ) {
+						$bgcolour = "background: orange;";
+					}
 ?>
               <tr>
-               <td style='height: 2.3em'>
+               <td style='height: 2.3em; <?php echo $bgcolour; ?>;'>
                 <input 
                   type='radio' 
                   name='block[<?php echo $row_blocks['id']; ?>]' 
@@ -147,7 +155,7 @@ function print_blocks_table($StudentID, $StudentType)
                   <span><?php echo $row['SubjectName']; ?></span>		
                 </label>
                   <div class='places_left' >
-                   <?php echo '('.get_places_left($row[0])."/".$row['MaxPupils'].")\n"; ?>
+                   <?php echo '('.$places_taken."/".$max_pupils.")\n"; ?>
                   </div>	
                </td>
               </tr>
@@ -187,8 +195,8 @@ else if (mysql_num_rows($result) > 0)
      <div id="dynamic">
       <table>
        <tr>
- <!--       <td>Mobile Number:   <input type='text' value='<?php echo $row['MobileNumber'];   ?>' /></td> -->
-        <td>Sequence Number:</td><td><input type='text' value='<?php echo $row['SequenceNumber']; ?>' /></td>
+ <!--       <td>Mobile Number:   <input type='text' name='mobile_number' value='<?php echo $row['MobileNumber'];   ?>' /></td> -->
+        <td>Sequence Number:</td><td><input type='text' name='sequence_number' value='<?php echo $row['SequenceNumber']; ?>' /></td>
 <?php print_coursetype_selects($row['StudentType']); ?>
        </tr>
 <!--       <tr>

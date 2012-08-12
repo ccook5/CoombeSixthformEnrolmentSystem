@@ -4,15 +4,33 @@ require_once('../header.inc.php');
 require_once('../footer.inc.php');
 require_once('../functions.inc.php');
 
-$StudentID    = get_post_val('StudentID');
-$CourseTypeID = get_post_val('CourseTypeID');
+$StudentID       = get_post_val('StudentID');
+$CourseTypeID    = get_post_val('CourseTypeID');
+$mobile_numner   = get_post_val('mobile_number');
+$sequence_number = get_post_val('sequence_number');
 
 print_header($title = 'Coombe Sixth Form Enrolment - Blocks', 
 				$hide_title_bar        = true, 
 				$script                = "", 
 				$exclude_datatables_js = true, 
-				$meta                  ="      <meta http-equiv='refresh' content='0;url=/students_blocks.php?student_id=".$StudentID."'/>");
+				$meta                  = "      <meta http-equiv='refresh' content='120;url=/students_blocks.php?student_id=".$StudentID."'/>");
 
+// pop the sequence number in the student table.
+if (isset($_POST['sequence_number']))
+{
+	$sql  = "UPDATE students SET ";
+	$sql .= "SequenceNumber='".$sequence_number."' ";
+	$sql .= "WHERE id='".$StudentID."'";
+
+	if (! mysql_query($sql, $link))
+	{
+		print('Invalid query: ' . mysql_error().'. SQL: '.$sql );
+		print('Continuing, this probably isn\'t fatal.');
+	}
+} else {
+	print('Sequence Number not set.');
+}
+				
 // delete all the current enrolments
 if (isset($_POST['StudentID']))
 {

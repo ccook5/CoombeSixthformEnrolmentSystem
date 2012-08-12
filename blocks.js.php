@@ -64,7 +64,8 @@ $(document).ready(function() {
 				       LastName            : jqInputs[2].value,
 				       StudentType         : jqSelects[0].options[jqSelects[0].selectedIndex].value,
 				       PreviousInstitution : jqInputs[3].value,
-				       EnrolmentYear       : jqInputs[4].value},
+				       EnrolmentYear       : jqInputs[4].value
+					  },
 				dataType: 'html'
 			});
 
